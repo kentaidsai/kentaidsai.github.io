@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e10;
+      --surface: #18181c;
+      --border: #2a2a32;
+      --accent: #c8f04a;
+      --accent-dim: #a8cc30;
+      --text: #f0f0ee;
+      --muted: #6b6b78;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* Glow blob */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,240,74,0.12) 0%, transparent 70%);
+      top: -120px;
+      right: -120px;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(2rem, 6vw, 3.5rem);
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 0 0 1px rgba(200,240,74,0.04), 0 24px 64px rgba(0,0,0,0.5);
+      animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(200,240,74,0.08);
+      border: 1px solid rgba(200,240,74,0.2);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      margin-bottom: 2.25rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 2.25rem;
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 360px) {
+      .btn-group { grid-template-columns: 1fr; }
+    }
+
+    .btn {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      padding: 1.1rem 1.25rem;
+      border-radius: calc(var(--radius) - 2px);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,240,74,0.07) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      background: rgba(200,240,74,0.04);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(200,240,74,0.15);
+    }
+
+    .btn:hover::before { opacity: 1; }
+    .btn:active { transform: translateY(0); }
+
+    .btn-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .btn-label {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-desc {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .btn-arrow {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .btn:hover .btn-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    .footer-note {
+      margin-top: 1.75rem;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="tag">Control Panel</div>
+    <h1>Manage <span>Settings</span></h1>
+    <p class="subtitle">Select an action below to navigate to the corresponding configuration page.</p>
+    <div class="divider"></div>
+
+    <div class="btn-group">
+
+      <a class="btn" href="gotoSetting.html" target="_blank" rel="noopener noreferrer">
+        <span class="btn-icon">📅</span>
+        <span class="btn-label">Set</span>
+        <span class="btn-desc">Configure off days</span>
+        <span class="btn-arrow">↗</span>
+      </a>
+
+      <a class="btn" href="setOffDays.html" target="_blank" rel="noopener noreferrer">
+        <span class="btn-icon">⚙️</span>
+        <span class="btn-label">Update</span>
+        <span class="btn-desc">Go to settings</span>
+        <span class="btn-arrow">↗</span>
+      </a>
+
+    </div>
+
+    <p class="footer-note">RWD — responsive on all screen sizes</p>
+  </div>
+
+</body>
+</html>
