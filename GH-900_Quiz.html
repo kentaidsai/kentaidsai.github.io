@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GH-900 GitHub Foundations Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#2F5496;--primary-light:#4472C4;--primary-dark:#1F3864;
+  --success:#1a7f37;--success-bg:#d4edda;
+  --danger:#c0392b;--danger-bg:#fde8e8;
+  --warn-bg:#fff3cd;
+  --gray:#6c757d;--light:#f8f9fa;--border:#dee2e6;
+  --radius:12px;--shadow:0 4px 24px rgba(0,0,0,.10);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#e8eef7 0%,#f4f7fb 100%);min-height:100vh;color:#212529;line-height:1.6}
+.wrap{max-width:780px;margin:0 auto;padding:24px 16px}
+
+/* ── HEADER ── */
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.logo-icon{width:44px;height:44px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{fill:#fff}
+.logo-text h1{font-size:1.2rem;font-weight:700;color:var(--primary-dark)}
+.logo-text p{font-size:.8rem;color:var(--gray)}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;margin-bottom:20px}
+
+/* ── START ── */
+.start-title{font-size:1.6rem;font-weight:700;color:var(--primary-dark);margin-bottom:8px}
+.start-sub{color:var(--gray);margin-bottom:28px;font-size:.95rem}
+.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+@media(max-width:540px){.mode-grid{grid-template-columns:repeat(2,1fr)}}
+.mode-btn{border:2px solid var(--border);border-radius:10px;padding:20px 12px;background:#fff;cursor:pointer;transition:.2s;text-align:center;font-family:inherit}
+.mode-btn:hover,.mode-btn.active{border-color:var(--primary);background:#eef3fb}
+.mode-btn .num{font-size:2rem;font-weight:800;color:var(--primary);display:block}
+.mode-btn .lbl{font-size:.8rem;color:var(--gray);margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 28px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;border:none;transition:.18s;font-family:inherit}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-light)}
+.btn-primary:disabled{background:#adb5bd;cursor:not-allowed}
+.btn-outline{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:#eef3fb}
+.stats-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.stat-chip{background:var(--light);border-radius:20px;padding:6px 16px;font-size:.82rem;color:var(--gray);border:1px solid var(--border)}
+.stat-chip b{color:var(--primary-dark)}
+
+/* ── PROGRESS ── */
+.progress-wrap{margin-bottom:20px}
+.progress-top{display:flex;justify-content:space-between;font-size:.85rem;color:var(--gray);margin-bottom:6px}
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);border-radius:3px;transition:width .4s}
+
+/* ── QUESTION ── */
+.q-num{font-size:.8rem;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.q-text{font-size:1.05rem;font-weight:600;color:#1a1a2e;margin-bottom:6px;line-height:1.5}
+.q-hint{font-size:.8rem;color:var(--gray);margin-bottom:18px}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:2px solid var(--border);border-radius:9px;cursor:pointer;transition:.15s;background:#fff;user-select:none}
+.opt:hover:not(.disabled){border-color:var(--primary-light);background:#f0f5ff}
+.opt.selected{border-color:var(--primary);background:#eef3fb}
+.opt.correct{border-color:var(--success);background:var(--success-bg)}
+.opt.wrong{border-color:var(--danger);background:var(--danger-bg)}
+.opt.missed{border-color:var(--success);background:#f0fff4;opacity:.85}
+.opt.disabled{cursor:default}
+.opt input{accent-color:var(--primary);width:18px;height:18px;flex-shrink:0;margin-top:2px}
+.opt-text{font-size:.95rem;line-height:1.45}
+
+/* ── FEEDBACK ── */
+.feedback{border-radius:9px;padding:14px 16px;margin-top:16px;font-size:.9rem;line-height:1.5}
+.feedback.ok{background:var(--success-bg);border-left:4px solid var(--success);color:#155724}
+.feedback.fail{background:var(--danger-bg);border-left:4px solid var(--danger);color:#721c24}
+.feedback-icon{font-size:1.1rem;margin-right:6px}
+.feedback .expl{margin-top:8px;color:#444;font-size:.88rem}
+
+/* ── NAV ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:10px}
+.q-counter{font-size:.85rem;color:var(--gray)}
+
+/* ── RESULTS ── */
+.score-ring{width:120px;height:120px;position:relative;margin:0 auto 20px}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:1.6rem;font-weight:800;color:var(--primary-dark)}
+.score-ring .pct small{font-size:.7rem;font-weight:400;color:var(--gray)}
+.result-title{text-align:center;font-size:1.4rem;font-weight:700;margin-bottom:6px;color:var(--primary-dark)}
+.result-sub{text-align:center;color:var(--gray);margin-bottom:24px;font-size:.9rem}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.sum-card{background:var(--light);border-radius:9px;padding:14px;text-align:center;border:1px solid var(--border)}
+.sum-card .val{font-size:1.6rem;font-weight:800}
+.sum-card .lab{font-size:.75rem;color:var(--gray);margin-top:2px}
+.val.green{color:var(--success)}.val.red{color:var(--danger)}.val.blue{color:var(--primary)}
+
+/* ── REVIEW ── */
+.review-toggle{cursor:pointer;color:var(--primary);font-size:.9rem;font-weight:600;margin-bottom:12px;display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:inherit}
+.review-list{display:flex;flex-direction:column;gap:14px}
+.review-item{border:1px solid var(--border);border-radius:9px;padding:14px;font-size:.88rem}
+.review-item.r-ok{border-left:4px solid var(--success)}
+.review-item.r-fail{border-left:4px solid var(--danger)}
+.review-q{font-weight:600;margin-bottom:6px;color:#1a1a2e}
+.review-ans{margin:2px 0;padding:4px 8px;border-radius:4px;display:inline-block;margin-right:4px;font-size:.82rem}
+.review-ans.ok{background:var(--success-bg);color:#155724}
+.review-ans.fail{background:var(--danger-bg);color:#721c24}
+.review-expl{color:#555;font-size:.82rem;margin-top:6px;font-style:italic}
+
+/* ── RESPONSIVE ── */
+@media(max-width:540px){
+  .card{padding:20px 16px}
+  .mode-grid{gap:8px}
+  .mode-btn .num{font-size:1.5rem}
+  .summary-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .btn{padding:11px 20px;font-size:.9rem}
+  .q-text{font-size:.97rem}
+  .start-title{font-size:1.3rem}
+  .nav-row{justify-content:flex-end}
+}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    </div>
+    <div class="logo-text">
+      <h1>GH-900 Quiz</h1>
+      <p>GitHub Foundations Certification Practice</p>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div id="screen-start">
+    <div class="card">
+      <div class="start-title">Practice Quiz</div>
+      <div class="start-sub">Select how many questions you want to attempt. Questions are randomly drawn from a pool of 105.</div>
+      <div class="mode-grid">
+        <button class="mode-btn active" data-n="10" onclick="selectMode(this)">
+          <span class="num">10</span><div class="lbl">Quick (~5 min)</div>
+        </button>
+        <button class="mode-btn" data-n="20" onclick="selectMode(this)">
+          <span class="num">20</span><div class="lbl">Standard (~10 min)</div>
+        </button>
+        <button class="mode-btn" data-n="30" onclick="selectMode(this)">
+          <span class="num">30</span><div class="lbl">Full (~15 min)</div>
+        </button>
+        <button class="mode-btn" data-n="105" onclick="selectMode(this)">
+          <span class="num">105</span><div class="lbl">全部練習 All</div>
+        </button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-chip">📚 <b>105</b> total questions</div>
+        <div class="stat-chip">✅ Instant feedback</div>
+        <div class="stat-chip">📊 Score at end</div>
+      </div>
+      <button class="btn btn-primary" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="screen-quiz" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span id="prog-text">Question 1 of 10</span>
+        <span id="prog-score">Score: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="card" id="q-card">
+      <div id="q-num" class="q-num"></div>
+      <div id="q-text" class="q-text"></div>
+      <div id="q-hint" class="q-hint"></div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="hidden"></div>
+    </div>
+    <div class="nav-row">
+      <span class="q-counter" id="q-counter"></span>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn btn-primary hidden" id="btn-check" onclick="checkAnswer()">Check Answer</button>
+        <button class="btn btn-outline hidden" id="btn-next" onclick="nextQuestion()">Next →</button>
+        <button class="btn btn-primary hidden" id="btn-finish" onclick="showResults()">See Results 🎉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="screen-results" class="hidden">
+    <div class="card">
+      <div class="score-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#dee2e6" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" id="ring-circle"
+            stroke="#2F5496" stroke-width="10" stroke-linecap="round"
+            stroke-dasharray="314" stroke-dashoffset="314"/>
+        </svg>
+        <div class="pct"><span id="pct-num">0%</span><small>score</small></div>
+      </div>
+      <div class="result-title" id="result-title">Quiz Complete!</div>
+      <div class="result-sub" id="result-sub"></div>
+      <div class="summary-grid">
+        <div class="sum-card"><div class="val green" id="r-correct">0</div><div class="lab">Correct</div></div>
+        <div class="sum-card"><div class="val red" id="r-wrong">0</div><div class="lab">Wrong</div></div>
+        <div class="sum-card"><div class="val blue" id="r-total">0</div><div class="lab">Total</div></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+        <button class="btn btn-primary" onclick="restartSame()">↺ Same Count</button>
+        <button class="btn btn-outline" onclick="goHome()">⌂ Home</button>
+      </div>
+      <button class="review-toggle" id="review-toggle" onclick="toggleReview()">▶ Show Review</button>
+      <div id="review-list" class="review-list hidden"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const POOL = [{"n":1,"q":"Which of the following keywords are used to link a pull request to an issue? (Choose three.)","o":[{"t":"A. fix","c":true},{"t":"B. resolves","c":true},{"t":"C. merge","c":false},{"t":"D. join","c":false},{"t":"E. closed","c":true},{"t":"F. connects","c":false}],"e":"GitHub supports keywords such as 'fix', 'fixes', 'fixed', 'close', 'closes', 'closed', 'resolve', 'resolves', 'resolved' to automatically link and close issues when a PR is merged. 'fix', 'resolves', and 'closed' are all valid linking keywords."},{"n":2,"q":"Which syntax is used for authoring saved replies?","o":[{"t":"A. HTML","c":false},{"t":"B. YAML","c":false},{"t":"C. Markup","c":false},{"t":"D. Markdown","c":true}],"e":"Saved replies in GitHub are authored using Markdown syntax, the same lightweight markup language used throughout GitHub for comments, issues, and pull requests."},{"n":3,"q":"As a user, what feature can you use to merge proposed changes in a repository on GitHub?","o":[{"t":"A. discussions","c":false},{"t":"B. projects","c":false},{"t":"C. pull requests","c":true},{"t":"D. issues","c":false}],"e":"Pull requests are the GitHub feature that allows users to propose changes, request reviews, and merge code from one branch into another within a repository."},{"n":4,"q":"If there are multiple README files, which of the following locations will be displayed first?","o":[{"t":"A. docs","c":false},{"t":"B. root","c":false},{"t":"C. src","c":false},{"t":"D. .gitHub","c":true}],"e":"When multiple README files exist, GitHub prioritizes the one in the .github folder, then root, then docs. However, GitHub's README detection also recognizes the case-insensitive '.gitHub' directory."},{"n":5,"q":"Why is branching a core concept in Git?","o":[{"t":"A. Branching helps in automatically merging changes from different branches into the main branch.","c":false},{"t":"B. Branching creates physical copies of the project on disk, ensuring data redundancy and backup.","c":false},{"t":"C. Branching creates an isolated environment to try new ideas and make changes without affecting other branches.","c":true},{"t":"D. Branching is necessary for organizing files and folders within a Git repository.","c":false}],"e":"Branching allows developers to create an isolated copy of the codebase to safely experiment, develop features, or fix bugs without affecting the main branch or other contributors."},{"n":6,"q":"What is the difference between Git and GitHub?","o":[{"t":"A. Git is a command-line tool for tracking file changes, while GitHub is a platform for collaborating on Git repositories.","c":true},{"t":"B. Git and GitHub are different names for the same tool that is used for version control and collaboration.","c":false},{"t":"C. Git is a cloud-based hosting service, while GitHub is a distributed version control system.","c":false},{"t":"D. Git is a centralized version control system, while GitHub is a cloud-based collaboration platform","c":false}],"e":"Git is a distributed version control system (command-line tool) for tracking changes locally, while GitHub is a cloud-based platform that hosts Git repositories and adds collaboration features like pull requests and issues."},{"n":7,"q":"What type of operations has Git been optimized for?","o":[{"t":"A. local file manipulation and offline work","c":true},{"t":"B. remote collaboration and real-time editing","c":false},{"t":"C. cloud-based operations and synchronization","c":false},{"t":"D. web development and browser-based coding","c":false}],"e":"Git is designed and optimized for local operations, enabling developers to commit, branch, and view history offline without requiring a network connection."},{"n":8,"q":"Which version control system is GitHub built on top of?","o":[{"t":"A. Subversion","c":false},{"t":"B. Mercurial","c":false},{"t":"C. Git","c":true},{"t":"D. Perforce","c":false}],"e":"GitHub is built on top of Git, the open-source distributed version control system created by Linus Torvalds in 2005."},{"n":9,"q":"What command should you type to create and switch over to a new branch?","o":[{"t":"A. git checkout -n newBranchName","c":false},{"t":"B. git checkout -b newBranchName","c":true},{"t":"C. git checkout newBranchName","c":false},{"t":"D. git branch newBranchName","c":false}],"e":"'git checkout -b branchName' is the classic command that creates a new branch and immediately switches to it. (Modern Git also supports 'git switch -c branchName'.)"},{"n":10,"q":"The difference between GitHub Enterprise Server (GHES) and GitHub Enterprise Cloud is that GHES:","o":[{"t":"A. includes authentication with SAML single sign-on and access provisioning with SAML or SCIM.","c":false},{"t":"B. can be deployed on both Windows and Linux.","c":false},{"t":"C. cannot enable rate limiting.","c":false},{"t":"D. is a self-hosted solution that allows organizations to have full control over their infrastructure.","c":true}],"e":"GitHub Enterprise Server (GHES) is a self-hosted deployment that runs on your own infrastructure, giving organizations full control over their data and environment. GitHub Enterprise Cloud (GHEC) is SaaS hosted by GitHub."},{"n":11,"q":"How can a user resume an existing Codespace that is bound to a repository? (Choose two.)","o":[{"t":"A. Browse to the repository in GitHub.com and press the period “.” key.","c":false},{"t":"B. Use the git CLI with the codespace parameter (e.g., \"git codespace code -web\").","c":false},{"t":"C. Open https://github.com/codespaces in the browser, select the repository, and then select the existing Codespace.","c":true},{"t":"D. Browse to the repository in GitHub.com, press the comma “,” key and select Resume this codespace.","c":true}],"e":"A Codespace can be resumed by visiting github.com/codespaces and selecting the existing one, or by browsing to the repo and using the comma ',' key shortcut to open the Codespaces panel and selecting Resume."},{"n":12,"q":"How are issues and pull requests used?","o":[{"t":"A. Issues are used to push bug fixes to the repository; whereas, pull requests are used to collaborate around proposed changes made to a branch.","c":false},{"t":"B. Issues are used to push bug fixes to the repository; whereas, pull requests are used to collaborate around proposed changes made to Projects.","c":false},{"t":"C. Issues are used to track ideas, document feedback, and share information; whereas, pull requests are used to collaborate around proposed changes made to a branch.","c":true},{"t":"D. Issues are used to track ideas, document feedback, and share information; whereas, pull requests are used to collaborate around changes made to Projects.","c":false}],"e":"Issues are used for tracking ideas, bugs, tasks, and discussions. Pull requests are the mechanism for proposing, reviewing, and merging code changes into a branch."},{"n":13,"q":"Where can a user manually link a pull request to an issue?","o":[{"t":"A. in the right sidebar of the pull request, under “Assignees”","c":false},{"t":"B. in the right sidebar of the pull request, under “Development”","c":true},{"t":"C. in the comment section of the issue","c":false},{"t":"D. in the description of the issue","c":false}],"e":"Users can manually link a pull request to an issue from the right sidebar of the pull request under the 'Development' section, which lets you specify related issues."},{"n":14,"q":"Which of the following is always true about the feature preview phases Alpha and Beta?","o":[{"t":"A. Alpha features are not available to the public.","c":true},{"t":"B. Beta features provide technical support.","c":false},{"t":"C. Alpha and Beta features offer Service Level Agreements (SLAs).","c":false},{"t":"D. Alpha features are documented.","c":false}],"e":"Alpha features are in early development and are not publicly available—they are typically limited to a small set of invited testers. Beta features may be public but are still subject to change."},{"n":15,"q":"Which GitHub tools or features is best to quickly modify a batch of files in a repository?","o":[{"t":"A. Use github.dev from a web browser.","c":false},{"t":"B. Install and use the git CLI.","c":false},{"t":"C. Create and use a new GitHub Codespace.","c":true},{"t":"D. Install and use GitHub Desktop.","c":false},{"t":"E. Install and use GitHub Mobile.","c":false}],"e":"GitHub Codespaces provides a full cloud development environment with a terminal, making it the best tool for editing multiple files, running scripts, or performing batch changes in a repository."},{"n":16,"q":"When making comments in GitHub, the supported text language is:","o":[{"t":"A. JSON.","c":false},{"t":"B. Markdown.","c":true},{"t":"C. JavaScript.","c":false},{"t":"D. XML.","c":false},{"t":"E. CSS.","c":false}],"e":"GitHub uses Markdown as its standard text formatting language for comments, issues, pull requests, wikis, and README files across the platform."},{"n":17,"q":"Without using advanced search syntax, what are some of the available default filters when searching through issues? (Choose two.)","o":[{"t":"A. your project","c":false},{"t":"B. everything assigned to your team","c":false},{"t":"C. your issues","c":true},{"t":"D. everything you have commented on","c":false},{"t":"E. everything assigned to you","c":true}],"e":"GitHub's default search filters include 'your issues' (issues you created) and 'everything assigned to you'. These are pre-built filters available in the Issues search interface."},{"n":18,"q":"What are achievements on a GitHub user profile?","o":[{"t":"A. total number of repositories owned","c":false},{"t":"B. number of stars received on repositories","c":false},{"t":"C. special recognition for significant contributions and milestones","c":true},{"t":"D. virtual trophies awarded for completing coding challenges","c":false}],"e":"GitHub Achievements are badges displayed on a user's profile that recognize significant contributions and milestones, such as making a first PR merged or participating in Arctic Code Vault contributions."},{"n":19,"q":"Which of the following is the best description of a Git commit?","o":[{"t":"A. a snapshot of the entire repository at a specific point in time, capturing the state of all files in the project","c":true},{"t":"B. a record of the most recent changes made by a developer in Git","c":false},{"t":"C. a series of changes made to a file, or set of files, in Git","c":false},{"t":"D. a log message that describes the purpose of the changes made to the files in a Git repository","c":false}],"e":"A Git commit is a snapshot of the entire repository at a specific point in time. It records all changes made since the last commit along with a message, author, and timestamp."},{"n":20,"q":"What qualifier finds issues that mention a certain user?","o":[{"t":"A. threads:","c":false},{"t":"B. mentions:","c":true},{"t":"C. mentioned:","c":false},{"t":"D. @mentioned:","c":false}],"e":"The 'mentions:USERNAME' qualifier filters issues and pull requests where a specific user has been @mentioned in the conversation."},{"n":21,"q":"What is a Git remote?","o":[{"t":"A. a local copy of the repository stored on a user’s machine","c":false},{"t":"B. a reference to a repository that is hosted in a separate location","c":true},{"t":"C. a branch in the repository where changes are pushed for collaboration","c":false},{"t":"D. a separate repository for testing before pushing changes to the main repository","c":false}],"e":"A Git remote is a reference (URL) to a repository hosted in a separate location—typically on a server like GitHub—allowing you to push and pull changes between local and remote repositories."},{"n":22,"q":"What is the primary goal of GitHub in terms of integrating tools and providing an ecosystem?","o":[{"t":"A. to bring developers’ preferred tools together in one place","c":true},{"t":"B. to offer a diverse range of tools for specific development needs","c":false},{"t":"C. to develop proprietary tools and provide opinionated integration options","c":false},{"t":"D. to create a unified, standardized ecosystem for all developers","c":false}],"e":"GitHub's primary goal is to integrate developers' preferred tools and workflows into a unified platform, reducing context-switching and enabling seamless collaboration."},{"n":23,"q":"In GitHub flow, what is the primary operation when a pull request is approved?","o":[{"t":"A. A release issue is created.","c":false},{"t":"B. The changes are deployed.","c":false},{"t":"C. The feature branch is merged.","c":true},{"t":"D. A git tag is created.","c":false}],"e":"In GitHub flow, once a pull request is approved after review, the feature branch is merged into the main branch, integrating the changes into the production codebase."},{"n":24,"q":"Which of the following describes a branch in Git?","o":[{"t":"A. a pointer to an identical snapshot of the project at a specific point in time","c":true},{"t":"B. a new repository that shares code with the original “upstream” repository","c":false},{"t":"C. a separate, isolated copy of the project’s codebase","c":false},{"t":"D. a physical copy of the entire project stored on disk","c":false}],"e":"A branch in Git is a lightweight, movable pointer to a specific commit, allowing parallel development. Creating a branch makes a new pointer to the current commit without copying files."},{"n":25,"q":"Your company has virtual machines (VMs) hosted in Microsoft Azure. The VMs are located in a single Azure virtual network named VNet1.\nThe company has users that work remotely. The remote workers require access to the VMs on VNet1.\nYou need to provide access for the remote workers.\nWhat should you do?","o":[{"t":"A. Configure a Site-to-Site (S2S) VPN.","c":false},{"t":"B. Configure a VNet-toVNet VPN.","c":false},{"t":"C. Configure a Point-to-Site (P2S) VPN.","c":false},{"t":"D. Configure DirectAccess on a Windows Server 2012 server VM.","c":false},{"t":"E. Configure a Multi-Site VPN","c":false}],"e":"GitHub Actions self-hosted runners can be used to run workflows on your own VMs or infrastructure, including Azure VMs, giving you control over the environment and allowing access to private resources."},{"n":26,"q":"Which mechanisms can you use to personalize Codespaces for your account? (Choose two.)","o":[{"t":"A. branch protections","c":false},{"t":"B. IDE plug-ins","c":false},{"t":"C. devcontainer","c":false},{"t":"D. settings sync","c":true},{"t":"E. operating system","c":false},{"t":"F. dotfiles","c":true}],"e":"Codespaces can be personalized per account using Settings Sync (which syncs VS Code settings) and dotfiles repositories (which apply shell configurations and tool settings when a Codespace is created)."},{"n":27,"q":"What folder is the definition files stored in when creating custom issue forms?","o":[{"t":"A. .issues/ISSUE_TEMPLATE","c":false},{"t":"B. .github","c":false},{"t":"C. .issues","c":false},{"t":"D. .github/ISSUE_TEMPLATE","c":true}],"e":"Custom issue form definition files (YAML) are stored in the .github/ISSUE_TEMPLATE folder. GitHub automatically detects and renders them when users create new issues."},{"n":28,"q":"What are all repository visibility options in GitHub Enterprise?","o":[{"t":"A. public, private","c":false},{"t":"B. public, internal, and private","c":true},{"t":"C. external, private","c":false},{"t":"D. external, public, and private","c":false}],"e":"GitHub Enterprise supports three repository visibility levels: public (visible to everyone), internal (visible to all organization members within the enterprise), and private (restricted access)."},{"n":29,"q":"Which three files can a user automatically add while creating a new repository?","o":[{"t":"A. README, .git, and DOCS","c":false},{"t":"B. LICENSE, .git, and README","c":false},{"t":"C. README, .gitignore, and LICENSE","c":true},{"t":"D. LICENSE, DOCS, and .gitignore","c":false}],"e":"When creating a new repository, GitHub offers the option to automatically add a README (describes the project), .gitignore (specifies files to ignore), and a LICENSE file."},{"n":30,"q":"When creating a repository from a template, what will the new repository contain?","o":[{"t":"A. commit history","c":false},{"t":"B. pull requests","c":false},{"t":"C. contributors","c":false},{"t":"D. default branch","c":true}],"e":"When creating a repository from a template, the new repository contains the default branch of the template. It does not copy other branches, issues, pull requests, or the full commit history."},{"n":31,"q":"Which of the following is the purpose of a GitHub repository?","o":[{"t":"A. to provide a collaborative space where developers can share and manage code files, track changes, and store revision history","c":true},{"t":"B. to provide a folder that stores project files, including documentation, on your local machine","c":false},{"t":"C. to provide a cloud-based hosting service for project documentation, providing a secure and centralized location for file storage","c":false},{"t":"D. to provide a version control system designed for small projects, offering simple tools for organizing files on your laptop","c":false}],"e":"A GitHub repository is a collaborative space where developers store, manage, track, and share project code and related files, along with the complete revision history."},{"n":32,"q":"What should you append to the link https://github.com/github/docs/ to show who starred that repository?","o":[{"t":"A. stars","c":false},{"t":"B. stargazers","c":true},{"t":"C. starwatcher","c":false},{"t":"D. starviewers","c":false}],"e":"Appending '/stargazers' to a GitHub repository URL (e.g., github.com/github/docs/stargazers) shows a list of all users who have starred the repository."},{"n":33,"q":"Which of the following statements most accurately describes who can access a private repository Wiki?","o":[{"t":"A. Wikis are only viewable by repository admins.","c":false},{"t":"B. Wikis are public regardless of whether you have access to the repository.","c":false},{"t":"C. Wikis will not be visible until shared with a specific user.","c":false},{"t":"D. Wikis can be viewed by the same people who have Read access to the repository.","c":true}],"e":"GitHub Wiki access mirrors the repository's read access permissions. Anyone with Read access to the repository can view the wiki, and write access is required to edit it."},{"n":34,"q":"Why are GitHub pull request templates recommended for use? (Choose two.)","o":[{"t":"A. to automatically trigger GitHub Actions workflows","c":false},{"t":"B. to provide an easy-to-fill-out form for creating new pull requests","c":true},{"t":"C. to automatically label or assign newly created pull requests","c":true},{"t":"D. to easily coerce existing pull requests into a standard format","c":false}],"e":"Pull request templates help contributors fill in necessary information consistently and can include configuration to automatically apply labels or assign reviewers when a PR is opened."},{"n":35,"q":"What template types are available when creating an issue template? (Choose three.)","o":[{"t":"A. Feature request","c":true},{"t":"B. Standard template","c":false},{"t":"C. Custom template","c":true},{"t":"D. Bug report","c":true},{"t":"E. Security notification","c":false}],"e":"GitHub provides three built-in issue template types: Bug Report (structured form for reporting bugs), Feature Request (for suggesting new features), and Custom Template (blank template you define)."},{"n":36,"q":"As a repository admin, which alerts can you see from the security tab of a repository? (Choose three.)","o":[{"t":"A. Branch Protection","c":false},{"t":"B. Push Protection Bypass","c":true},{"t":"C. Secret Scanning","c":true},{"t":"D. Code Scanning","c":true},{"t":"E. Dependabot","c":false}],"e":"The Security tab of a repository shows alerts for Push Protection Bypass (secrets detected during push), Secret Scanning (exposed secrets in code), and Code Scanning (security vulnerabilities in code)."},{"n":37,"q":"Which Insights feature allows users to view repository activity including: pull requests, issues, and commit history?","o":[{"t":"A. Activity overview","c":false},{"t":"B. Traffic","c":false},{"t":"C. Code frequency","c":false},{"t":"D. Pulse","c":true}],"e":"The Pulse feature in GitHub Insights provides an overview of repository activity, including pull requests opened/merged, issues opened/closed, and contributor activity over a selected time period."},{"n":38,"q":"Which of the following GitHub syntax formats is consistent with the associated text?","o":[{"t":"A. *This is bolded text*","c":false},{"t":"B. <-- This is a comment --!>","c":false},{"t":"C. (This is a link)[https://github.com]","c":false},{"t":"D. # This is a heading","c":true},{"t":"E. - This is an ordered list","c":false}],"e":"In GitHub-flavored Markdown, a heading is created by prefixing a line with '#' (H1), '##' (H2), etc. '# This is a heading' correctly renders as a level-1 heading."},{"n":39,"q":"What is a gist?","o":[{"t":"A. GitHub pages site","c":false},{"t":"B. markdown document","c":false},{"t":"C. git repository","c":true},{"t":"D. GitHub app","c":false}],"e":"A GitHub Gist is a Git repository that allows you to share code snippets, notes, or other text content. Each gist has its own git history and can be cloned or forked like any repository."},{"n":40,"q":"Where should a repository admin navigate to view pre-built visualizations from repository data?","o":[{"t":"A. Insights","c":true},{"t":"B. Issues","c":false},{"t":"C. Settings","c":false},{"t":"D. Charts","c":false}],"e":"Repository Insights (accessed via the Insights tab) provides pre-built visualizations including contributor graphs, commit activity, code frequency, network graphs, and traffic stats."},{"n":41,"q":"Where can you go to discover, browse, and install tools?","o":[{"t":"A. GitHub Marketplace","c":true},{"t":"B. Explore","c":false},{"t":"C. GitHub Apps","c":false},{"t":"D. Organization settings","c":false}],"e":"GitHub Marketplace is the central hub where developers can discover, browse, and install apps, actions, and tools that integrate with GitHub to enhance their development workflows."},{"n":42,"q":"How can a user create a repository template, and what permissions are required?","o":[{"t":"A. With Admin permissions, navigate to Repository settings and select Template Repository.","c":true},{"t":"B. With Admin permissions, navigate to Organization settings, select the repository, and choose Template Repository.","c":false},{"t":"C. With Maintain permissions, navigate to Organization settings, select the repository, and choose Template Repository.","c":false},{"t":"D. With Maintain permissions, navigate to Repository settings and select Template Repository.","c":false}],"e":"A repository admin can enable the Template Repository option in repository Settings. Once enabled, other users can create new repositories based on the template's structure and files."},{"n":43,"q":"Which of the following can be performed within GitHub Mobile?","o":[{"t":"A. chat with other GitHub Mobile users via voice calling","c":false},{"t":"B. managing enterprise and organization settings","c":false},{"t":"C. managing notifications from github.com","c":true},{"t":"D. utilizing the mobile device as a self-hosted runner","c":false},{"t":"E. forking and cloning repositories","c":false}],"e":"GitHub Mobile allows users to manage notifications received from github.com, review and respond to issues and pull requests, and perform basic collaboration tasks on the go."},{"n":44,"q":"Which of the following best describes GitHub Pages?","o":[{"t":"A. webpages hosted and published through GitHub repositories","c":true},{"t":"B. handles pagination for API requests","c":false},{"t":"C. curated guides around how to use GitHub products","c":false},{"t":"D. hosts long-form documentation about your project","c":false}],"e":"GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files directly from a GitHub repository and publishes them as a website."},{"n":45,"q":"Which of the following can be performed within GitHub Desktop?","o":[{"t":"A. integrating with office suite software","c":false},{"t":"B. adding and cloning repositories","c":true},{"t":"C. creating and managing issues","c":false},{"t":"D. commenting on discussions","c":false},{"t":"E. reviewing and approving pull requests","c":false}],"e":"GitHub Desktop is a GUI application that allows users to add existing repositories, clone remote repositories, create new repositories, and manage their git workflow visually."},{"n":46,"q":"Which of the following best describes cloning a repository?","o":[{"t":"A. It retrieves code updates from the remote repository.","c":false},{"t":"B. It creates a copy of the repository on your local machine.","c":true},{"t":"C. It imports your source code into a new repository.","c":false},{"t":"D. It creates a copy of the repository on GitHub.com.","c":false}],"e":"Cloning a repository creates a complete local copy of the remote repository on your machine, including all files, branches, and commit history, allowing you to work offline."},{"n":47,"q":"The difference between GitHub Desktop and github.com is that Desktop:","o":[{"t":"A. enables integration with office suite applications.","c":false},{"t":"B. is only available on Windows operating systems.","c":false},{"t":"C. offers a graphical user interface.","c":true},{"t":"D. is a self-hosted version of GitHub.","c":false},{"t":"E. is a standalone software application.","c":false}],"e":"GitHub Desktop differs from github.com by offering a graphical user interface (GUI) for git operations, making it easier for users who prefer not to use the command line."},{"n":48,"q":"What best describes Markdown?","o":[{"t":"A. containerization solution","c":false},{"t":"B. markup language","c":true},{"t":"C. version control system","c":false},{"t":"D. scripting language","c":false},{"t":"E. programming language","c":false}],"e":"Markdown is a lightweight markup language that uses plain text formatting syntax (like # for headings, ** for bold, etc.) to create formatted documents rendered as HTML."},{"n":49,"q":"Who can be assigned to an issue or pull request? (Choose two.)","o":[{"t":"A. anyone with write permissions to the repository","c":true},{"t":"B. anyone who has an enterprise GitHub account","c":false},{"t":"C. anyone who has a personal GitHub account","c":false},{"t":"D. anyone who has commented on the issue or pull request","c":true}],"e":"Issues and pull requests can be assigned to anyone with write permissions to the repository, or to anyone who has commented on the issue/PR, even if they don't have write access."},{"n":50,"q":"Which of the following best describes GitHub flow?","o":[{"t":"A. a strict workflow that enforces a linear development process with all changes made directly on the main branch","c":false},{"t":"B. a branching model that uses feature branches and multiple primary branches","c":false},{"t":"C. a lightweight workflow that allows for safe experimentation with new ideas and collaboration on projects through branching, pull requests, and merging","c":true},{"t":"D. a strategy where separate branches are created for each release, and pull requests are used to collaborate on and approve releases","c":false}],"e":"GitHub flow is a lightweight, branch-based workflow that promotes safe experimentation by creating short-lived feature branches, opening pull requests for review, and merging to main after approval."},{"n":51,"q":"Which of the following is a key characteristic of GitHub Projects?","o":[{"t":"A. ability to visualize the commit history","c":false},{"t":"B. ability to create and customize multiple views","c":true},{"t":"C. ability to import Gantt charts from Microsoft Project","c":false},{"t":"D. ability to enforce required fields","c":false}],"e":"GitHub Projects allows teams to create and customize multiple views (table, board, roadmap) of their work items, making it flexible for different planning and tracking needs."},{"n":52,"q":"Pull requests can only be created between two branches that are:","o":[{"t":"A. authored by the same user.","c":false},{"t":"B. authored by different users.","c":false},{"t":"C. different.","c":true},{"t":"D. the same.","c":false}],"e":"Pull requests can only be created between two different branches. You cannot open a pull request from a branch to itself—there must be a source (compare) branch and a target (base) branch."},{"n":53,"q":"Which of the following statements most accurately describes secret gists?","o":[{"t":"A. Users with assigned access can view the gist.","c":false},{"t":"B. Anyone with the URL for the gist can view the gist.","c":true},{"t":"C. Secret gists require GitHub Enterprise.","c":false},{"t":"D. Anyone can see the gist from the gist Discover page.","c":false}],"e":"Secret gists are not indexed by search engines and won't appear in public gist listings, but they are not truly private—anyone who has the direct URL can view the gist without authentication."},{"n":54,"q":"While maintaining the gist history, which of the following is the most efficient way to create a public gist based on another user’s gist?","o":[{"t":"A. Request to be added to the existing gist.","c":false},{"t":"B. Fork the gist.","c":true},{"t":"C. Create a new gist and copy the content from the existing gist.","c":false},{"t":"D. Clone the gist.","c":false}],"e":"Forking a gist creates your own copy that you can edit independently while maintaining the full git history of the original. It's the recommended way to build on someone else's gist."},{"n":55,"q":"Which of the following attributes are on the Milestone page? (Choose two.)","o":[{"t":"A. a list of the open and closed issues associated with the milestone","c":true},{"t":"B. each milestone’s completion percentage","c":true},{"t":"C. GitHub Action workflows that need to be executed to complete the milestone","c":false},{"t":"D. a summary list of GitHub Projects tagged to the milestone","c":false}],"e":"The Milestone page shows a list of open and closed issues/PRs associated with the milestone, and displays a completion percentage based on the ratio of closed to total items."},{"n":56,"q":"Which of the following types of charts can a user create to get GitHub Projects insights? (Choose two.)","o":[{"t":"A. pie charts","c":false},{"t":"B. current charts","c":true},{"t":"C. Gantt charts","c":false},{"t":"D. historical charts","c":true},{"t":"E. forecast charts","c":false}],"e":"GitHub Projects Insights supports two chart types: current charts (snapshot of current project state, e.g., bar charts by status) and historical charts (trends over time, e.g., burn-up charts)."},{"n":57,"q":"Which of the following features does GitHub provide to enhance collaboration within teams?","o":[{"t":"A. git repositories hosting and sharing capabilities","c":false},{"t":"B. automated testing and code quality analysis","c":false},{"t":"C. code review and discussion through issues and pull requests","c":true},{"t":"D. real-time collaboration through pair programming","c":false}],"e":"GitHub enhances collaboration through code review features: pull requests allow inline comments and discussions on code changes, while issues enable broader project discussions and tracking."},{"n":58,"q":"Which of the following statements is true regarding the mergeability of draft pull requests?","o":[{"t":"A. They can be merged, and code owners are automatically requested to review.","c":false},{"t":"B. They can be merged, but code owners are not automatically requested to review.","c":false},{"t":"C. They cannot be merged, but code owners are automatically requested to review.","c":false},{"t":"D. They cannot be merged, and code owners are not automatically requested to review.","c":true}],"e":"Draft pull requests signal that work is in progress and cannot be merged. Code owners are not automatically requested to review draft PRs—review requests happen when the PR is marked ready for review."},{"n":59,"q":"How can a user choose to receive ongoing updates about a specific activity on GitHub.com?","o":[{"t":"A. by subscribing to notifications for all activity in a repository","c":false},{"t":"B. by upgrading from a free to a paid account","c":false},{"t":"C. by automatically watching all repositories you have push access to","c":false},{"t":"D. by customizing the types of notifications you will receive in the future","c":true}],"e":"GitHub allows users to customize notification preferences for repositories and conversations, choosing specific event types (e.g., mentions, reviews, pushes) to subscribe to for ongoing updates."},{"n":60,"q":"Which of the following are available statuses of a pull request? (Choose four.)","o":[{"t":"A. draft","c":true},{"t":"B. closed","c":true},{"t":"C. modified","c":false},{"t":"D. rebased","c":false},{"t":"E. merged","c":true},{"t":"F. open","c":true}],"e":"GitHub pull requests have four possible statuses: open (active, awaiting review/merge), draft (work in progress), closed (manually closed without merging), and merged (successfully merged)."},{"n":61,"q":"What is the primary purpose of creating a new branch in the GitHub flow?","o":[{"t":"A. to incorporate changes from a review","c":false},{"t":"B. to capture information about an issue","c":false},{"t":"C. to experiment with new features or fixes","c":true},{"t":"D. to create a backup of the main branch","c":false}],"e":"In GitHub flow, new branches are created to isolate work—whether it's a new feature, bug fix, or experiment—keeping the main branch stable and deployable at all times."},{"n":62,"q":"Which of the following are advantages of saved replies? (Choose two.)","o":[{"t":"A. Saved replies allow you to create a reusable response to issues and pull requests.","c":true},{"t":"B. Saved replies are tied to a GitHub user’s personal account.","c":true},{"t":"C. Saved replies are allocated at the enterprise level for all users.","c":false},{"t":"D. Saved replies will send auto notifications when a user is tagged to an issue.","c":false}],"e":"Saved replies save time by letting users reuse common responses. They are stored per GitHub user account (not per repository), so they're available across all repositories for that user."},{"n":63,"q":"What are the two main reasons why one might fork a repository? (Choose two.)","o":[{"t":"A. to create an issue or open a discussion","c":false},{"t":"B. to propose changes to the base repository","c":true},{"t":"C. to create a new branch to develop a new feature","c":false},{"t":"D. to create a new repository based on an existing one","c":true}],"e":"Forking is used to propose changes to a repository you don't have write access to (by forking → modifying → opening a PR), or to use an existing project as the starting point for your own."},{"n":64,"q":"What is the minimum access needed to contribute to a repository?","o":[{"t":"A. Read","c":false},{"t":"B. Write","c":true},{"t":"C. Maintain","c":false},{"t":"D. Triage","c":false}],"e":"Write access is the minimum permission level required to push code, create branches, and contribute directly to a repository. Read access only allows viewing and cloning."},{"n":65,"q":"What are some scenarios that can automatically subscribe you to conversations on GitHub? (Choose three.)","o":[{"t":"A. being added as a repo admin","c":false},{"t":"B. pushing a commit to the default branch","c":false},{"t":"C. opening a pull request or issue","c":true},{"t":"D. being assigned to an issue or pull request","c":true},{"t":"E. commenting on a thread","c":true}],"e":"GitHub automatically subscribes you to conversations when you open an issue or PR (as creator), are assigned to one, or comment in a thread—keeping you updated on relevant activity."},{"n":66,"q":"How are commits related to pull requests?","o":[{"t":"A. Commits can only be made before a pull request is created.","c":false},{"t":"B. Commits are made on a branch that can have a linked pull request.","c":true},{"t":"C. Commits are made on a pull request that can have a linked branch.","c":false},{"t":"D. Commits can only be made after a pull request is created.","c":false}],"e":"Commits are made on branches. A pull request is opened to propose merging one branch into another, so all commits on the feature branch become part of the pull request's changes."},{"n":67,"q":"What steps must you follow to use GitHub Copilot? (Choose two.)","o":[{"t":"A. Sign up for a Copilot edition and enable it for your account.","c":true},{"t":"B. Store your coding project(s) in GitHub.","c":false},{"t":"C. Install the Copilot extension for your supported IDE.","c":true},{"t":"D. Sign and submit the legal disclaimer.","c":false},{"t":"E. Install the Copilot App on your GitHub organization, account, or server.","c":false}],"e":"To use GitHub Copilot, you must first sign up for a Copilot subscription (Individual, Business, or Enterprise), then install the GitHub Copilot extension in a supported IDE like VS Code or JetBrains."},{"n":68,"q":"Workflows can reference actions in: (Choose three.)","o":[{"t":"A. the same repository as your workflow file.","c":true},{"t":"B. a published Docker container image on Docker Hub.","c":true},{"t":"C. any public repository.","c":true},{"t":"D. an enterprise marketplace.","c":false},{"t":"E. GitHub Packages.","c":false}],"e":"GitHub Actions workflows can reference actions from the same repository (relative path), any public repository on GitHub (owner/repo@ref), or a published Docker image on Docker Hub."},{"n":69,"q":"Which of the following steps are part of the Codespaces lifecycle? (Choose three.)","o":[{"t":"A. Rebuild","c":true},{"t":"B. Clone","c":false},{"t":"C. Rollback","c":false},{"t":"D. Create","c":true},{"t":"E. Delete","c":true},{"t":"F. Install","c":false},{"t":"G. Commit","c":false}],"e":"The Codespace lifecycle includes: Create (provision a new Codespace), Rebuild (recreate the container while preserving workspace), Stop (pause), and Delete (permanently remove). Resume is also part of the lifecycle."},{"n":70,"q":"Copilot for Individuals offers which of the following features that are not offered by Copilot for Business? (Choose two.)","o":[{"t":"A. VPN proxy support via self-signed certificates","c":true},{"t":"B. organization-wide policy management","c":false},{"t":"C. telemetry","c":false},{"t":"D. blocks suggestions matching public code","c":false},{"t":"E. offers multi-line function suggestions","c":false},{"t":"F. support for personal GitHub accounts","c":true}],"e":"GitHub Copilot Individual offers features for personal use including VPN proxy support via self-signed certificates and support for personal GitHub accounts, which are not included in Business plans."},{"n":71,"q":"Which of the following are components of GitHub Actions? (Choose three.)","o":[{"t":"A. events","c":true},{"t":"B. CI/CD","c":false},{"t":"C. jobs","c":true},{"t":"D. steps","c":true},{"t":"E. octokit","c":false},{"t":"F. agents","c":false},{"t":"G. JavaScript","c":false}],"e":"GitHub Actions has three core components: Events (triggers that start a workflow), Jobs (groups of steps that run on a runner), and Steps (individual tasks within a job that run commands or actions)."},{"n":72,"q":"For which of the following does GitHub provide hosted runners?","o":[{"t":"A. Kubernetes","c":false},{"t":"B. Docker","c":false},{"t":"C. AWS, Azure, and GCP","c":false},{"t":"D. Linux, Windows, and macOS","c":true}],"e":"GitHub provides GitHub-hosted runners for Linux (Ubuntu), Windows, and macOS. These managed runners are automatically provisioned, maintained, and updated by GitHub."},{"n":73,"q":"GitHub Copilot leverages an AI model trained using:","o":[{"t":"A. public GitHub repositories.","c":true},{"t":"B. code samples from online forums.","c":false},{"t":"C. public, internal, and private repositories in your GitHub organization.","c":false},{"t":"D. public and internal repositories in your GitHub organization.","c":false}],"e":"GitHub Copilot is powered by an AI model (OpenAI Codex/GPT) trained on a large dataset that includes publicly available code from GitHub public repositories."},{"n":74,"q":"How is github.dev different than Codespaces?","o":[{"t":"A. Codespaces provides terminal access.","c":true},{"t":"B. A free monthly quota for personal accounts is provided by github.dev.","c":false},{"t":"C. Extensions in the Visual Studio Code Marketplace are supported by github.dev.","c":false},{"t":"D. Codespaces is available within the web browser.","c":false}],"e":"The key difference is that Codespaces provides a full cloud development environment including terminal access, package installation, and running servers—while github.dev (the web editor) is browser-only with no terminal."},{"n":75,"q":"Which of the following is an Innersource development practice?","o":[{"t":"A. removing open source code from the organization","c":false},{"t":"B. making all repositories publicly accessible","c":false},{"t":"C. adopting open source code into the organization","c":false},{"t":"D. sharing code between teams within the organization","c":true}],"e":"InnerSource applies open-source development practices within an organization, including sharing code internally between teams, enabling cross-team contributions, and using transparent collaboration workflows."},{"n":76,"q":"After 30 minutes of inactivity, a GitHub Codespace will:","o":[{"t":"A. be deleted.","c":false},{"t":"B. restart.","c":false},{"t":"C. commit changes.","c":false},{"t":"D. time out.","c":true}],"e":"After 30 minutes of inactivity by default, a GitHub Codespace will time out and stop running. The state is preserved and the Codespace can be resumed later. The timeout is configurable."},{"n":77,"q":"Which of the following best describes GitHub Copilot?","o":[{"t":"A. an advanced search tool to intelligently reuse existing code in your projects","c":false},{"t":"B. an AI pair programmer that offers autocomplete-style suggestions","c":true},{"t":"C. an AI tool designed to replace software developers","c":false},{"t":"D. a Visual Studio Code extension for developing AI solutions","c":false}],"e":"GitHub Copilot is an AI pair programmer that integrates into code editors and provides real-time autocomplete-style suggestions for code, comments, and documentation as you type."},{"n":78,"q":"In GitHub, why is it recommended to deploy from your feature branch before merging into the main branch?","o":[{"t":"A. to avoid the need for testing changes in production","c":false},{"t":"B. to ensure the changes are verified and validated in a production environment","c":true},{"t":"C. to speed up the process of merging changes into the main branch","c":false},{"t":"D. to directly deploy changes from the main branch without any intermediate testing","c":false}],"e":"GitHub flow recommends deploying from a feature branch to production before merging, so that changes can be validated in the real environment and rolled back easily if issues arise."},{"n":79,"q":"As a user, what feature can you use to add an issue to the top of the Issues page for easier visibility?","o":[{"t":"A. Subscribe to the issue.","c":false},{"t":"B. Pin the issue.","c":true},{"t":"C. Star the issue.","c":false},{"t":"D. Label the issue.","c":false}],"e":"Users can pin up to 3 issues in a repository to highlight important items at the top of the Issues page. Pinning requires write access and is done from the issue's context menu."},{"n":80,"q":"Which of the following default workflows are available as part of GitHub projects? (Choose three.)","o":[{"t":"A. “Auto-archive items”","c":true},{"t":"B. “Label added to issue”","c":false},{"t":"C. “Item closed”","c":true},{"t":"D. “Pull request merged”","c":true},{"t":"E. “Pull request opened”","c":false}],"e":"GitHub Projects includes built-in default workflows: 'Auto-archive items' (archives stale items), 'Item closed' (sets status when closed), and 'Pull request merged' (updates status when PR merges)."},{"n":81,"q":"A centralized version control system is a system that:","o":[{"t":"A. ensures each developer has their own local copy of the central code repository, including the complete project history and metadata.","c":false},{"t":"B. stores project files on a cloud-based server and allows multiple developers to collaborate on the same files simultaneously.","c":false},{"t":"C. requires developers to manually track and manage different versions of their files using naming conventions and manual backups.","c":false},{"t":"D. relies on a central server to store the entire project history and allows developers to check out files for editing.","c":true}],"e":"A centralized version control system (like SVN) uses a single central server that stores the entire project history. Developers check out files from this central server and must connect to it to commit changes."},{"n":82,"q":"What are advantages of GitHub Projects over GitHub Projects Classic? (Choose two.)","o":[{"t":"A. GitHub Projects can be connected to third-party tools.","c":false},{"t":"B. GitHub Projects has Insights.","c":true},{"t":"C. GitHub Projects has multiple layout views.","c":true},{"t":"D. GitHub Projects are Copilot enabled.","c":false}],"e":"GitHub Projects (new) improves upon Projects Classic by adding Insights (built-in charts and analytics) and multiple layout views (table, board, roadmap), which were not available in the classic version."},{"n":83,"q":"What are two recommended ways of improving the discoverability of a repository? (Choose two.)","o":[{"t":"A. Register the repository with GitHub search.","c":false},{"t":"B. Add labels to categorize the repository.","c":false},{"t":"C. Create a README file describing the repository.","c":true},{"t":"D. Add topics to classify the repository.","c":true}],"e":"Repository discoverability is improved by adding a descriptive README (which appears on the repository homepage) and adding topics/tags that make the repository searchable and categorized on GitHub."},{"n":84,"q":"An employee needs to find all issues within organization “Avocado” containing text “404 error” and a “guacamole” label. Which of the following steps would be best to search for these results?","o":[{"t":"A. Go to “Avocado” organization. Select Issues under a repository. Filter issues with a “guacamole” label.","c":false},{"t":"B. Enter query org: Avocado is:issue label:guacamole contains:\"404 error\" in the search bar.","c":false},{"t":"C. Enter query org: Avocado label:guacamole \"404 error\" in the search bar. Select “Issues” in the “Filter by” section.","c":true},{"t":"D. Go to the “Avocado” organization settings. Select Repository defaults under Repository. Scroll to Repository labels and select the “guacamole” label.","c":false}],"e":"GitHub's advanced search supports the 'org:' qualifier to limit results to an organization, 'label:' to filter by label, and quoted strings for exact phrase matches. The search type must be set to Issues."},{"n":85,"q":"Which of the following outcomes can be achieved with a branch protection rule?","o":[{"t":"A. Restrict who can view the branch.","c":false},{"t":"B. Block code pushes that contain hardcoded secrets.","c":false},{"t":"C. Require two-factor authentication (2FA) by code contributors.","c":false},{"t":"D. Require approval before merging changes.","c":true}],"e":"Branch protection rules can enforce requirements like required reviews, status checks, or restrict who can push. 'Require approval before merging' ensures at least one reviewer approves changes."},{"n":86,"q":"What is the difference between an organization member and an outside collaborator?","o":[{"t":"A. Outside collaborators do not consume paid licenses.","c":false},{"t":"B. Two-factor authentication (2FA) is not required for outside collaborators.","c":false},{"t":"C. Organization base permissions do not apply to outside collaborators.","c":true},{"t":"D. Outside collaborators cannot be given the admin role on a repository.","c":false}],"e":"Organization base permissions apply to all members but do not apply to outside collaborators. Outside collaborators only receive the specific repository permissions they are explicitly granted."},{"n":87,"q":"Which of the following are characteristics of GitHub Teams? (Choose two.)","o":[{"t":"A. Teams has a maximum size of 100 users.","c":false},{"t":"B. Teams can be nested.","c":true},{"t":"C. Team visibility can be visible or secret.","c":true},{"t":"D. Teams requires access to at least one repository.","c":false}],"e":"GitHub Teams can be nested (parent/child hierarchy for permission inheritance) and have visibility settings: visible teams can be seen by all organization members, while secret teams are only visible to their members and owners."},{"n":88,"q":"Which of the following two-factor authentication (2FA) methods can you use to secure a GitHub account? (Choose three.)","o":[{"t":"A. security questions","c":false},{"t":"B. single sign-on","c":false},{"t":"C. security keys","c":true},{"t":"D. GitHub mobile","c":true},{"t":"E. authenticator app","c":true}],"e":"GitHub supports multiple 2FA methods: security keys (FIDO2 hardware keys), GitHub Mobile (push notifications for authentication), and authenticator apps (TOTP codes). SMS is also supported but less secure."},{"n":89,"q":"Which of the following permissions can be enabled or disabled at the enterprise level? (Choose two.)","o":[{"t":"A. repository naming convention","c":false},{"t":"B. repository secrets","c":false},{"t":"C. repository visibility change","c":true},{"t":"D. repository deletion and transfer","c":true}],"e":"Enterprise admins can control whether member organizations can change repository visibility (e.g., private to public) and whether repositories can be deleted or transferred, helping enforce data governance policies."},{"n":90,"q":"Which of the following is a restriction for Enterprise Managed Users (EMUs)?","o":[{"t":"A. Users cannot create public repositories.","c":true},{"t":"B. Custom repository roles are not available.","c":false},{"t":"C. Organization base permissions cannot be applied.","c":false},{"t":"D. Each GitHub team must be linked to an identity provider group.","c":false}],"e":"Enterprise Managed Users (EMUs) are restricted accounts provisioned by identity providers. EMU users cannot create public repositories—all repositories are scoped within the enterprise for security."},{"n":91,"q":"What is a benefit of using GitHub Enterprise Cloud with Enterprise Managed Users (EMU)?","o":[{"t":"A. It enables GitHub user accounts access to protected resources using SAML SSO.","c":false},{"t":"B. It automatically validates user interactions using the identity provider (IdP) conditional access policy (CAP).","c":false},{"t":"C. It offers additional collaboration and content creation capabilities for managed user accounts.","c":false},{"t":"D. It provides centralized control and streamlined management of user accounts through their identity provider (IdP).","c":true}],"e":"GitHub Enterprise Cloud with EMU provides centralized identity management through an IdP (Identity Provider), giving enterprises streamlined user provisioning, de-provisioning, and access control via SAML/SCIM."},{"n":92,"q":"An organization in a GitHub enterprise has a base permission of “No permissions.” Which users in this enterprise will be able to see all internal repositories within this organization? (Choose two.)","o":[{"t":"A. members in another organization in that enterprise","c":true},{"t":"B. outside collaborators in the same organization","c":false},{"t":"C. members in the same organization","c":true},{"t":"D. outside collaborators with repo Admin access","c":false}],"e":"Repository access in a GitHub enterprise is scoped per organization. Members of other organizations in the same enterprise, and members in the same organization without explicit access, both need direct repository permissions."},{"n":93,"q":"How can a user highlight a post to the top of the Discussions page?","o":[{"t":"A. Star the discussion.","c":false},{"t":"B. Pin the discussion.","c":true},{"t":"C. Save the discussion.","c":false},{"t":"D. Create an issue from the discussion.","c":false}],"e":"Users with maintainer or admin access to a GitHub Discussions category can pin a discussion to highlight it at the top of the Discussions page, making it more visible to the community."},{"n":94,"q":"What should a user follow to see public activity on their personal dashboard? (Choose two.)","o":[{"t":"A. organizations","c":true},{"t":"B. stars","c":false},{"t":"C. teams","c":false},{"t":"D. enterprises","c":false},{"t":"E. people","c":true}],"e":"Your GitHub personal dashboard shows public activity from people and organizations you follow. Following specific users and organizations ensures their public contributions appear in your activity feed."},{"n":95,"q":"Which of the following GitHub features supports Polling?","o":[{"t":"A. Projects","c":false},{"t":"B. Issues","c":false},{"t":"C. Discussions","c":true},{"t":"D. Wikis","c":false}],"e":"GitHub Discussions supports a Polls category that allows community members to create polls where others can vote. This feature is specific to Discussions and not available in Issues or PRs."},{"n":96,"q":"Which of the following are counted in the contribution graph on a user’s profile? (Choose two.)","o":[{"t":"A. followers","c":false},{"t":"B. pull requests created","c":true},{"t":"C. commits made","c":true},{"t":"D. public repositories","c":false},{"t":"E. issues closed","c":false}],"e":"GitHub's contribution graph counts pull requests you've created and commits you've made (on the default branch or any branch that gets merged). It does not count comments, reactions, or issues by default."},{"n":97,"q":"What is defined as software that can be freely used, modified, and shared by anyone?","o":[{"t":"A. proprietary","c":false},{"t":"B. free source","c":false},{"t":"C. open source","c":true},{"t":"D. Innersource","c":false}],"e":"Open source software is defined as software that is freely available to use, modify, study, and distribute. It is typically licensed under OSI-approved licenses like MIT, Apache 2.0, or GPL."},{"n":98,"q":"What GitHub feature allows the developer community to financially support the people and organizations who maintain the open source projects they depend on?","o":[{"t":"A. GitHub Community Exchange","c":false},{"t":"B. GitHub Support","c":false},{"t":"C. GitHub Sponsors","c":true},{"t":"D. GitHub Discussions","c":false}],"e":"GitHub Sponsors is a platform feature that allows the developer community to financially support open-source maintainers and contributors directly through GitHub, with GitHub matching contributions in some programs."},{"n":99,"q":"New open source contributors can receive funding from GitHub sponsors:","o":[{"t":"A. using PayPal as a payment processor.","c":false},{"t":"B. equal to 95% of the contribution value.","c":false},{"t":"C. after setting up a sponsored developer profile.","c":true},{"t":"D. by including GitHub matching funds.","c":false}],"e":"To receive funding through GitHub Sponsors, a new contributor must first set up a sponsored developer profile, which requires approval from GitHub. Once approved, sponsors can contribute financially."},{"n":100,"q":"Which Discussion category allows a user to mark a response as an answer?","o":[{"t":"A. General","c":false},{"t":"B. Ideas","c":false},{"t":"C. Polls","c":false},{"t":"D. Q&A","c":true}],"e":"In GitHub Discussions, the Q&A category is specifically designed for question-and-answer format. It allows the original poster or repository maintainers to mark a reply as the accepted answer."},{"n":101,"q":"What should be done to locate an existing action that was provided by a GitHub-approved vendor? (Choose two.)","o":[{"t":"A. Create a new workflow file.","c":false},{"t":"B. Confirm that the action has a verification badge.","c":true},{"t":"C. Search the vendor’s website for a github.yaml index.","c":false},{"t":"D. Search the GitHub Marketplace for Actions by the vendor.","c":true},{"t":"E. Add the vendor as an allowed Actions Source.","c":false},{"t":"F. Install the GitHub App that was provided by the vendor.","c":false}],"e":"To find GitHub-approved vendor actions: check for the blue verification badge (indicates the publisher is a verified GitHub partner) and search the GitHub Marketplace filtered by the vendor's name."},{"n":102,"q":"Which of the following best describes a Codespace?","o":[{"t":"A. a development environment hosted in the cloud","c":true},{"t":"B. an AI pair programmer that offers autocomplete-style suggestions","c":false},{"t":"C. a Visual Studio Code plug-in to manage local devcontainers","c":false},{"t":"D. a lightweight editing experience that runs entirely in your browser","c":false}],"e":"A GitHub Codespace is a cloud-hosted development environment that runs in the cloud (in a container on GitHub's infrastructure), accessible via VS Code in the browser or desktop."},{"n":103,"q":"Which of the following is distinctive of GitHub Actions workflows? (Choose two.)","o":[{"t":"A. stored in the .github/workflows directory in a GitHub repository","c":true},{"t":"B. built using the GitHub Workflow Designer","c":false},{"t":"C. built using YAML syntax","c":true},{"t":"D. only supported in public repositories","c":false},{"t":"E. stored as JSON files","c":false}],"e":"GitHub Actions workflows are defined as YAML files and must be stored in the .github/workflows/ directory of a repository. They support both public and private repositories."},{"n":104,"q":"How can a user resume an existing Codespace that is bound to a repository? (Each correct answer presents a complete solution. Choose two.)","o":[{"t":"A. Use the git CLI with the codespace parameter (e.g., ‘git codespace code -web’).","c":false},{"t":"B. Browse to the repository in GitHub.com, press the comma V key and select Resume this codespace.","c":true},{"t":"C. Open https://github.com/codespaces in the browser, select the repository, and then select the existing Codespace.","c":true},{"t":"D. Browse to the repository in GitHub.com and press the period ‘.’ key.","c":false}],"e":"An existing Codespace can be resumed by visiting github.com/codespaces and selecting it, or by browsing to the repository on GitHub.com and using the Codespace panel (comma key shortcut) to resume it."},{"n":105,"q":"GitHub Actions workflows can be directly triggered by which of the following events? (Choose three.)","o":[{"t":"A. committing a change to a local git repository","c":false},{"t":"B. creating an Issue","c":true},{"t":"C. creating a new repository","c":false},{"t":"D. pushing to a GitHub repository","c":true},{"t":"E. adding a comment to a discussion post","c":true},{"t":"F. disabling a GitHub runner","c":false}],"e":"GitHub Actions workflows can be triggered by repository events like creating an issue, pushing to a repository, or adding a comment to a discussion post. Local git commits or disabling runners do not trigger workflows."}];
+
+let selected_n = 10;
+let quiz = [];
+let current = 0;
+let score = 0;
+let answers = [];
+
+function selectMode(btn){
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selected_n = parseInt(btn.dataset.n);
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function startQuiz(){
+  quiz = selected_n >= POOL.length ? shuffle(POOL) : shuffle(POOL).slice(0, selected_n);
+  current = 0; score = 0; answers = [];
+  show('screen-quiz');
+  renderQuestion();
+}
+
+function show(id){
+  ['screen-start','screen-quiz','screen-results'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function renderQuestion(){
+  const q = quiz[current];
+  const multi = q.o.filter(o=>o.c).length > 1;
+  const pct = (current/quiz.length)*100;
+
+  document.getElementById('prog-text').textContent = `Question ${current+1} of ${quiz.length}`;
+  document.getElementById('prog-score').textContent = `Score: ${score}`;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('q-num').textContent = `Q${q.n}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-hint').textContent = multi ? `(Select all that apply — ${q.o.filter(o=>o.c).length} correct answers)` : '(Select one answer)';
+  document.getElementById('q-counter').textContent = `${current+1} / ${quiz.length}`;
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'hidden';
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.dataset.i = i;
+    const inp = document.createElement('input');
+    inp.type = multi ? 'checkbox' : 'radio';
+    inp.name = 'opt';
+    inp.value = i;
+    inp.addEventListener('change', onSelect);
+    const span = document.createElement('span');
+    span.className = 'opt-text';
+    span.textContent = opt.t;
+    label.appendChild(inp);
+    label.appendChild(span);
+    opts.appendChild(label);
+  });
+
+  document.getElementById('btn-check').classList.remove('hidden');
+  document.getElementById('btn-next').classList.add('hidden');
+  document.getElementById('btn-finish').classList.add('hidden');
+}
+
+function onSelect(){
+  const q = quiz[current];
+  const multi = q.o.filter(o=>o.c).length > 1;
+  const labels = document.querySelectorAll('.opt');
+  if(!multi){
+    labels.forEach(l=>l.classList.remove('selected'));
+    const inp = document.querySelector('input[name=opt]:checked');
+    if(inp) labels[parseInt(inp.value)].classList.add('selected');
+  } else {
+    labels.forEach(l=>l.classList.remove('selected'));
+    document.querySelectorAll('input[name=opt]:checked').forEach(inp=>{
+      labels[parseInt(inp.value)].classList.add('selected');
+    });
+  }
+}
+
+function getSelected(){
+  return Array.from(document.querySelectorAll('input[name=opt]:checked')).map(i=>parseInt(i.value));
+}
+
+function checkAnswer(){
+  const sel = getSelected();
+  if(sel.length === 0){ alert('Please select at least one answer.'); return; }
+
+  const q = quiz[current];
+  const correctIdx = q.o.map((o,i)=>o.c?i:-1).filter(i=>i>=0);
+  const selSet = new Set(sel);
+  const corrSet = new Set(correctIdx);
+  const isCorrect = sel.length===correctIdx.length && correctIdx.every(i=>selSet.has(i));
+
+  if(isCorrect) score++;
+  answers.push({q, sel, correct: correctIdx, isCorrect});
+
+  // Style options
+  const labels = document.querySelectorAll('.opt');
+  labels.forEach(l=>{
+    const i = parseInt(l.dataset.i);
+    l.classList.add('disabled');
+    l.querySelector('input').disabled = true;
+    if(corrSet.has(i) && selSet.has(i)) l.className = 'opt disabled correct';
+    else if(!corrSet.has(i) && selSet.has(i)) l.className = 'opt disabled wrong';
+    else if(corrSet.has(i) && !selSet.has(i)) l.className = 'opt disabled missed';
+    else l.className = 'opt disabled';
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback');
+  fb.className = isCorrect ? 'feedback ok' : 'feedback fail';
+  fb.innerHTML = (isCorrect
+    ? '<span class="feedback-icon">✅</span><b>Correct!</b>'
+    : '<span class="feedback-icon">❌</span><b>Incorrect.</b> The correct answer' + (correctIdx.length>1?'s are':'is') + ': <b>' + correctIdx.map(i=>q.o[i].t).join(', ') + '</b>') +
+    '<div class="expl">' + q.e + '</div>';
+
+  document.getElementById('btn-check').classList.add('hidden');
+  document.getElementById('prog-score').textContent = `Score: ${score}`;
+
+  const isLast = current === quiz.length-1;
+  if(isLast) document.getElementById('btn-finish').classList.remove('hidden');
+  else document.getElementById('btn-next').classList.remove('hidden');
+}
+
+function nextQuestion(){
+  current++;
+  renderQuestion();
+}
+
+function showResults(){
+  show('screen-results');
+  const total = quiz.length;
+  const pct = Math.round((score/total)*100);
+  document.getElementById('pct-num').textContent = pct+'%';
+  document.getElementById('r-correct').textContent = score;
+  document.getElementById('r-wrong').textContent = total-score;
+  document.getElementById('r-total').textContent = total;
+
+  // Ring animation
+  const circ = 2*Math.PI*50;
+  const offset = circ - (pct/100)*circ;
+  const ring = document.getElementById('ring-circle');
+  ring.style.strokeDasharray = circ;
+  ring.style.strokeDashoffset = circ;
+  ring.style.transition = 'stroke-dashoffset 1s ease';
+  ring.style.stroke = pct>=80?'#1a7f37':pct>=60?'#2F5496':'#c0392b';
+  setTimeout(()=>ring.style.strokeDashoffset=offset, 100);
+
+  const titles = pct>=90?'🏆 Excellent!':pct>=80?'🎉 Great job!':pct>=60?'👍 Good effort!':'💪 Keep practicing!';
+  const subs = `You got ${score} out of ${total} questions correct (${pct}%)`;
+  document.getElementById('result-title').textContent = titles;
+  document.getElementById('result-sub').textContent = subs;
+
+  // Build review
+  const rl = document.getElementById('review-list');
+  rl.innerHTML = '';
+  answers.forEach((a, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (a.isCorrect?'r-ok':'r-fail');
+    const corrText = a.correct.map(i=>a.q.o[i].t);
+    const selText = a.sel.map(i=>a.q.o[i].t);
+    div.innerHTML = `<div class="review-q">${idx+1}. ${a.q.q}</div>` +
+      `<div>Your answer: ${selText.map(t=>`<span class="review-ans ${a.isCorrect?'ok':'fail'}">${t}</span>`).join('')}</div>` +
+      (!a.isCorrect ? `<div>Correct: ${corrText.map(t=>`<span class="review-ans ok">${t}</span>`).join('')}</div>` : '') +
+      `<div class="review-expl">${a.q.e}</div>`;
+    rl.appendChild(div);
+  });
+}
+
+function toggleReview(){
+  const rl = document.getElementById('review-list');
+  const btn = document.getElementById('review-toggle');
+  const hidden = rl.classList.toggle('hidden');
+  btn.textContent = (hidden?'▶':'▼') + ' ' + (hidden?'Show':'Hide') + ' Review';
+}
+
+function restartSame(){ startQuiz(); }
+function goHome(){ show('screen-start'); }
+</script>
+</body>
+</html>
