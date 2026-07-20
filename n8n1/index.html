@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>n8n 基礎班（n8n1）· 簡報總覽</title>
+<style>
+  :root{
+    --bg:#f7f4ee; --surface:#fff; --ink:#16191d; --muted:#62676d;
+    --line:#cdd1d4; --accent:#e65327; --accent-soft:#fbeae3;
+    --font:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;}
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 32px 80px;}
+  header .kicker{color:var(--accent);font-weight:700;letter-spacing:.1em;font-size:15px;margin:0 0 10px;}
+  header h1{font-size:44px;line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;}
+  header p.sub{color:var(--muted);font-size:19px;max-width:760px;margin:0 0 8px;}
+  .meta{color:var(--muted);font-size:15px;margin-top:14px;}
+  .meta b{color:var(--ink);}
+  .hint{margin-top:16px;padding:16px 22px;background:var(--accent-soft);border-left:6px solid var(--accent);border-radius:10px;font-size:15px;color:#5a2417;}
+
+  section{margin-top:44px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:3px solid var(--ink);padding-bottom:12px;margin-bottom:24px;flex-wrap:wrap;}
+  .sec-head h2{font-size:24px;margin:0;}
+  .sec-head .desc{color:var(--muted);font-size:15px;margin-left:auto;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+  a.card{
+    display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;
+    background:var(--surface);border:2px solid var(--line);border-radius:16px;
+    padding:22px 24px;transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;
+  }
+  a.card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 22px rgb(22 25 29 / .08);}
+  a.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+  .card .no{font-size:14px;font-weight:700;color:var(--accent);letter-spacing:.06em;}
+  .card .title{font-size:22px;font-weight:700;}
+  .card .note{font-size:15px;color:var(--muted);}
+  .card .pages{margin-top:6px;font-size:13px;color:var(--muted);}
+  footer{margin-top:52px;padding-top:20px;border-top:2px solid var(--line);color:var(--muted);font-size:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">n8n1 · 基礎班</p>
+    <h1>n8n 基礎班 · 簡報總覽</h1>
+    <p class="sub">從零開始掌握 n8n。全部為離線可播放的 HTML 簡報，點選任一章即可開啟；方向鍵／空白鍵播放，表格逐列出現。</p>
+    <p class="meta"><b>課程時數 14 小時</b> · 6 份簡報（課前 ＋ 5 章）· 共 50 頁</p>
+    <div class="hint">建議依序學習：先看課前觀念，再從 Chap 01 逐章操作到 Workflow 管理。</div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>課前準備</h2>
+      <span class="desc">開始前先對齊觀念</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="part0_課前準備與核心觀念.html">
+        <span class="no">課前 · PART 0</span><span class="title">課前準備與核心觀念</span>
+        <span class="note">講師介紹、AI 素養、觀念釐清</span><span class="pages">7 頁</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>基礎班 5 章</h2>
+      <span class="desc">概念 → 操作 → 實作 → 管理</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="chap01_n8n概述與安裝.html">
+        <span class="no">CHAP 01</span><span class="title">n8n 概述與安裝</span>
+        <span class="note">定位、價值、三種安裝</span><span class="pages">11 頁</span>
+      </a>
+      <a class="card" href="b02_介面與基本操作.html">
+        <span class="no">CHAP 02</span><span class="title">介面與基本操作</span>
+        <span class="note">編輯器、節點、資料流</span><span class="pages">10 頁</span>
+      </a>
+      <a class="card" href="b03_Node節點介紹.html">
+        <span class="no">CHAP 03</span><span class="title">Node 節點介紹</span>
+        <span class="note">九大類別與核心節點</span><span class="pages">9 頁</span>
+      </a>
+      <a class="card" href="b04_基礎實作.html">
+        <span class="no">CHAP 04</span><span class="title">基礎實作 Hands-on</span>
+        <span class="note">Email 報表、提醒、Sheets 同步</span><span class="pages">6 頁</span>
+      </a>
+      <a class="card" href="b05_Workflow管理.html">
+        <span class="no">CHAP 05</span><span class="title">Workflow 管理</span>
+        <span class="note">命名、版本、啟用、Tags</span><span class="pages">7 頁</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    離線 HTML 教學簡報 · Structured Teaching 風格 · 此頁須與同資料夾內的各章 <code>.html</code> 放在一起才能開啟連結。
+  </footer>
+</div>
+</body>
+</html>
