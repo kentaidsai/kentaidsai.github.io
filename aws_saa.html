@@ -16,11 +16,12 @@
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",
          "Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
   --pad:18px;          /* horizontal gutter, shrinks on small screens */
-  --hh:50px;           /* sticky header height, for scroll offsets */
+  --root:100%;         /* font scale, driven by the 字級 buttons */
+  --hh:calc(2.4rem + 12px);   /* sticky header height, scales with type */
 }
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;font-size:var(--root)}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);
-     font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+     font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased;
      overflow-wrap:break-word}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 input{font:inherit}
@@ -32,21 +33,22 @@ input{font:inherit}
 .shell{position:sticky;top:0;z-index:50;background:var(--panel);
        border-bottom:1px solid var(--line)}
 
-.hd{height:var(--hh);padding:0 var(--pad);display:flex;align-items:center;gap:10px}
-.brand{font-size:14px;font-weight:650;letter-spacing:.01em;white-space:nowrap}
-.now{font-family:var(--mono);font-size:11px;color:var(--dim);
+.hd{min-height:var(--hh);padding:8px var(--pad);display:flex;align-items:center;
+    gap:8px 10px;flex-wrap:wrap}
+.brand{font-size:.92rem;font-weight:650;letter-spacing:.01em;white-space:nowrap}
+.now{font-family:var(--mono);font-size:.73rem;color:var(--dim);
      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
 .now b{color:var(--amber);font-weight:600}
-.hd .right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.hd .right{display:flex;align-items:center;gap:7px;flex-shrink:0;margin-left:auto}
 
-.tap{font-family:var(--mono);font-size:12px;padding:6px 11px;border-radius:7px;
+.tap{font-family:var(--mono);font-size:.79rem;padding:6px 11px;border-radius:7px;
      border:1px solid var(--line);background:var(--panel2);color:var(--dim);
      white-space:nowrap;transition:.13s}
 .tap:hover{color:var(--ink);border-color:var(--faint)}
 .tap.go{background:var(--amber);border-color:var(--amber);color:#1a1206;font-weight:600}
 .tap.go:hover{background:#ffb968}
 .tap.open{border-color:var(--amber);color:var(--amber)}
-.pts{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap}
+.pts{font-family:var(--mono);font-size:.79rem;color:var(--dim);white-space:nowrap}
 .pts b{color:var(--amber)}
 
 /* ══ collapsible panel ══ */
@@ -56,25 +58,25 @@ input{font:inherit}
      overflow-x:auto;scrollbar-width:none}
 .row::-webkit-scrollbar{display:none}
 .row.wrap{flex-wrap:wrap;overflow:visible}
-.lbl{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.09em;
+.lbl{font-family:var(--mono);font-size:.67rem;color:var(--faint);letter-spacing:.09em;
      flex-shrink:0;width:56px}
-.chip{font-family:var(--mono);font-size:11.5px;color:var(--dim);padding:5px 11px;
+.chip{font-family:var(--mono);font-size:.76rem;color:var(--dim);padding:5px 11px;
       border-radius:999px;border:1px solid var(--line);white-space:nowrap;
       flex-shrink:0;transition:.13s}
 .chip:hover{color:var(--ink);border-color:var(--faint)}
 .chip.on{background:var(--amber);border-color:var(--amber);color:#1a1206;font-weight:600}
-#find{font-family:var(--mono);font-size:12px;padding:6px 11px;border-radius:7px;
+#find{font-family:var(--mono);font-size:.79rem;padding:6px 11px;border-radius:7px;
       border:1px solid var(--line);background:var(--bg);color:var(--ink);
       flex:1;min-width:130px}
 #find::placeholder{color:var(--faint)}
-.hint{font-family:var(--mono);font-size:10px;color:var(--faint);padding:2px var(--pad) 6px 74px}
+.hint{font-family:var(--mono);font-size:.67rem;color:var(--faint);padding:2px var(--pad) 6px 74px}
 
 /* ══ progress ══ */
 .prog{padding:8px var(--pad) 10px}
 .pline{display:flex;align-items:center;gap:9px}
-.ribnote{font-family:var(--mono);font-size:10.5px;color:var(--faint);
+.ribnote{font-family:var(--mono);font-size:.71rem;color:var(--faint);
          flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ribtog{font-family:var(--mono);font-size:10px;color:var(--faint);padding:3px 8px;
+.ribtog{font-family:var(--mono);font-size:.67rem;color:var(--faint);padding:3px 8px;
         border:1px solid var(--line);border-radius:5px;flex-shrink:0}
 .ribtog:hover{color:var(--amber);border-color:var(--amber)}
 .rib{display:flex;flex-wrap:wrap;gap:2px;margin-top:8px;
@@ -85,37 +87,37 @@ input{font:inherit}
 .cell.pick{background:var(--amber-dim);box-shadow:inset 0 0 0 1px var(--amber)}
 .cell.ok{background:var(--teal);box-shadow:none}
 .cell.no{background:var(--coral);box-shadow:none}
-#breakdown{font-family:var(--mono);font-size:10.5px;color:var(--dim);
+#breakdown{font-family:var(--mono);font-size:.71rem;color:var(--dim);
            margin-top:7px;line-height:1.75}
 #breakdown:empty{display:none}
 
 /* ══ questions ══ */
 .wrap{max-width:840px;margin:0 auto;padding:18px var(--pad) 90px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;
-      margin-bottom:11px;scroll-margin-top:calc(var(--hh) + 10px)}
+      margin-bottom:11px;scroll-margin-top:calc(var(--off,58px) + 12px)}
 .top{display:flex;gap:11px;padding:14px 16px 8px}
 .num{flex-shrink:0;min-width:46px;height:23px;padding:0 6px;border-radius:5px;
      background:var(--panel2);border:1px solid var(--line);font-family:var(--mono);
-     font-size:11px;color:var(--dim);display:flex;align-items:center;
+     font-size:.73rem;color:var(--dim);display:flex;align-items:center;
      justify-content:center;margin-top:2px}
 .card.done .num{border-color:var(--amber);color:var(--amber)}
 .card.pass .num{border-color:var(--teal);color:var(--teal);background:var(--teal-dim)}
 .card.fail .num{border-color:var(--coral);color:var(--coral);background:var(--coral-dim)}
-.qt{flex:1;font-size:14.5px;line-height:1.62;min-width:0}
-.pill{display:inline-block;font-family:var(--mono);font-size:10px;padding:1px 6px;
+.qt{flex:1;font-size:1.05rem;line-height:1.62;min-width:0}
+.pill{display:inline-block;font-family:var(--mono);font-size:.67rem;padding:1px 6px;
       border-radius:3px;margin-left:7px;vertical-align:1px;white-space:nowrap}
 .p-multi{background:var(--amber-dim);color:var(--amber)}
 .p-fix{background:var(--panel2);color:var(--dim);border:1px solid var(--line)}
-.tagline{padding:0 16px 8px 73px;font-family:var(--mono);font-size:10px;color:var(--faint)}
+.tagline{padding:0 16px 8px 73px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
 
 .opts{padding:0 16px 13px;display:flex;flex-direction:column;gap:5px}
 .opt{display:flex;gap:10px;padding:9px 12px;border:1px solid var(--line);
      border-radius:6px;background:var(--bg);cursor:pointer;transition:.12s;
      align-items:flex-start}
 .opt:hover{border-color:var(--faint)}
-.opt .k{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--faint);
+.opt .k{font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--faint);
         flex-shrink:0;padding-top:2px;min-width:13px}
-.opt .v{flex:1;font-size:13.5px;line-height:1.55;min-width:0}
+.opt .v{flex:1;font-size:1rem;line-height:1.58;min-width:0}
 .opt.pick{border-color:var(--amber);background:rgba(242,163,60,.07)}
 .opt.pick .k{color:var(--amber)}
 .opt.reveal{border-color:var(--teal);border-style:dashed}
@@ -126,38 +128,39 @@ input{font:inherit}
 .opt.miss{border-color:var(--teal);border-style:dashed;cursor:default}
 .opt.miss .k{color:var(--teal)}
 .opt.mute{opacity:.5;cursor:default}
-.mk{font-family:var(--mono);font-size:10px;margin-left:7px;font-weight:600}
+.mk{font-family:var(--mono);font-size:.7rem;margin-left:7px;font-weight:600}
 .mk.g{color:var(--teal)} .mk.r{color:var(--coral)}
-.verdict{padding:0 16px 13px;font-family:var(--mono);font-size:11.5px}
+.verdict{padding:0 16px 13px;font-family:var(--mono);font-size:.8rem}
 .verdict .g{color:var(--teal)} .verdict .r{color:var(--coral)}
 
-.more{display:block;width:100%;padding:13px;font-family:var(--mono);font-size:12px;
+.more{display:block;width:100%;padding:13px;font-family:var(--mono);font-size:.8rem;
       color:var(--dim);border:1px dashed var(--line);border-radius:8px;background:var(--panel)}
 .more:hover{color:var(--amber);border-color:var(--amber)}
 .empty{text-align:center;padding:56px 20px;color:var(--faint);
-       font-family:var(--mono);font-size:12.5px}
+       font-family:var(--mono);font-size:.82rem}
 
 /* ══ one-at-a-time nav ══ */
 .navbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--panel);
         border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;
         padding:10px var(--pad);
         padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
-.navpos{flex:1;text-align:center;font-family:var(--mono);font-size:11.5px;
+.navpos{flex:1;text-align:center;font-family:var(--mono);font-size:.79rem;
         color:var(--dim);min-width:0}
 .navpos b{color:var(--amber)}
 .tap.wide{min-width:106px;text-align:center}
 .tap[disabled]{opacity:.35;cursor:default}
+.fsnow{font-family:var(--mono);font-size:.76rem;color:var(--dim);min-width:46px;text-align:center}
 body.single .wrap{padding-bottom:104px}
 body.single .card{margin-bottom:0}
 
 /* ══ result summary ══ */
 .done{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:26px 20px;
       text-align:center}
-.done .big{font-family:var(--mono);font-size:34px;color:var(--amber);font-weight:600;
+.done .big{font-family:var(--mono);font-size:2.25rem;color:var(--amber);font-weight:600;
            line-height:1.2}
-.done .cap{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:6px}
+.done .cap{font-family:var(--mono);font-size:.73rem;color:var(--faint);margin-top:6px}
 .done .rows{margin:20px auto 0;max-width:400px;display:flex;flex-direction:column;gap:7px}
-.done .r{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px}
+.done .r{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.76rem}
 .done .r .nm{width:104px;text-align:left;color:var(--dim);flex-shrink:0}
 .done .r .track{flex:1;height:7px;background:var(--panel2);border-radius:4px;overflow:hidden}
 .done .r .fill{height:100%;background:var(--teal);border-radius:4px}
@@ -169,8 +172,7 @@ body.single .card{margin-bottom:0}
   .tagline{padding-left:16px}
 }
 @media(max-width:620px){
-  :root{--pad:12px;--hh:48px}
-  body{font-size:14px}
+  :root{--pad:12px}
   .brand{display:none}                 /* scope label carries the context instead */
   .lbl{width:auto;padding-right:2px}
   .row{padding:6px var(--pad)}
@@ -178,10 +180,8 @@ body.single .card{margin-bottom:0}
   .wrap{padding-top:14px}
   .top{padding:12px 12px 7px;gap:9px}
   .num{min-width:42px;font-size:10px}
-  .qt{font-size:14px}
   .opts{padding:0 12px 12px}
   .opt{padding:9px 10px}
-  .opt .v{font-size:13px}
   .tagline,.verdict{padding-left:12px;padding-right:12px}
   .cell{width:8px;height:14px}
   .rib{max-height:78px}
@@ -214,6 +214,13 @@ body.single .card{margin-bottom:0}
     <div class="row" id="topicBar"><span class="lbl">服務主題</span></div>
     <div class="row" id="countBar"><span class="lbl">出題</span></div>
     <div class="hint">先選範圍，再選要抽幾題</div>
+    <div class="row wrap">
+      <span class="lbl">字級</span>
+      <button class="tap" id="fsDown" aria-label="縮小字體">A−</button>
+      <span class="fsnow" id="fsNow">100%</span>
+      <button class="tap" id="fsUp" aria-label="放大字體">A+</button>
+      <button class="tap" id="fsReset">回預設</button>
+    </div>
     <div class="row wrap">
       <span class="lbl">工具</span>
       <input id="find" type="search" placeholder="搜尋全題庫，例如 Aurora">
@@ -810,6 +817,27 @@ body.single .card{margin-bottom:0}
     var val = e.target.value.trim();
     timer = setTimeout(function(){ query = val; cursor = 0; refresh(); }, 220);
   };
+
+  /* ── font scale ── */
+  var STEPS = [88, 100, 112, 126, 142, 160];
+  var fsIdx = 1;
+  function applyFont(){
+    document.documentElement.style.setProperty('--root', STEPS[fsIdx] + '%');
+    $('fsNow').textContent = STEPS[fsIdx] + '%';
+    $('fsDown').disabled = fsIdx === 0;
+    $('fsUp').disabled = fsIdx === STEPS.length - 1;
+    syncOffset();
+  }
+  function syncOffset(){
+    var hd = document.querySelector('.hd');
+    var h = hd && hd.offsetHeight;
+    if(h) document.documentElement.style.setProperty('--off', h + 'px');
+  }
+  window.addEventListener('resize', syncOffset);
+  $('fsUp').onclick    = function(){ if(fsIdx < STEPS.length-1){ fsIdx++; applyFont(); } };
+  $('fsDown').onclick  = function(){ if(fsIdx > 0){ fsIdx--; applyFont(); } };
+  $('fsReset').onclick = function(){ fsIdx = 1; applyFont(); };
+  applyFont();
 
   setRib(ribOpen);
   refresh();
