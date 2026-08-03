@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n 基礎班 · 課程捷運路線圖</title>
+<style>
+  :root{
+    --pink:#ea4b71;--purple:#7b6bff;--teal:#12c2b0;--amber:#f5a623;--red:#ff5c6c;
+    --txt:#eef0ff;--muted:#aab0d4;--font:"Inter","Segoe UI",-apple-system,"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);color:var(--txt);min-height:100vh;
+    background:
+      radial-gradient(1200px 800px at 82% -10%, rgba(234,75,113,.18), transparent 60%),
+      radial-gradient(1000px 700px at 8% 108%, rgba(123,107,255,.16), transparent 60%),
+      linear-gradient(160deg,#0b0d1a 0%, #10132a 100%);
+  }
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1.3px, transparent 1.4px);background-size:34px 34px;}
+  .wrap{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:40px 32px 60px}
+  header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px;margin-bottom:10px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .nodemark{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--pink),#b93b8f);
+    display:grid;place-items:center;font-size:1.4rem;box-shadow:0 8px 30px rgba(234,75,113,.5)}
+  h1{font-size:2.2rem;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+  h1 small{display:block;font-size:1rem;font-weight:600;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin-top:.3rem}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin:20px 0 6px;font-size:.95rem;color:var(--muted)}
+  .lg{display:flex;align-items:center;gap:8px}
+  .lg .sw{width:26px;height:8px;border-radius:5px}
+  .lg .mk{width:16px;height:16px;border-radius:50%;background:#2a2f52;border:2px solid var(--muted)}
+  .lg .mk.term{border-color:#fff;background:#fff}
+  .lg .mk.inter{background:#0b0d1a;border-width:3px}
+  .lg .mk.diamond{border-radius:3px;transform:rotate(45deg);width:13px;height:13px}
+  .maproom{margin-top:14px;border:1px solid rgba(255,255,255,.09);border-radius:20px;
+    background:rgba(10,12,26,.5);padding:8px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:auto}
+  svg{width:100%;height:auto;display:block}
+  .foot{margin-top:22px;color:var(--muted);font-size:.9rem;line-height:1.7}
+  .foot b{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="nodemark">⬡</div>
+      <h1>n8n 基礎班 · 課程路線圖<small>Course Metro Map</small></h1>
+    </div>
+    <div style="color:var(--muted);font-size:.95rem;text-align:right">
+      講師 <b style="color:var(--txt)">Ken Tai</b><br>10 Lab · 3 Exercise · 3 Case Study
+    </div>
+  </header>
+
+  <div class="legend" id="lineLegend"></div>
+  <div class="legend">
+    <div class="lg"><span class="mk term"></span> 起 / 終點站</div>
+    <div class="lg"><span class="mk inter"></span> 轉乘站（模組交界）</div>
+    <div class="lg"><span class="mk"></span> Lab 車站</div>
+    <div class="lg"><span class="mk diamond"></span> 練習 Exercise（挑戰站）</div>
+    <div class="lg"><span class="mk" style="background:#0b0d1a;border-color:var(--red)"></span> 案例 / 概念站</div>
+  </div>
+
+  <div class="maproom"><div id="map"></div></div>
+
+  <div class="foot" id="footnote"></div>
+</div>
+
+<script>
+const LINES=[
+  {key:'env', name:'環境建置線', color:'#f5a623'},
+  {key:'core',name:'核心實作線', color:'#ea4b71'},
+  {key:'adv', name:'進階節點線', color:'#7b6bff'},
+  {key:'ops', name:'管理備份線', color:'#12c2b0'},
+  {key:'case',name:'綜合案例線', color:'#ff5c6c'},
+];
+const CL=Object.fromEntries(LINES.map(l=>[l.key,l.color]));
+
+// stations in order
+const ST=[
+  {t:'start', line:'env', id:'起', name:['環境建置','START']},
+  {t:'lab',   line:'env', id:'',  name:['n8n 註冊','雲端 / Docker']},
+  {t:'lab',   line:'env', id:'',  name:['Docker','本機 Server']},
+  {t:'lab',   line:'env', id:'',  name:['Demo01','First Workflow']},
+  {t:'lab',   line:'env', id:'',  name:['匯出 / 匯入','Export · Import']},
+
+  {t:'inter', line:'core',id:'01',name:['Hello World','HTTP · Code']},
+  {t:'lab',   line:'core',id:'01+',name:['Edit Fields','動態 URL']},
+  {t:'lab',   line:'core',id:'02',name:['Gmail 寄信','OAuth2']},
+  {t:'lab',   line:'core',id:'03',name:['n8n Form','→ Sheets']},
+  {t:'lab',   line:'core',id:'04',name:['批量寄信','Sheets · Gmail']},
+  {t:'lab',   line:'core',id:'05',name:['Webhook','Query 觸發']},
+  {t:'ex',    line:'core',id:'E1',name:['Exercise 01','短網址']},
+
+  {t:'inter', line:'adv', id:'06',name:['排程 Schedule','Cron 定時']},
+  {t:'lab',   line:'adv', id:'07',name:['Binary 圖片','附件 · 內嵌']},
+  {t:'ex',    line:'adv', id:'E2',name:['Exercise 02','PDF 擷取']},
+  {t:'lab',   line:'adv', id:'08',name:['Filter','拆分 · 過濾']},
+  {t:'lab',   line:'adv', id:'09',name:['統一通知','去重 · BCC']},
+  {t:'lab',   line:'adv', id:'10',name:['AI Agent','記憶機器人']},
+  {t:'lab',   line:'adv', id:'10+',name:['AI × 日曆','Calendar']},
+
+  {t:'inter', line:'ops', id:'E3',name:['Exercise 03','Workflow 備份']},
+
+  {t:'inter', line:'case',id:'▶', name:['分析方法論','Who/What/How']},
+  {t:'case',  line:'case',id:'C1',name:['Case 01','線上報名']},
+  {t:'case',  line:'case',id:'C2',name:['Case 02','週報統計']},
+  {t:'case',  line:'case',id:'C3',name:['Case 03','指派業務']},
+  {t:'end',   line:'case',id:'終',name:['結業 · 問卷','FINISH']},
+];
+
+// serpentine layout
+const COLS=5, DX=290, DY=232, MX=150, MY=150;
+ST.forEach((s,i)=>{
+  const row=Math.floor(i/COLS);
+  const col=i%COLS;
+  const rev=row%2===1;
+  const c=rev?(COLS-1-col):col;
+  s.x=MX+c*DX; s.y=MY+row*DY; s.row=row; s.col=col;
+});
+const W=MX*2+(COLS-1)*DX;
+const rows=Math.ceil(ST.length/COLS);
+const H=MY*2+(rows-1)*DY;
+
+function rc(x,y,r,fill,stroke,sw){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw||0}"/>`;}
+
+let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Noto Sans TC','Microsoft JhengHei',sans-serif">`;
+
+// connectors (draw first, under stations)
+for(let i=0;i<ST.length-1;i++){
+  const a=ST[i], b=ST[i+1];
+  const color=CL[b.line];
+  svg+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${color}" stroke-width="11" stroke-linecap="round"/>`;
+  // subtle glow
+  svg+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${color}" stroke-width="20" stroke-linecap="round" opacity="0.14"/>`;
+}
+// redraw solid on top of glow
+for(let i=0;i<ST.length-1;i++){
+  const a=ST[i], b=ST[i+1];
+  svg+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${CL[b.line]}" stroke-width="11" stroke-linecap="round"/>`;
+}
+
+// stations + labels
+ST.forEach((s,i)=>{
+  const color=CL[s.line];
+  const labelBelow = (s.row%2===0); // even rows label below, odd rows label above -> avoid line? we place opposite of nothing; keep consistent below except when crowded
+  // marker by type
+  if(s.t==='start'||s.t==='end'){
+    svg+=rc(s.x,s.y,20,color,'#ffffff',4);
+    svg+=`<text x="${s.x}" y="${s.y}" fill="#0b0d1a" font-size="17" font-weight="800" text-anchor="middle" dominant-baseline="central">${s.id}</text>`;
+  } else if(s.t==='inter'){
+    svg+=rc(s.x,s.y,16,'#0b0d1a',color,5);
+    svg+=`<text x="${s.x}" y="${s.y}" fill="${color}" font-size="14" font-weight="800" text-anchor="middle" dominant-baseline="central">${s.id}</text>`;
+  } else if(s.t==='ex'){
+    // diamond
+    const r=15;
+    svg+=`<rect x="${s.x-r}" y="${s.y-r}" width="${r*2}" height="${r*2}" rx="4" transform="rotate(45 ${s.x} ${s.y})" fill="${color}" stroke="#ffffff" stroke-width="2.5"/>`;
+    svg+=`<text x="${s.x}" y="${s.y}" fill="#0b0d1a" font-size="12.5" font-weight="800" text-anchor="middle" dominant-baseline="central">${s.id}</text>`;
+  } else if(s.t==='case'){
+    svg+=rc(s.x,s.y,13,'#0b0d1a',color,4);
+    svg+=`<text x="${s.x}" y="${s.y}" fill="${color}" font-size="12" font-weight="800" text-anchor="middle" dominant-baseline="central">${s.id}</text>`;
+  } else { // lab
+    svg+=rc(s.x,s.y,12,color,'#0b0d1a',3);
+    if(s.id) svg+=`<text x="${s.x}" y="${s.y}" fill="#0b0d1a" font-size="12" font-weight="800" text-anchor="middle" dominant-baseline="central">${s.id}</text>`;
+  }
+  // label
+  const dy = labelBelow ? 40 : -44;
+  const anchor='middle';
+  const l1=s.name[0], l2=s.name[1]||'';
+  const ty = s.y + dy;
+  svg+=`<text x="${s.x}" y="${ty}" fill="#eef0ff" font-size="17" font-weight="700" text-anchor="${anchor}">${l1}</text>`;
+  if(l2) svg+=`<text x="${s.x}" y="${ty+21}" fill="#aab0d4" font-size="13.5" text-anchor="${anchor}">${l2}</text>`;
+});
+
+svg+='</svg>';
+document.getElementById('map').innerHTML=svg;
+
+// line legend
+document.getElementById('lineLegend').innerHTML=LINES.map(l=>
+  `<div class="lg"><span class="sw" style="background:${l.color}"></span> ${l.name}</div>`).join('');
+
+document.getElementById('footnote').innerHTML=
+  '搭乘方式：從左上角 <b>環境建置</b> 起站出發，沿路線依序抵達每一站；'+
+  '換色代表進入新模組（<b>轉乘站</b>），<b>菱形站</b>是動手挑戰的 Exercise，'+
+  '虛線圈是綜合案例與概念站，終點是 <b>結業與課後問卷</b>。';
+</script>
+</body>
+</html>
