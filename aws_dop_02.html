@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOP-C02 模擬試場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#f7f5ef;
+    --surface:#ffffff;
+    --surface-alt:#efebe0;
+    --border:#ddd6c4;
+    --text:#211d16;
+    --text-dim:#6e6656;
+    --accent:#b45309;
+    --accent-contrast:#fffaf2;
+    --good:#0d7f72;
+    --good-soft:#ddf3ee;
+    --bad:#b3261e;
+    --bad-soft:#fbe2e0;
+    --flag:#6d4aff;
+    --flag-soft:#eae3ff;
+    --shadow: 0 1px 2px rgba(33,29,22,.06), 0 4px 14px rgba(33,29,22,.05);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141210;
+      --surface:#1d1a16;
+      --surface-alt:#262219;
+      --border:#3a342a;
+      --text:#f1ece0;
+      --text-dim:#a79c89;
+      --accent:#f0a93c;
+      --accent-contrast:#1b1300;
+      --good:#33c9b0;
+      --good-soft:#123832;
+      --bad:#ff6b5e;
+      --bad-soft:#3a1613;
+      --flag:#9c87ff;
+      --flag-soft:#241c42;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141210;
+    --surface:#1d1a16;
+    --surface-alt:#262219;
+    --border:#3a342a;
+    --text:#f1ece0;
+    --text-dim:#a79c89;
+    --accent:#f0a93c;
+    --accent-contrast:#1b1300;
+    --good:#33c9b0;
+    --good-soft:#123832;
+    --bad:#ff6b5e;
+    --bad-soft:#3a1613;
+    --flag:#9c87ff;
+    --flag-soft:#241c42;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,'PingFang TC','Noto Sans TC',sans-serif;
+    line-height:1.55;
+  }
+  .mono{ font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; }
+
+  a{ color: var(--accent); }
+
+  /* ---------- header ---------- */
+  header.top{
+    position:sticky; top:0; z-index:30;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+  .top-inner{
+    max-width:920px; margin:0 auto; padding:14px 20px 12px;
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 18px;
+  }
+  .brand{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-right:auto; min-width:0; }
+  .brand .titlegroup{ display:flex; align-items:baseline; gap:10px; white-space:nowrap; }
+  .brand .tag{
+    font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+    letter-spacing:.08em; color:var(--accent-contrast); background:var(--accent);
+    padding:2px 7px; border-radius:4px; white-space:nowrap;
+  }
+  .brand h1{
+    font-size:19px; margin:0; font-weight:700; letter-spacing:-.01em; white-space:nowrap;
+  }
+  .brand .sub{ font-size:12.5px; color:var(--text-dim); font-family:'JetBrains Mono',monospace;}
+  .stat-strip{
+    display:flex; gap:16px; flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-dim);
+    padding-bottom:11px; margin-bottom:12px; border-bottom:1px solid var(--border);
+  }
+  .stat-strip b{ color:var(--text); font-size:13px; }
+  .modes{
+    max-width:920px; margin:0 auto; padding:0 20px; display:flex; gap:6px;
+  }
+  .mode-btn{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600;
+    padding:8px 14px; border:1px solid var(--border); border-bottom:none;
+    background:var(--surface-alt); color:var(--text-dim); cursor:pointer;
+    border-radius:8px 8px 0 0; letter-spacing:.02em;
+  }
+  .mode-btn.active{ background:var(--bg); color:var(--text); border-color:var(--border); }
+  .mode-badge{
+    display:inline-block; min-width:18px; padding:1px 5px; margin-left:4px; border-radius:999px;
+    background:var(--bad); color:#fff; font-size:10.5px; font-weight:700; text-align:center;
+  }
+  .mode-badge.zero{ background:var(--surface-alt); color:var(--text-dim); }
+
+  /* ---------- controls ---------- */
+  .controls{
+    max-width:920px; margin:0 auto; padding:16px 20px 4px;
+  }
+  .panel{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; box-shadow:var(--shadow); margin-bottom:14px;
+  }
+  .panel h2{
+    margin:0 0 10px; font-size:11px; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-weight:600;
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:7px; }
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
+    padding:6px 11px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text-dim); cursor:pointer; user-select:none;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .chip .n{ opacity:.65; }
+  .chip.active{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
+  .chip.active .n{ opacity:.85; }
+  .toggles{ display:flex; flex-wrap:wrap; gap:16px; margin-top:12px; }
+  .toggle{ display:flex; align-items:center; gap:7px; font-size:13px; cursor:pointer; color:var(--text-dim); }
+  .toggle input{ accent-color:var(--accent); width:15px; height:15px; }
+  .toggle.on{ color:var(--text); }
+
+  .mock-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .mock-row .lbl{ font-size:13px; color:var(--text-dim); margin-right:2px; }
+  .size-btn{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600;
+    padding:7px 13px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); cursor:pointer;
+  }
+  .size-btn.active{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
+  .start-btn{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+    padding:9px 18px; border-radius:8px; border:1px solid var(--accent);
+    background:var(--accent); color:var(--accent-contrast); cursor:pointer; margin-left:auto;
+  }
+  .start-btn:hover{ filter:brightness(1.05); }
+  .timer{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-dim); }
+
+  /* ---------- toolbar ---------- */
+  .toolbar{
+    position:sticky; top:var(--header-h,88px); z-index:20;
+    max-width:920px; margin:0 auto; padding:10px 20px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+  }
+  .toolbar::before{ content:""; }
+  .tbtn{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600;
+    padding:8px 13px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface); color:var(--text); cursor:pointer;
+  }
+  .tbtn.primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
+  .tbtn:disabled{ opacity:.4; cursor:not-allowed; }
+  .count-pill{
+    margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--text-dim);
+  }
+
+  /* ---------- score summary ---------- */
+  #summary{ max-width:920px; margin:0 auto; padding:0 20px 4px; display:none; }
+  .score-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; box-shadow:var(--shadow); display:flex; gap:22px; flex-wrap:wrap; align-items:center;
+  }
+  .score-big{ font-family:'JetBrains Mono',monospace; font-size:34px; font-weight:700; }
+  .score-big span{ font-size:16px; color:var(--text-dim); font-weight:500; }
+  .score-bars{ flex:1; min-width:220px; display:flex; flex-direction:column; gap:6px; }
+  .sbar-row{ display:grid; grid-template-columns:150px 1fr 46px; align-items:center; gap:8px; font-size:11.5px; }
+  .sbar-row .name{ color:var(--text-dim); font-family:'JetBrains Mono',monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sbar-track{ height:7px; background:var(--surface-alt); border-radius:4px; overflow:hidden; }
+  .sbar-fill{ height:100%; background:var(--good); }
+  .sbar-row .pct{ font-family:'JetBrains Mono',monospace; color:var(--text-dim); text-align:right; }
+
+  /* ---------- questions ---------- */
+  main{ max-width:920px; margin:0 auto; padding:6px 20px 80px; }
+  .qcard{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px 14px; margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .qhead{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:9px; }
+  .qno{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--text-dim); }
+  .tag{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.02em;
+    padding:2px 8px; border-radius:5px; background:var(--surface-alt); color:var(--text-dim);
+  }
+  .tag.type{ background:var(--surface-alt); }
+  .flagbtn{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:700;
+    padding:2px 8px; border-radius:5px; border:1px solid var(--flag); background:var(--flag-soft);
+    color:var(--flag); cursor:pointer;
+  }
+  .wrong-tag{ background:var(--bad-soft); color:var(--bad); }
+  .removebtn{ border-color:var(--border); background:var(--surface-alt); color:var(--text-dim); }
+  .result-icon{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; }
+  .result-icon.ok{ color:var(--good); }
+  .result-icon.no{ color:var(--bad); }
+  .flagnote{
+    display:none; margin:0 0 10px; padding:9px 11px; border-radius:8px;
+    background:var(--flag-soft); color:var(--text); font-size:12.5px; border:1px solid var(--flag);
+  }
+  .flagnote b{ color:var(--flag); }
+  .qtext{ font-size:15px; margin:0 0 12px; max-width:66ch; }
+  .opts{ display:flex; flex-direction:column; gap:7px; margin-bottom:6px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:9px; padding:8px 10px; border-radius:8px;
+    border:1px solid var(--border); cursor:pointer; font-size:14px;
+  }
+  .opt input{ margin-top:3px; accent-color:var(--accent); width:15px; height:15px; flex:none; }
+  .opt .otext{ flex:1; }
+  .opt .oletter{ font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--text-dim); }
+  .opt.correct-picked{ background:var(--good-soft); border-color:var(--good); }
+  .opt.wrong-picked{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.missed{ border-color:var(--good); border-style:dashed; }
+  .opt.reveal-correct{ background:var(--good-soft); border-color:var(--good); }
+  .mark{ margin-left:6px; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12px; white-space:nowrap; flex:none; align-self:flex-start; }
+  .mark.ok{ color:var(--good); } .mark.bad{ color:var(--bad); } .mark.miss{ color:var(--good); }
+
+  .expwrap{ margin-top:8px; }
+  .exptoggle{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent); background:none;
+    border:none; cursor:pointer; padding:4px 0; font-weight:600;
+  }
+  .exp{ display:none; font-size:13.5px; color:var(--text-dim); background:var(--surface-alt);
+    border-radius:8px; padding:10px 12px; margin-top:6px; max-width:68ch; white-space:pre-line; }
+  .svc-list{ margin-top:9px; display:flex; flex-wrap:wrap; gap:5px; }
+  .svc{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); background:var(--surface-alt); padding:2px 7px; border-radius:5px; }
+
+  /* ---------- one-at-a-time navigation ---------- */
+  .qnav{
+    position:sticky; bottom:0; z-index:15; display:none;
+    max-width:920px; margin:0 auto; padding:10px 20px 14px;
+    background:linear-gradient(to bottom, rgba(0,0,0,0), var(--bg) 45%);
+  }
+  .qnav.on{ display:block; }
+  .qnav-inner{
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:10px 12px; box-shadow:var(--shadow);
+  }
+  .navbtn{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600;
+    padding:9px 14px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--text); cursor:pointer; white-space:nowrap;
+  }
+  .navbtn.primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
+  .navbtn:disabled{ opacity:.35; cursor:not-allowed; }
+  .navmid{ flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
+  .pos-label{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text-dim);
+    display:flex; justify-content:space-between; gap:10px;
+  }
+  .pos-label .runscore{ color:var(--text); }
+  .progress{ height:6px; background:var(--surface-alt); border-radius:4px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); transition:width .18s ease; }
+
+  .empty{ text-align:center; color:var(--text-dim); padding:60px 20px; font-family:'JetBrains Mono',monospace; }
+
+  footer{
+    max-width:920px; margin:0 auto; padding:10px 20px 40px; color:var(--text-dim);
+    font-size:11.5px; font-family:'JetBrains Mono',monospace; text-align:center;
+  }
+
+  @media (max-width:600px){
+    .brand .tag{ font-size:10px; }
+    .brand h1{ font-size:16px; }
+    .brand .sub{ flex-basis:100%; }
+    .score-big{ font-size:26px; }
+    .sbar-row{ grid-template-columns:96px 1fr 38px; }
+    .toolbar{ gap:6px; }
+    .tbtn{ flex:1 1 calc(50% - 6px); text-align:center; padding:10px 8px; }
+    .count-pill{ flex-basis:100%; text-align:center; margin-left:0; order:10; }
+    .mock-row{ width:100%; }
+    .start-btn{ margin-left:0; flex:1 1 100%; text-align:center; padding:12px; }
+    .qnav{ padding:8px 12px 12px; }
+    .qnav-inner{ flex-wrap:wrap; gap:8px; }
+    .navmid{ order:-1; flex-basis:100%; }
+    .navbtn{ flex:1 1 0; text-align:center; justify-content:center; padding:11px 8px; }
+    .qcard{ padding:14px 14px 12px; }
+    .opt{ padding:10px 10px; }
+    .chip{ padding:7px 12px; }
+  }
+  @media (hover:none){
+    .chip, .tbtn, .opt, .mode-btn, .size-btn{ min-height:40px; display:inline-flex; align-items:center; }
+    .opt{ align-items:flex-start; }
+  }
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="titlegroup">
+        <span class="tag">DOP-C02</span>
+        <h1>模擬試場</h1>
+      </span>
+      <span class="sub">AWS Certified DevOps Engineer – Professional</span>
+    </div>
+  </div>
+  <div class="modes">
+    <button class="mode-btn active" data-mode="browse">瀏覽練習 Browse</button>
+    <button class="mode-btn" data-mode="mock">模擬考 Mock Exam</button>
+    <button class="mode-btn" data-mode="mistakes">錯題複習 <span id="wrongCountBadge" class="mode-badge">0</span></button>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="panel" id="browsePanel">
+    <div class="stat-strip" id="statStrip"></div>
+    <h2>篩選 Filter</h2>
+    <div class="chips" id="domainChips"></div>
+    <div class="toggles">
+      <label class="toggle" id="toggleMulti"><input type="checkbox" id="chkMulti"> 只顯示複選題 Multi-answer only</label>
+      <label class="toggle" id="toggleFlag"><input type="checkbox" id="chkFlag"> 只顯示 AI 標記可疑題 Flagged only</label>
+    </div>
+  </div>
+
+  <div class="panel" id="mockPanel" style="display:none">
+    <h2>模擬考設定 Setup</h2>
+    <div class="mock-row" style="margin-bottom:10px;">
+      <span class="lbl">領域 Domain：</span>
+      <div class="chips" id="mockDomainChips"></div>
+    </div>
+    <div class="mock-row">
+      <span class="lbl">題數 Questions：</span>
+      <button class="size-btn" data-size="10">10</button>
+      <button class="size-btn" data-size="20">20</button>
+      <button class="size-btn active" data-size="50">50</button>
+      <button class="size-btn" data-size="75">75</button>
+      <button class="size-btn" data-size="all">全部 All</button>
+      <button class="start-btn" id="startMock">開始抽題 Draw ▸</button>
+    </div>
+    <div class="mock-row" id="mockMeta" style="margin-top:10px; display:none;"></div>
+  </div>
+
+  <div class="panel" id="mistakesPanel" style="display:none">
+    <h2>錯題複習 Review Mistakes</h2>
+    <div class="mock-row">
+      <span class="lbl" id="mistakesSummary">目前沒有待複習的錯題。</span>
+      <button class="tbtn" id="btnRefreshMistakes">↻ 重新整理清單 Refresh</button>
+      <button class="tbtn" id="btnClearMistakes" style="margin-left:auto">🗑 清空錯題本 Clear all</button>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar" id="toolbar">
+  <button class="tbtn primary" id="btnGrade">✓ 批改本題</button>
+  <button class="tbtn" id="btnReset">↺ 重設 Reset</button>
+  <button class="tbtn" id="btnShowAns">👁 顯示答案 Show answers</button>
+  <button class="tbtn" id="btnToggleExp">▤ 顯示解析 Explanations</button>
+  <button class="tbtn" id="btnDisplay" title="切換單題／列表顯示">☰ 改為列表</button>
+  <span class="count-pill" id="countPill"></span>
+</div>
+
+<div id="summary">
+  <div class="score-card">
+    <div class="score-big" id="scoreBig">0<span>/0</span></div>
+    <div class="score-bars" id="scoreBars"></div>
+  </div>
+</div>
+
+<main id="list"></main>
+
+<div class="qnav" id="qnav"></div>
+
+<footer>
+  題庫來源：DOP-C02 V20.17.pdf（第三方題庫）· 領域與 AI 覆核結果為自動判斷，僅供讀書規劃參考，不構成官方認證保證。
+</footer>
+
+<script src="dop_data.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var DOMAIN_LABELS = {
+    sdlc: "SDLC 自動化",
+    config: "設定管理與 IaC",
+    resilient: "高可用架構",
+    monitoring: "監控與日誌",
+    incident: "事件回應",
+    security: "安全與合規",
+    unclassified: "未分類"
+  };
+  var DOMAIN_ORDER = ["sdlc","config","resilient","monitoring","incident","security","unclassified"];
+
+  var els = {
+    statStrip: document.getElementById('statStrip'),
+    domainChips: document.getElementById('domainChips'),
+    mockDomainChips: document.getElementById('mockDomainChips'),
+    chkMulti: document.getElementById('chkMulti'),
+    chkFlag: document.getElementById('chkFlag'),
+    toggleMulti: document.getElementById('toggleMulti'),
+    toggleFlag: document.getElementById('toggleFlag'),
+    browsePanel: document.getElementById('browsePanel'),
+    mockPanel: document.getElementById('mockPanel'),
+    startMock: document.getElementById('startMock'),
+    mockMeta: document.getElementById('mockMeta'),
+    mistakesPanel: document.getElementById('mistakesPanel'),
+    mistakesSummary: document.getElementById('mistakesSummary'),
+    btnRefreshMistakes: document.getElementById('btnRefreshMistakes'),
+    btnClearMistakes: document.getElementById('btnClearMistakes'),
+    wrongCountBadge: document.getElementById('wrongCountBadge'),
+    list: document.getElementById('list'),
+    qnav: document.getElementById('qnav'),
+    toolbar: document.getElementById('toolbar'),
+    btnDisplay: document.getElementById('btnDisplay'),
+    btnGrade: document.getElementById('btnGrade'),
+    btnReset: document.getElementById('btnReset'),
+    btnShowAns: document.getElementById('btnShowAns'),
+    btnToggleExp: document.getElementById('btnToggleExp'),
+    countPill: document.getElementById('countPill'),
+    summary: document.getElementById('summary'),
+    scoreBig: document.getElementById('scoreBig'),
+    scoreBars: document.getElementById('scoreBars'),
+  };
+
+  function loadPrefs(){
+    try{
+      var raw = localStorage.getItem('dopc02_prefs');
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function savePrefs(p){
+    try{ localStorage.setItem('dopc02_prefs', JSON.stringify(p)); }catch(e){}
+  }
+  var prefs = loadPrefs();
+
+  // ---------- 錯題本 (mistake bank): persisted per-browser via localStorage ----------
+  function loadWrongSet(){
+    try{
+      var raw = localStorage.getItem('dopc02_wrong');
+      var arr = raw ? JSON.parse(raw) : [];
+      return new Set(arr);
+    }catch(e){ return new Set(); }
+  }
+  function saveWrongSet(){
+    try{ localStorage.setItem('dopc02_wrong', JSON.stringify(Array.from(wrongSet))); }catch(e){}
+  }
+  var wrongSet = loadWrongSet();
+
+  function updateWrongBadge(){
+    var n = wrongSet.size;
+    els.wrongCountBadge.textContent = n;
+    els.wrongCountBadge.classList.toggle('zero', n === 0);
+    els.mistakesSummary.textContent = n === 0
+      ? '目前沒有待複習的錯題，太棒了！'
+      : '目前有 '+n+' 題答錯過、尚未答對的題目待複習。';
+  }
+
+  var state = {
+    mode: 'browse',
+    display: prefs.display === 'list' ? 'list' : 'single',  // 預設一次只做一題
+    activeDomains: new Set(prefs.activeDomains || DOMAIN_ORDER),
+    onlyMulti: !!prefs.onlyMulti,
+    onlyFlag: !!prefs.onlyFlag,
+    mockSize: '50',
+    mockDomains: new Set(DOMAIN_ORDER),
+    currentList: [],
+    listIsMistakes: false,
+    pageIndex: 0,
+    answers: {},              // 題號 -> 已選的選項字母陣列
+    gradedNos: new Set(),     // 本輪已批改的題號
+    results: {},              // 題號 -> 是否答對
+    showAnswers: false,
+    showExp: false,
+    mockStartTs: null,
+    timerHandle: null,
+  };
+
+  function persist(){
+    savePrefs({
+      activeDomains: Array.from(state.activeDomains),
+      onlyMulti: state.onlyMulti,
+      onlyFlag: state.onlyFlag,
+      display: state.display
+    });
+  }
+
+  // ---------- derived stats ----------
+  var domainCounts = {};
+  DOMAIN_ORDER.forEach(function(k){ domainCounts[k] = 0; });
+  var flaggedCount = 0, multiCount = 0;
+  QUESTIONS.forEach(function(q){
+    domainCounts[q.dkey] = (domainCounts[q.dkey]||0) + 1;
+    if(q.flag) flaggedCount++;
+    if(q.type === 'multi') multiCount++;
+  });
+
+  els.statStrip.innerHTML =
+    '<span><b>'+QUESTIONS.length+'</b> 題</span>' +
+    '<span><b>'+multiCount+'</b> 複選題</span>' +
+    '<span><b>'+flaggedCount+'</b> AI 標記可疑</span>' +
+    '<span>版本 <b>V20.17</b></span>';
+
+  // ---------- build chips ----------
+  function buildChips(container, selectedSet, onToggle, withAll){
+    container.innerHTML = '';
+    if(withAll){
+      var allChip = document.createElement('div');
+      allChip.className = 'chip' + (selectedSet.size === DOMAIN_ORDER.length ? ' active' : '');
+      allChip.textContent = '全部 All';
+      allChip.addEventListener('click', function(){
+        if(selectedSet.size === DOMAIN_ORDER.length){ selectedSet.clear(); }
+        else { DOMAIN_ORDER.forEach(function(k){ selectedSet.add(k); }); }
+        onToggle();
+      });
+      container.appendChild(allChip);
+    }
+    DOMAIN_ORDER.forEach(function(k){
+      var chip = document.createElement('div');
+      chip.className = 'chip' + (selectedSet.has(k) ? ' active' : '');
+      var label = document.createElement('span');
+      label.textContent = DOMAIN_LABELS[k];
+      var n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = domainCounts[k];
+      chip.appendChild(label); chip.appendChild(n);
+      chip.addEventListener('click', function(){
+        if(selectedSet.has(k)) selectedSet.delete(k); else selectedSet.add(k);
+        onToggle();
+      });
+      container.appendChild(chip);
+    });
+  }
+
+  function rebuildDomainChips(){
+    buildChips(els.domainChips, state.activeDomains, function(){ persist(); rebuildDomainChips(); renderBrowse(); }, true);
+  }
+  function rebuildMockChips(){
+    buildChips(els.mockDomainChips, state.mockDomains, function(){ rebuildMockChips(); }, true);
+  }
+
+  rebuildDomainChips();
+  rebuildMockChips();
+
+  els.chkMulti.checked = state.onlyMulti;
+  els.chkFlag.checked = state.onlyFlag;
+  els.toggleMulti.classList.toggle('on', state.onlyMulti);
+  els.toggleFlag.classList.toggle('on', state.onlyFlag);
+
+  els.chkMulti.addEventListener('change', function(){
+    state.onlyMulti = els.chkMulti.checked;
+    els.toggleMulti.classList.toggle('on', state.onlyMulti);
+    persist(); renderBrowse();
+  });
+  els.chkFlag.addEventListener('change', function(){
+    state.onlyFlag = els.chkFlag.checked;
+    els.toggleFlag.classList.toggle('on', state.onlyFlag);
+    persist(); renderBrowse();
+  });
+
+  // ---------- mode switching ----------
+  document.querySelectorAll('.mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      state.mode = btn.getAttribute('data-mode');
+      els.browsePanel.style.display = state.mode === 'browse' ? '' : 'none';
+      els.mockPanel.style.display = state.mode === 'mock' ? '' : 'none';
+      els.mistakesPanel.style.display = state.mode === 'mistakes' ? '' : 'none';
+      window.scrollTo({top:0, behavior:'auto'});
+      if(state.mode === 'browse'){ renderBrowse(); }
+      else if(state.mode === 'mistakes'){ renderMistakes(); }
+      else { renderEmptyMock(); }
+    });
+  });
+
+  function renderMistakes(){
+    stopTimer();
+    updateWrongBadge();
+    var list = QUESTIONS.filter(function(q){ return wrongSet.has(q.no); });
+    state.currentList = list;
+    if(list.length === 0){
+      resetGradingUI();
+      els.list.innerHTML = '<div class="empty">目前沒有待複習的錯題　·　去「瀏覽練習」或「模擬考」多練習幾題吧</div>';
+      els.countPill.textContent = '';
+      return;
+    }
+    renderList(list, false, true);
+  }
+
+  els.btnRefreshMistakes.addEventListener('click', renderMistakes);
+  els.btnClearMistakes.addEventListener('click', function(){
+    if(wrongSet.size === 0) return;
+    if(!confirm('確定要清空錯題本嗎？共 '+wrongSet.size+' 題，此動作無法復原。')) return;
+    wrongSet.clear();
+    saveWrongSet();
+    renderMistakes();
+  });
+
+  document.querySelectorAll('.size-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      state.mockSize = btn.getAttribute('data-size');
+    });
+  });
+
+  function renderEmptyMock(){
+    resetGradingUI();
+    els.list.innerHTML = '<div class="empty">選擇領域與題數後，按「開始抽題」產生模擬考題目</div>';
+    els.countPill.textContent = '';
+    stopTimer();
+  }
+
+  els.startMock.addEventListener('click', function(){
+    var pool = QUESTIONS.filter(function(q){ return state.mockDomains.has(q.dkey); });
+    shuffle(pool);
+    var n = state.mockSize === 'all' ? pool.length : Math.min(parseInt(state.mockSize,10), pool.length);
+    state.currentList = pool.slice(0, n);
+    var estMin = Math.round(n * 144 / 60);
+    els.mockMeta.style.display = '';
+    els.mockMeta.innerHTML = '<span class="timer">已抽出 '+n+' 題 · 官方節奏建議作答時間 約 '+estMin+' 分鐘 · 計時：<span id="elapsed">00:00</span></span>';
+    startTimer();
+    renderList(state.currentList, true);
+  });
+
+  function shuffle(arr){
+    for(var i=arr.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
+    }
+  }
+
+  function startTimer(){
+    stopTimer();
+    state.mockStartTs = Date.now();
+    state.timerHandle = setInterval(function(){
+      var s = Math.floor((Date.now()-state.mockStartTs)/1000);
+      var mm = String(Math.floor(s/60)).padStart(2,'0');
+      var ss = String(s%60).padStart(2,'0');
+      var el = document.getElementById('elapsed');
+      if(el) el.textContent = mm+':'+ss;
+    }, 1000);
+  }
+  function stopTimer(){
+    if(state.timerHandle){ clearInterval(state.timerHandle); state.timerHandle = null; }
+  }
+
+  // ---------- browse rendering ----------
+  function renderBrowse(){
+    var list = QUESTIONS.filter(function(q){
+      if(!state.activeDomains.has(q.dkey)) return false;
+      if(state.onlyMulti && q.type !== 'multi') return false;
+      if(state.onlyFlag && !q.flag) return false;
+      return true;
+    });
+    state.currentList = list;
+    renderList(list, false);
+  }
+
+  function resetGradingUI(){
+    state.showAnswers = false;
+    els.summary.style.display = 'none';
+    els.qnav.classList.remove('on');
+  }
+
+  // 開始新的一輪：清掉作答紀錄與批改狀態，回到第一題
+  function renderList(list, isMock, isMistakes){
+    resetGradingUI();
+    state.currentList = list;
+    state.listIsMistakes = !!isMistakes;
+    state.pageIndex = 0;
+    state.answers = {};
+    state.gradedNos = new Set();
+    state.results = {};
+    paint();
+  }
+
+  // 依目前顯示模式（單題／列表）把 state.currentList 畫出來
+  function paint(){
+    var list = state.currentList;
+    els.list.innerHTML = '';
+    if(!list.length){
+      els.list.innerHTML = '<div class="empty">沒有符合篩選條件的題目</div>';
+      els.qnav.classList.remove('on');
+      els.countPill.textContent = '';
+      return;
+    }
+    if(state.display === 'single'){
+      if(state.pageIndex >= list.length) state.pageIndex = list.length - 1;
+      if(state.pageIndex < 0) state.pageIndex = 0;
+      els.list.appendChild(buildCard(list[state.pageIndex], state.pageIndex, state.listIsMistakes));
+      els.qnav.classList.add('on');
+      renderNav();
+    } else {
+      var frag = document.createDocumentFragment();
+      list.forEach(function(q, idx){ frag.appendChild(buildCard(q, idx, state.listIsMistakes)); });
+      els.list.appendChild(frag);
+      els.qnav.classList.remove('on');
+    }
+    updateCountPill();
+    syncToolbarLabels();
+  }
+
+  function goTo(index){
+    var list = state.currentList;
+    if(!list.length) return;
+    state.pageIndex = Math.max(0, Math.min(index, list.length - 1));
+    paint();
+    window.scrollTo({top:0, behavior:'auto'});
+  }
+
+  function runStats(){
+    var done = 0, ok = 0;
+    state.currentList.forEach(function(q){
+      if(state.gradedNos.has(q.no)){ done++; if(state.results[q.no]) ok++; }
+    });
+    return {done:done, ok:ok, total:state.currentList.length};
+  }
+
+  function updateCountPill(){
+    var s = runStats();
+    els.countPill.textContent = state.display === 'single'
+      ? ('共 ' + s.total + ' 題 · 已批改 ' + s.done + ' · 答對 ' + s.ok)
+      : (s.total + ' 題顯示中');
+  }
+
+  function syncToolbarLabels(){
+    // 單題模式的批改鈕放在下方導覽列，工具列就不重複放一顆
+    els.btnGrade.style.display = state.display === 'single' ? 'none' : '';
+    els.btnGrade.textContent = '✓ 批改全部';
+    els.btnDisplay.textContent = state.display === 'single' ? '☰ 改為列表' : '▭ 改為單題';
+  }
+
+  // ---------- 單題模式的上下題導覽列 ----------
+  function renderNav(){
+    var list = state.currentList, i = state.pageIndex, q = list[i];
+    var s = runStats();
+    var graded = state.gradedNos.has(q.no);
+    els.qnav.innerHTML = '';
+
+    var inner = el('div','qnav-inner');
+
+    var prev = el('button','navbtn','← 上一題');
+    prev.disabled = (i === 0);
+    prev.addEventListener('click', function(){ goTo(i - 1); });
+    inner.appendChild(prev);
+
+    var mid = el('div','navmid');
+    var label = el('div','pos-label');
+    label.appendChild(el('span', null, '第 ' + (i+1) + ' / ' + list.length + ' 題'));
+    label.appendChild(el('span','runscore', '已批改 ' + s.done + ' · 答對 ' + s.ok));
+    mid.appendChild(label);
+    var track = el('div','progress');
+    var fill = el('div','progress-fill');
+    fill.style.width = Math.round((i+1) / list.length * 100) + '%';
+    track.appendChild(fill);
+    mid.appendChild(track);
+    inner.appendChild(mid);
+
+    if(!graded){
+      var gradeBtn = el('button','navbtn primary','✓ 批改本題');
+      gradeBtn.addEventListener('click', gradeOne);
+      inner.appendChild(gradeBtn);
+    }
+
+    var isLast = (i === list.length - 1);
+    if(isLast){
+      var doneBtn = el('button','navbtn' + (graded ? ' primary' : ''), '📊 查看成績');
+      doneBtn.addEventListener('click', function(){ showSummary(); });
+      inner.appendChild(doneBtn);
+    } else {
+      var next = el('button','navbtn' + (graded ? ' primary' : ''), '下一題 →');
+      next.addEventListener('click', function(){ goTo(i + 1); });
+      inner.appendChild(next);
+    }
+
+    els.qnav.appendChild(inner);
+  }
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function buildCard(q, idx, isMistakes){
+    var card = el('div','qcard');
+    card.dataset.no = q.no;
+    if(wrongSet.has(q.no)) card.classList.add('is-wrong');
+
+    var head = el('div','qhead');
+    head.appendChild(el('span','qno mono','No.'+q.no));
+    head.appendChild(el('span','tag mono', DOMAIN_LABELS[q.dkey]));
+    head.appendChild(el('span','tag type mono', q.type === 'multi' ? '複選 Multi' : '單選 Single'));
+    if(wrongSet.has(q.no)){
+      head.appendChild(el('span','tag wrong-tag mono', '↺ 錯題本'));
+    }
+    if(q.flag){
+      var fb = el('button','flagbtn', '⚠ AI 存疑');
+      fb.addEventListener('click', function(){
+        var note = card.querySelector('.flagnote');
+        note.style.display = note.style.display === 'block' ? 'none' : 'block';
+      });
+      head.appendChild(fb);
+    }
+    if(isMistakes){
+      var rmBtn = el('button','flagbtn removebtn', '✕ 移出錯題本');
+      rmBtn.addEventListener('click', function(){
+        wrongSet.delete(q.no);
+        saveWrongSet();
+        updateWrongBadge();
+        // 從目前清單中移除這題，位置留在原地繼續複習下一題
+        var pos = state.currentList.indexOf(q);
+        if(pos !== -1) state.currentList.splice(pos, 1);
+        if(state.pageIndex > state.currentList.length - 1) state.pageIndex = state.currentList.length - 1;
+        if(state.currentList.length === 0){ renderMistakes(); }
+        else { paint(); }
+      });
+      head.appendChild(rmBtn);
+    }
+    var resultIcon = el('span','result-icon');
+    head.appendChild(resultIcon);
+    card.appendChild(head);
+
+    if(q.flag){
+      var note = el('div','flagnote');
+      var reasonTxt = q.flagDataIssue
+        ? '此題原始 PDF 資料損壞（選項缺漏或亂碼），答案代號可能無對應意義。'
+        : ('題庫答案：'+q.ans.join('')+'　AI 建議：'+(q.flagSugg||'（無法判定）')+'　信心：'+(q.flagConf||'-')+'。 '+ (q.flagReason||''));
+      note.innerHTML = '<b>AI 覆核提示：</b> ';
+      note.appendChild(document.createTextNode(reasonTxt));
+      card.appendChild(note);
+    }
+
+    card.appendChild(el('p','qtext', q.q));
+
+    var optsWrap = el('div','opts');
+    var letters = Object.keys(q.opts);
+    var inputType = q.type === 'multi' ? 'checkbox' : 'radio';
+    letters.forEach(function(L){
+      var label = el('label','opt');
+      var input = document.createElement('input');
+      input.type = inputType;
+      input.name = 'q-'+q.no;
+      input.value = L;
+      label.appendChild(input);
+      var letterSpan = el('span','oletter', L+'. ');
+      var textSpan = el('span','otext', q.opts[L]);
+      var wrap = document.createElement('span');
+      wrap.appendChild(letterSpan);
+      wrap.appendChild(textSpan);
+      label.appendChild(wrap);
+      label.dataset.letter = L;
+      optsWrap.appendChild(label);
+    });
+    card.appendChild(optsWrap);
+
+    // 還原之前作答的選項（在單題模式下來回切換題目時不會丟失）
+    var saved = state.answers[q.no] || [];
+    if(saved.length){
+      optsWrap.querySelectorAll('input').forEach(function(inp){
+        if(saved.indexOf(inp.value) !== -1) inp.checked = true;
+      });
+    }
+    optsWrap.addEventListener('change', function(){
+      var picked = [];
+      optsWrap.querySelectorAll('input').forEach(function(inp){ if(inp.checked) picked.push(inp.value); });
+      state.answers[q.no] = picked;
+    });
+
+    if(q.svc && q.svc.length){
+      var svcList = el('div','svc-list');
+      q.svc.forEach(function(s){ svcList.appendChild(el('span','svc',s)); });
+      card.appendChild(svcList);
+    }
+
+    var expWrap = el('div','expwrap');
+    var expBtn = el('button','exptoggle','▤ 顯示官方解析 Explanation');
+    var expBox = el('div','exp', q.exp || '（此題無解析）');
+    expBtn.addEventListener('click', function(){
+      var showing = expBox.style.display === 'block';
+      expBox.style.display = showing ? 'none' : 'block';
+    });
+    expWrap.appendChild(expBtn);
+    expWrap.appendChild(expBox);
+    card.appendChild(expWrap);
+
+    // 這題本輪已經批改過（例如按上一題回來），直接把批改結果重新標示出來
+    if(state.gradedNos.has(q.no)) applyGrading(card, q, saved);
+    if(state.showExp) expBox.style.display = 'block';
+    if(state.showAnswers){
+      optsWrap.querySelectorAll('.opt').forEach(function(opt){
+        if(q.ans.indexOf(opt.dataset.letter) !== -1) opt.classList.add('reveal-correct');
+      });
+    }
+
+    return card;
+  }
+
+  // ---------- toolbar actions ----------
+  els.btnGrade.addEventListener('click', function(){
+    if(state.display === 'single') gradeOne();
+    else gradeAll();
+  });
+  els.btnDisplay.addEventListener('click', function(){
+    state.display = state.display === 'single' ? 'list' : 'single';
+    persist();
+    paint();  // 保留目前作答與批改狀態，只換顯示方式
+    window.scrollTo({top:0, behavior:'auto'});
+  });
+  els.btnReset.addEventListener('click', function(){
+    if(state.mode === 'mock'){ renderList(state.currentList, true); if(state.currentList.length) startTimer(); }
+    else if(state.mode === 'mistakes'){ renderMistakes(); }
+    else { renderBrowse(); }
+  });
+
+  // 鍵盤操作：← → 換題、Enter 批改本題（僅單題模式）
+  document.addEventListener('keydown', function(e){
+    if(state.display !== 'single' || !state.currentList.length) return;
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    // 焦點在按鈕或選項上時，交給該控制項自己處理（Enter 會觸發按鈕、方向鍵會切換選項）
+    var t = e.target;
+    if(t && (t.tagName === 'BUTTON' || t.tagName === 'INPUT' || t.isContentEditable)) return;
+    if(e.key === 'ArrowLeft'){ goTo(state.pageIndex - 1); }
+    else if(e.key === 'ArrowRight'){ goTo(state.pageIndex + 1); }
+    else if(e.key === 'Enter'){
+      var q = state.currentList[state.pageIndex];
+      if(q && !state.gradedNos.has(q.no)){ gradeOne(); }
+      else { goTo(state.pageIndex + 1); }
+    }
+  });
+  els.btnShowAns.addEventListener('click', function(){
+    state.showAnswers = !state.showAnswers;
+    document.querySelectorAll('.qcard').forEach(function(card){
+      var no = parseInt(card.dataset.no,10);
+      var q = QUESTIONS.find(function(x){ return x.no === no; });
+      card.querySelectorAll('.opt').forEach(function(opt){
+        var L = opt.dataset.letter;
+        opt.classList.toggle('reveal-correct', state.showAnswers && q.ans.indexOf(L) !== -1);
+      });
+    });
+  });
+  els.btnToggleExp.addEventListener('click', function(){
+    state.showExp = !state.showExp;
+    document.querySelectorAll('.exp').forEach(function(box){
+      box.style.display = state.showExp ? 'block' : 'none';
+    });
+  });
+
+  // 把某一題的批改結果標示在畫面上（✓ 正確／✗ 錯誤／△ 遺漏）
+  function applyGrading(card, q, picked){
+    if(!card) return;
+    picked = picked || [];
+    var isCorrect = state.results[q.no];
+    card.querySelectorAll('.opt').forEach(function(opt){
+      var L = opt.dataset.letter;
+      var wasPicked = picked.indexOf(L) !== -1;
+      var isAns = q.ans.indexOf(L) !== -1;
+      opt.querySelector('input').disabled = true;
+      var existingMark = opt.querySelector('.mark');
+      if(existingMark) existingMark.remove();
+      opt.classList.remove('correct-picked','wrong-picked','missed');
+      if(wasPicked && isAns){ opt.classList.add('correct-picked'); addMark(opt,'✓ 正確','ok'); }
+      else if(wasPicked && !isAns){ opt.classList.add('wrong-picked'); addMark(opt,'✗ 錯誤','bad'); }
+      else if(!wasPicked && isAns){ opt.classList.add('missed'); addMark(opt,'△ 遺漏','miss'); }
+    });
+    var icon = card.querySelector('.result-icon');
+    icon.textContent = isCorrect ? '✓ 正確' : '✗ 錯誤';
+    icon.className = 'result-icon ' + (isCorrect ? 'ok' : 'no');
+  }
+
+  // 記錄一題的結果，並同步更新錯題本
+  function recordResult(q, picked){
+    var isCorrect = picked.length === q.ans.length && picked.every(function(p){ return q.ans.indexOf(p) !== -1; });
+    state.gradedNos.add(q.no);
+    state.results[q.no] = isCorrect;
+    if(isCorrect){ wrongSet.delete(q.no); }
+    // 只把「有作答但答錯」的題目收進錯題本；完全空白不算答錯
+    else if(picked.length > 0){ wrongSet.add(q.no); }
+    return isCorrect;
+  }
+
+  // 單題模式：只批改目前這一題，立即給回饋
+  function gradeOne(){
+    var q = state.currentList[state.pageIndex];
+    if(!q) return;
+    var card = els.list.querySelector('.qcard');
+    var picked = state.answers[q.no] || [];
+    recordResult(q, picked);
+    applyGrading(card, q, picked);
+    saveWrongSet();
+    updateWrongBadge();
+    updateCountPill();
+    renderNav();
+  }
+
+  // 列表模式：一次批改目前清單所有題目
+  function gradeAll(){
+    stopTimer();
+    state.currentList.forEach(function(q){
+      recordResult(q, state.answers[q.no] || []);
+    });
+    document.querySelectorAll('.qcard').forEach(function(card){
+      var no = parseInt(card.dataset.no,10);
+      var q = QUESTIONS.find(function(x){ return x.no === no; });
+      applyGrading(card, q, state.answers[no] || []);
+    });
+    saveWrongSet();
+    updateWrongBadge();
+    updateCountPill();
+    showSummary();
+  }
+
+  // 成績統計：只計入本輪已批改的題目
+  function showSummary(){
+    stopTimer();
+    var total = 0, correct = 0;
+    var byDomain = {};
+    DOMAIN_ORDER.forEach(function(k){ byDomain[k] = {c:0,t:0}; });
+
+    state.currentList.forEach(function(q){
+      if(!state.gradedNos.has(q.no)) return;
+      total++; byDomain[q.dkey].t++;
+      if(state.results[q.no]){ correct++; byDomain[q.dkey].c++; }
+    });
+
+    if(total === 0){
+      els.scoreBig.innerHTML = '0<span>/0　(尚未批改任何題目)</span>';
+      els.scoreBars.innerHTML = '';
+      els.summary.style.display = 'block';
+      els.summary.scrollIntoView({behavior:'smooth', block:'start'});
+      return;
+    }
+
+    els.scoreBig.innerHTML = correct + '<span>/'+total+'　('+ Math.round(correct/total*100) +'%)</span>';
+    els.scoreBars.innerHTML = '';
+    DOMAIN_ORDER.forEach(function(k){
+      var d = byDomain[k];
+      if(d.t === 0) return;
+      var row = el('div','sbar-row');
+      row.appendChild(el('span','name', DOMAIN_LABELS[k]));
+      var track = el('div','sbar-track');
+      var fill = el('div','sbar-fill');
+      fill.style.width = Math.round(d.c/d.t*100) + '%';
+      track.appendChild(fill);
+      row.appendChild(track);
+      row.appendChild(el('span','pct', d.c+'/'+d.t));
+      els.scoreBars.appendChild(row);
+    });
+
+    els.summary.style.display = 'block';
+    els.summary.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function addMark(opt, text, cls){
+    var m = el('span','mark '+cls, text);
+    opt.appendChild(m);
+  }
+
+  // ---------- responsive header height (keeps sticky toolbar from hiding under sticky header) ----------
+  var headerEl = document.querySelector('header.top');
+  function syncHeaderHeight(){
+    document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+  }
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(syncHeaderHeight); }
+  new ResizeObserver(syncHeaderHeight).observe(headerEl);
+
+  // ---------- init ----------
+  updateWrongBadge();
+  renderBrowse();
+})();
+</script>
+
+</body>
+</html>
