@@ -131,6 +131,25 @@
     margin:0 0 10px; font-size:11px; text-transform:uppercase; letter-spacing:.1em;
     color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-weight:600;
   }
+  /* 可收合的面板標題列 */
+  .panel-head{
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:none; border:none; padding:0; margin:0 0 12px; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); text-align:left;
+  }
+  .panel-head:hover{ color:var(--text); }
+  .panel-head .chev{ margin-left:auto; font-size:11px; transition:transform .15s ease; }
+  .phead-summary{
+    text-transform:none; letter-spacing:0; font-weight:500; font-size:11.5px;
+    color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .panel:not(.collapsed) .phead-summary{ display:none; }
+  .panel.collapsed{ padding-top:12px; padding-bottom:12px; }
+  .panel.collapsed .panel-head{ margin-bottom:0; }
+  .panel.collapsed .panel-head .chev{ transform:rotate(-90deg); }
+  .panel.collapsed .panel-body{ display:none; }
+  @media (prefers-reduced-motion: reduce){ .panel-head .chev{ transition:none; } }
   .chips{ display:flex; flex-wrap:wrap; gap:7px; }
   .chip{
     font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
@@ -332,39 +351,57 @@
 
 <div class="controls">
   <div class="panel" id="browsePanel">
-    <div class="stat-strip" id="statStrip"></div>
-    <h2>篩選 Filter</h2>
-    <div class="chips" id="domainChips"></div>
-    <div class="toggles">
-      <label class="toggle" id="toggleMulti"><input type="checkbox" id="chkMulti"> 只顯示複選題 Multi-answer only</label>
-      <label class="toggle" id="toggleFlag"><input type="checkbox" id="chkFlag"> 只顯示 AI 標記可疑題 Flagged only</label>
+    <button class="panel-head" data-panel="browse" aria-expanded="true" aria-controls="browseBody">
+      <span>篩選 Filter</span>
+      <span class="phead-summary" id="filterSummary"></span>
+      <span class="chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="panel-body" id="browseBody">
+      <div class="stat-strip" id="statStrip"></div>
+      <div class="chips" id="domainChips"></div>
+      <div class="toggles">
+        <label class="toggle" id="toggleMulti"><input type="checkbox" id="chkMulti"> 只顯示複選題 Multi-answer only</label>
+        <label class="toggle" id="toggleFlag"><input type="checkbox" id="chkFlag"> 只顯示 AI 標記可疑題 Flagged only</label>
+      </div>
     </div>
   </div>
 
   <div class="panel" id="mockPanel" style="display:none">
-    <h2>模擬考設定 Setup</h2>
-    <div class="mock-row" style="margin-bottom:10px;">
-      <span class="lbl">領域 Domain：</span>
-      <div class="chips" id="mockDomainChips"></div>
-    </div>
-    <div class="mock-row">
-      <span class="lbl">題數 Questions：</span>
-      <button class="size-btn" data-size="10">10</button>
-      <button class="size-btn" data-size="20">20</button>
-      <button class="size-btn active" data-size="50">50</button>
-      <button class="size-btn" data-size="75">75</button>
-      <button class="size-btn" data-size="all">全部 All</button>
-      <button class="start-btn" id="startMock">開始抽題 Draw ▸</button>
+    <button class="panel-head" data-panel="mock" aria-expanded="true" aria-controls="mockBody">
+      <span>模擬考設定 Setup</span>
+      <span class="phead-summary" id="mockHeadSummary">點此展開設定</span>
+      <span class="chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="panel-body" id="mockBody">
+      <div class="mock-row" style="margin-bottom:10px;">
+        <span class="lbl">領域 Domain：</span>
+        <div class="chips" id="mockDomainChips"></div>
+      </div>
+      <div class="mock-row">
+        <span class="lbl">題數 Questions：</span>
+        <button class="size-btn" data-size="10">10</button>
+        <button class="size-btn" data-size="20">20</button>
+        <button class="size-btn active" data-size="50">50</button>
+        <button class="size-btn" data-size="75">75</button>
+        <button class="size-btn" data-size="all">全部 All</button>
+        <button class="start-btn" id="startMock">開始抽題 Draw ▸</button>
+      </div>
     </div>
     <div class="mock-row" id="mockMeta" style="margin-top:10px; display:none;"></div>
   </div>
 
   <div class="panel" id="mistakesPanel" style="display:none">
-    <h2>錯題複習 Review Mistakes</h2>
-    <div class="mock-row">
-      <span class="lbl" id="mistakesSummary">目前沒有待複習的錯題。</span>
-      <button class="tbtn" id="btnRefreshMistakes">↻ 重新整理清單 Refresh</button>
-      <button class="tbtn" id="btnClearMistakes" style="margin-left:auto">🗑 清空錯題本 Clear all</button>
+    <button class="panel-head" data-panel="mistakes" aria-expanded="true" aria-controls="mistakesBody">
+      <span>錯題複習 Review Mistakes</span>
+      <span class="phead-summary" id="mistakesHeadSummary"></span>
+      <span class="chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="panel-body" id="mistakesBody">
+      <div class="mock-row">
+        <span class="lbl" id="mistakesSummary">目前沒有待複習的錯題。</span>
+        <button class="tbtn" id="btnRefreshMistakes">↻ 重新整理清單 Refresh</button>
+        <button class="tbtn" id="btnClearMistakes" style="margin-left:auto">🗑 清空錯題本 Clear all</button>
+      </div>
     </div>
   </div>
 </div>
@@ -471,6 +508,8 @@
     els.mistakesSummary.textContent = n === 0
       ? '目前沒有待複習的錯題，太棒了！'
       : '目前有 '+n+' 題答錯過、尚未答對的題目待複習。';
+    var headSummary = document.getElementById('mistakesHeadSummary');
+    if(headSummary) headSummary.textContent = n === 0 ? '沒有待複習的錯題' : (n + ' 題待複習');
   }
 
   var state = {
@@ -481,6 +520,7 @@
     onlyFlag: !!prefs.onlyFlag,
     mockSize: '50',
     mockDomains: new Set(DOMAIN_ORDER),
+    collapsed: Object.assign({browse:false, mock:false, mistakes:false}, prefs.collapsed || {}),
     currentList: [],
     listIsMistakes: false,
     pageIndex: 0,
@@ -498,8 +538,41 @@
       activeDomains: Array.from(state.activeDomains),
       onlyMulti: state.onlyMulti,
       onlyFlag: state.onlyFlag,
-      display: state.display
+      display: state.display,
+      collapsed: state.collapsed
     });
+  }
+
+  // ---------- 可收合面板 ----------
+  function setPanelCollapsed(key, collapsed){
+    var panel = document.querySelector('.panel-head[data-panel="'+key+'"]');
+    if(!panel) return;
+    var head = panel;
+    panel = head.closest('.panel');
+    panel.classList.toggle('collapsed', collapsed);
+    head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    state.collapsed[key] = collapsed;
+  }
+
+  document.querySelectorAll('.panel-head').forEach(function(head){
+    head.addEventListener('click', function(){
+      var key = head.getAttribute('data-panel');
+      setPanelCollapsed(key, !state.collapsed[key]);
+      persist();
+    });
+  });
+
+  // 收合時在標題列顯示目前的篩選條件摘要，才知道自己篩掉了什麼
+  function updateFilterSummary(){
+    var parts = [];
+    var nDomains = state.activeDomains.size;
+    if(nDomains === DOMAIN_ORDER.length) parts.push('全部領域');
+    else if(nDomains === 0) parts.push('未選領域');
+    else parts.push(nDomains + ' 個領域');
+    if(state.onlyMulti) parts.push('只看複選');
+    if(state.onlyFlag) parts.push('只看 AI 存疑');
+    parts.push(state.currentList.length + ' 題');
+    document.getElementById('filterSummary').textContent = parts.join(' · ');
   }
 
   // ---------- derived stats ----------
@@ -637,6 +710,9 @@
     var estMin = Math.round(n * 144 / 60);
     els.mockMeta.style.display = '';
     els.mockMeta.innerHTML = '<span class="timer">已抽出 '+n+' 題 · 官方節奏建議作答時間 約 '+estMin+' 分鐘 · 計時：<span id="elapsed">00:00</span></span>';
+    document.getElementById('mockHeadSummary').textContent = '已抽 '+n+' 題 · 點此重新設定';
+    setPanelCollapsed('mock', true);   // 抽完題就把設定收起來，把版面留給題目
+    persist();
     startTimer();
     renderList(state.currentList, true);
   });
@@ -673,6 +749,7 @@
     });
     state.currentList = list;
     renderList(list, false);
+    updateFilterSummary();
   }
 
   function resetGradingUI(){
@@ -1087,6 +1164,7 @@
   new ResizeObserver(syncHeaderHeight).observe(headerEl);
 
   // ---------- init ----------
+  Object.keys(state.collapsed).forEach(function(k){ setPanelCollapsed(k, !!state.collapsed[k]); });
   updateWrongBadge();
   renderBrowse();
 })();
