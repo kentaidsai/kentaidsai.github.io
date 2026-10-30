@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AIF-C01 複習測驗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1b2838;--navy2:#2c4a63;--paper:#f6f8fb;--card:#fff;--ink:#0f1722;--muted:#5f6b7a;--line:#e4e9f0;
+  --accent:#ff9900;--ok:#1f9d63;--ok-bg:#e8f6ef;--bad:#d64545;--bad-bg:#fdeeee;--sel:#2f6fd6;--sel-bg:#eaf1fd;
+  --d1:#e0568a;--d2:#3b7dd8;--d3:#7c6ce0;--d4:#1aa9a3;--d5:#128b86;
+  --sh:0 2px 10px rgba(20,30,45,.06),0 10px 30px rgba(20,30,45,.05);
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e141c;--card:#17202b;--ink:#e6edf5;--muted:#93a1b2;--line:#283443;
+  --ok-bg:#12301f;--bad-bg:#3a1919;--sel-bg:#18294a;--sh:0 2px 12px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#0e141c;--card:#17202b;--ink:#e6edf5;--muted:#93a1b2;--line:#283443;
+  --ok-bg:#12301f;--bad-bg:#3a1919;--sel-bg:#18294a;--sh:0 2px 12px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 80px}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.hidden{display:none!important}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:22px;padding:30px 32px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,153,0,.18)}
+.hero h1{font-size:clamp(22px,3.4vw,30px);font-weight:800;line-height:1.25;position:relative}
+.hero .sub{color:#c7d3e0;font-size:14.5px;margin-top:6px;max-width:720px;position:relative}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;position:relative}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:6px 12px;font-size:13px;color:#e7eef6}
+.chip b{color:#fff}
+.topbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
+.ghost{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:13px;color:var(--muted)}
+.ghost:hover{color:var(--ink)}
+
+/* panels */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:22px}
+.sec-title{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.setup{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:18px}
+.domains{display:grid;gap:10px}
+.dom{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--card);text-align:left;transition:.15s;border-left:5px solid var(--c)}
+.dom .dn{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.dom .dt{flex:1;min-width:0}
+.dom .dz{display:block;font-weight:800;font-size:15px;line-height:1.3}
+.dom .de{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dom .dc{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.dom .dc b{display:block;font-size:17px;color:var(--ink)}
+.dom .tick{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex:0 0 22px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+.dom[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 6%,var(--card))}
+.dom[aria-pressed="true"] .tick{background:var(--c);border-color:var(--c)}
+.dom[aria-pressed="false"]{opacity:.62}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.row label{font-weight:600;font-size:14.5px}
+.row small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:7px 12px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:var(--accent);color:#1b2838}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{background:var(--accent);color:#1b2838}}
+.switch{position:relative;width:44px;height:26px;flex:0 0 44px}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:var(--line);border-radius:20px;transition:.2s}
+.switch span::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked+span{background:var(--ok)}
+.switch input:checked+span::before{transform:translateX(18px)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mode{border:1.5px solid var(--line);border-radius:14px;padding:14px;background:var(--card);text-align:left}
+.mode b{display:block;font-size:15.5px}
+.mode span{font-size:12.5px;color:var(--muted);display:block;line-height:1.45;margin-top:2px}
+.mode[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--card))}
+.cta{width:100%;margin-top:16px;border:0;border-radius:14px;padding:15px;font-size:17px;font-weight:800;background:var(--accent);color:#1b2838;box-shadow:0 6px 18px rgba(255,153,0,.28)}
+.cta:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+.summary-line{font-size:13px;color:var(--muted);margin-top:10px;text-align:center}
+.wrongbook{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bad-bg);font-size:13.5px}
+.wrongbook b{color:var(--bad)}
+.wrongbook button{margin-left:auto;border:1px solid var(--bad);color:var(--bad);background:transparent;border-radius:9px;padding:5px 10px;font-weight:700;font-size:13px;white-space:nowrap}
+
+/* quiz */
+.qhead{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);padding:10px 0 12px;margin:0 0 6px}
+.qbar{display:flex;align-items:center;gap:10px}
+.qbar .count{font-weight:800;font-size:15px;white-space:nowrap}
+.progress{flex:1;height:8px;background:var(--line);border-radius:8px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#ffb84d);border-radius:8px;transition:width .3s}
+.timer{font-weight:700;font-size:14px;padding:4px 10px;border-radius:8px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
+.timer.warn{color:var(--bad);border-color:var(--bad)}
+.icon-btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start}
+.qcard{padding:24px}
+.qmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tag{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.tag.gray{--c:var(--muted)}
+.flagbtn{margin-left:auto;border:1px solid var(--line);background:transparent;border-radius:20px;padding:3px 12px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.flagbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.qtext{font-size:clamp(16px,1.9vw,18px);line-height:1.7;font-weight:600}
+.hint{font-size:13px;color:var(--sel);font-weight:700;margin-top:8px}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;font-size:15.5px;line-height:1.55;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:color-mix(in srgb,var(--sel) 55%,var(--line))}
+.opt .k{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;background:var(--paper);border:1px solid var(--line);font-size:14px}
+.opt.multi .k{border-radius:50%}
+.opt .tx{padding-top:2px}
+.opt.chosen{border-color:var(--sel);background:var(--sel-bg)}
+.opt.chosen .k{background:var(--sel);color:#fff;border-color:var(--sel)}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.correct .k{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .k{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.match{display:grid;gap:10px;margin-top:18px}
+.mrow{display:grid;grid-template-columns:1fr minmax(180px,250px);gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.mrow .p{font-size:14.5px}
+.mrow select{width:100%;padding:9px 10px;border-radius:9px;border:1.5px solid var(--line);background:var(--card);font-size:14px}
+.mrow.correct{border-color:var(--ok);background:var(--ok-bg)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.mrow .fix{grid-column:1/-1;font-size:12.5px;color:var(--ok);font-weight:700}
+.order{display:grid;gap:8px;margin-top:18px}
+.oitem{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card)}
+.oitem .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:800;font-size:13px;flex:0 0 28px}
+.oitem .t{flex:1;font-size:14.5px}
+.oitem button{border:1px solid var(--line);background:var(--paper);border-radius:8px;width:34px;height:32px;font-size:15px}
+.oitem.correct{border-color:var(--ok);background:var(--ok-bg)}
+.oitem.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.feedback{margin-top:18px;border-radius:14px;padding:16px 18px;border:1.5px solid}
+.feedback.ok{border-color:var(--ok);background:var(--ok-bg)}
+.feedback.no{border-color:var(--bad);background:var(--bad-bg)}
+.feedback .verdict{font-weight:800;font-size:16px}
+.feedback.ok .verdict{color:var(--ok)}.feedback.no .verdict{color:var(--bad)}
+.feedback .ans{font-size:14px;margin-top:2px}
+.feedback .exp{font-size:14.5px;margin-top:8px;line-height:1.7}
+.feedback .note{font-size:12.5px;margin-top:8px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:12px 20px;font-weight:800;font-size:15px}
+.btn.primary{background:var(--navy);color:#fff}
+:root[data-theme="dark"] .btn.primary{background:var(--accent);color:#1b2838}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{background:var(--accent);color:#1b2838}}
+.btn.primary:disabled{opacity:.4;cursor:not-allowed}
+.btn.sec{background:var(--card);border:1.5px solid var(--line)}
+.btn.grow{flex:1}
+.kbd{font-size:11.5px;color:var(--muted);margin-top:12px}
+.nav{position:sticky;top:76px}
+.nav h3{font-size:13px;color:var(--muted);font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between}
+.grid-n{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px;max-height:52vh;overflow:auto;padding:3px}
+.gn{aspect-ratio:1;border-radius:8px;border:1.5px solid var(--line);background:var(--card);font-size:12.5px;font-weight:700;position:relative;min-height:32px}
+.gn.ans{background:var(--sel-bg);border-color:var(--sel)}
+.gn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.gn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.gn.cur{outline:2.5px solid var(--accent);outline-offset:1px}
+.gn.flag::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--accent);border:2px solid var(--card)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.nav .btn{width:100%;margin-top:12px;padding:10px}
+.navtoggle{display:none}
+.drawer-bg{display:none}
+
+/* results */
+.result-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.ring{--p:0;width:160px;height:160px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--rc) calc(var(--p)*1%),var(--line) 0)}
+.ring>div{width:126px;height:126px;border-radius:50%;background:var(--card);display:grid;place-items:center;text-align:center}
+.ring b{font-size:34px;line-height:1;display:block}
+.ring small{font-size:12px;color:var(--muted)}
+.verdict-big{font-size:clamp(20px,3vw,26px);font-weight:800}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:8px 14px;min-width:96px}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+.bars{display:grid;gap:12px;margin-top:6px}
+.bar{display:grid;grid-template-columns:150px 1fr 90px;gap:12px;align-items:center;font-size:13.5px}
+.bar .track{height:12px;background:var(--line);border-radius:8px;overflow:hidden}
+.bar .track i{display:block;height:100%;background:var(--c);border-radius:8px}
+.bar .v{text-align:right;font-weight:700}
+.bar .n{font-weight:700;display:flex;align-items:center;gap:8px}
+.bar .n::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:0 0 10px}
+.review{display:grid;gap:12px}
+.ritem{border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:12px;padding:14px 16px}
+.ritem.okk{border-left-color:var(--ok)}
+.ritem .rq{font-weight:600;font-size:14.5px;margin:6px 0}
+.ritem .ra{font-size:13.5px}
+.ritem .ra .y{color:var(--bad);font-weight:700}.ritem .ra .c{color:var(--ok);font-weight:700}
+.ritem .re{font-size:13.5px;color:var(--muted);margin-top:6px}
+.filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.loader{text-align:center;padding:40px 20px}
+.drop{margin-top:16px;border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;color:var(--muted)}
+.drop.over{border-color:var(--accent);color:var(--ink)}
+.drop label{display:inline-block;margin-top:10px;background:var(--accent);color:#1b2838;font-weight:800;border-radius:10px;padding:8px 16px;cursor:pointer}
+footer{margin-top:26px;text-align:center;font-size:11.5px;color:var(--muted)}
+
+@media (max-width:900px){
+  .setup{grid-template-columns:1fr}
+  .layout{grid-template-columns:1fr}
+  .navtoggle{display:inline-block}
+  .nav{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:30;border-radius:20px 20px 0 0;transform:translateY(105%);transition:transform .25s;max-height:75vh;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+  .nav.open{transform:none}
+  .drawer-bg.open{display:block;position:fixed;inset:0;background:rgba(10,15,25,.45);z-index:25}
+  .grid-n{max-height:42vh}
+  .result-hero{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .stats{justify-content:center}
+}
+@media (max-width:560px){
+  .wrap{padding:14px 12px 90px}
+  .hero{padding:22px 20px;border-radius:18px}
+  .panel{padding:16px}
+  .qcard{padding:18px 16px}
+  .modes{grid-template-columns:1fr}
+  .row{flex-wrap:wrap}
+  .mrow{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr 70px}
+  .bar .track{grid-column:1/-1;grid-row:2}
+  .opt{font-size:15px;padding:11px 12px}
+  .actions .btn{flex:1}
+  .kbd{display:none}
+  .timer{font-size:13px;padding:3px 8px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <button class="ghost" id="themeBtn" type="button" aria-label="切換深淺色">🌓 深淺色</button>
+  </div>
+
+  <!-- ========== SETUP ========== -->
+  <section id="vSetup">
+    <header class="hero">
+      <h1>AWS Certified AI Practitioner<br>(AIF-C01) 複習測驗</h1>
+      <div class="sub">依官方考綱五大領域分類的題庫，可自選範圍練習，或用 65 題、90 分鐘的模擬考檢驗實力。題目資料由 <span class="mono">questions.json</span> 載入。</div>
+      <div class="chips" id="heroChips"></div>
+    </header>
+
+    <div id="loadBox" class="panel loader" style="margin-top:18px">
+      <div id="loadMsg">題庫載入中…</div>
+      <div id="dropZone" class="drop hidden">
+        直接以檔案開啟時，瀏覽器會阻擋讀取 JSON。<br>請把 <b class="mono">questions.json</b> 拖曳到這裡，或
+        <br><label>選擇 questions.json<input type="file" id="fileIn" accept=".json,application/json" hidden></label>
+      </div>
+    </div>
+
+    <div class="setup hidden" id="setupBody">
+      <div class="panel">
+        <div class="sec-title">1 · 選擇考試領域</div>
+        <div class="domains" id="domList"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ghost" type="button" id="selAll">全選</button>
+          <button class="ghost" type="button" id="selNone">全不選</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="sec-title">2 · 測驗設定</div>
+        <div class="modes">
+          <button class="mode" type="button" data-mode="practice" aria-pressed="true"><b>📝 練習模式</b><span>每題作答後立即看解析</span></button>
+          <button class="mode" type="button" data-mode="exam" aria-pressed="false"><b>⏱ 模擬考</b><span>計時、交卷後才公布答案</span></button>
+        </div>
+        <div class="row">
+          <label>題數<small id="countHint">從所選領域隨機抽題</small></label>
+          <div class="seg" id="countSeg"></div>
+        </div>
+        <div class="row" id="timeRow">
+          <label>作答時間<small>正式考試 65 題 / 90 分鐘</small></label>
+          <div class="seg" id="timeSeg"></div>
+        </div>
+        <div class="row">
+          <label for="optShuffleQ">題目隨機排序</label>
+          <span class="switch"><input type="checkbox" id="optShuffleQ" checked><span></span></span>
+        </div>
+        <div class="row">
+          <label for="optShuffleO">選項隨機排序<small>避免記憶答案位置</small></label>
+          <span class="switch"><input type="checkbox" id="optShuffleO"><span></span></span>
+        </div>
+        <div class="row">
+          <label for="optWeighted">依官方配分比例抽題<small>D1 20%・D2 24%・D3 28%・D4 14%・D5 14%</small></label>
+          <span class="switch"><input type="checkbox" id="optWeighted"><span></span></span>
+        </div>
+        <button class="cta" id="startBtn" type="button">開始測驗</button>
+        <div class="summary-line" id="poolLine"></div>
+        <div class="wrongbook hidden" id="wrongBox">
+          <span>📕 錯題本：<b id="wrongN">0</b> 題</span>
+          <button type="button" id="wrongStart">只練錯題</button>
+          <button type="button" id="wrongClear" style="margin-left:0;border-color:var(--line);color:var(--muted)">清空</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== QUIZ ========== -->
+  <section id="vQuiz" class="hidden">
+    <div class="qhead">
+      <div class="qbar">
+        <span class="count mono" id="qCount">1 / 20</span>
+        <div class="progress"><i id="qProg" style="width:0"></i></div>
+        <span class="timer mono hidden" id="timer">90:00</span>
+        <button class="icon-btn navtoggle" type="button" id="navOpen">☰ 題號</button>
+        <button class="icon-btn" type="button" id="quitBtn">結束</button>
+      </div>
+    </div>
+    <div class="layout">
+      <article class="panel qcard" id="qCard"></article>
+      <aside class="panel nav" id="nav">
+        <h3><span>題號導覽</span><span id="answeredN" class="mono"></span></h3>
+        <div class="grid-n" id="gridN"></div>
+        <div class="legend">
+          <span><i style="background:var(--sel-bg);border:1px solid var(--sel)"></i>已作答</span>
+          <span id="lgOk"><i style="background:var(--ok)"></i>答對</span>
+          <span id="lgNo"><i style="background:var(--bad)"></i>答錯</span>
+          <span><i style="background:var(--accent);border-radius:50%"></i>標記</span>
+        </div>
+        <button class="btn primary" type="button" id="submitAll">交卷</button>
+      </aside>
+    </div>
+    <div class="drawer-bg" id="drawerBg"></div>
+  </section>
+
+  <!-- ========== RESULT ========== -->
+  <section id="vResult" class="hidden">
+    <div class="panel result-hero">
+      <div class="ring" id="ring"><div><span><b id="rPct">0%</b><small id="rScore"></small></span></div></div>
+      <div>
+        <div class="verdict-big" id="rVerdict"></div>
+        <div style="color:var(--muted);font-size:14px;margin-top:4px" id="rSub"></div>
+        <div class="stats" id="rStats"></div>
+        <div class="actions">
+          <button class="btn primary" type="button" id="retryWrong">重練本次錯題</button>
+          <button class="btn sec" type="button" id="backSetup">回到設定</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <div class="sec-title">各領域表現</div>
+      <div class="bars" id="rBars"></div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <div class="sec-title">逐題檢討</div>
+      <div class="filters seg" id="rFilter" style="display:inline-flex">
+        <button type="button" data-f="wrong" aria-pressed="true">只看錯題</button>
+        <button type="button" data-f="all" aria-pressed="false">全部</button>
+      </div>
+      <div class="review" id="rList"></div>
+    </div>
+  </section>
+
+  <footer>AIF-C01 複習測驗 · 題庫來源：AIF-C01 Exam Q&amp;A (212)，答案依分析報告覆核 · 題目資料：questions.json</footer>
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+             set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const DCOL={1:'var(--d1)',2:'var(--d2)',3:'var(--d3)',4:'var(--d4)',5:'var(--d5)'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const LET='ABCDEFGH';
+
+let DB=null, DOMS={};
+const cfg=Object.assign({mode:'practice',count:20,time:90,domains:[1,2,3,4,5],shuffleQ:true,shuffleO:false,weighted:false},store.get('aif.cfg',{}));
+let S=null; // session state
+let timerId=null;
+
+/* ---------- theme ---------- */
+const applyTheme=t=>{if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme')};
+applyTheme(store.get('aif.theme',null));
+$('#themeBtn').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  const nx=cur==='dark'?'light':'dark';applyTheme(nx);store.set('aif.theme',nx);
+};
+
+/* ---------- load JSON ---------- */
+function init(data){
+  DB=data; DB.domains.forEach(d=>DOMS[d.id]=d);
+  $('#loadBox').classList.add('hidden'); $('#setupBody').classList.remove('hidden');
+  const n=DB.questions.length;
+  $('#heroChips').innerHTML=`<span class="chip">📚 題庫 <b>${n}</b> 題</span><span class="chip">🧭 <b>5</b> 大考試領域</span><span class="chip">🎯 及格 <b>700</b> / 1000</span>`;
+  buildSetup();
+}
+function showDrop(msg){
+  $('#loadMsg').innerHTML=msg; const dz=$('#dropZone'); dz.classList.remove('hidden');
+  const read=f=>{const r=new FileReader();r.onload=()=>{try{init(JSON.parse(r.result))}catch(e){$('#loadMsg').textContent='JSON 格式錯誤：'+e.message}};r.readAsText(f)};
+  $('#fileIn').onchange=e=>e.target.files[0]&&read(e.target.files[0]);
+  dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};
+  dz.ondragleave=()=>dz.classList.remove('over');
+  dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');e.dataTransfer.files[0]&&read(e.dataTransfer.files[0])};
+}
+fetch('aif_c01_questions.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(init)
+  .catch(()=>showDrop('無法自動載入題庫。'));
+
+/* ---------- setup ---------- */
+function poolFor(doms){return DB.questions.filter(q=>doms.includes(q.domain))}
+function buildSetup(){
+  const cnt={};DB.questions.forEach(q=>cnt[q.domain]=(cnt[q.domain]||0)+1);
+  $('#domList').innerHTML=DB.domains.map(d=>`
+    <button class="dom" type="button" data-d="${d.id}" style="--c:${DCOL[d.id]}" aria-pressed="${cfg.domains.includes(d.id)}">
+      <span class="tick">✓</span>
+      <span class="dn">D${d.id}</span>
+      <span class="dt"><span class="dz">${esc(d.name)}</span><span class="de">${esc(d.en)}</span></span>
+      <span class="dc"><b>${cnt[d.id]||0}</b>題・${d.weight}%</span>
+    </button>`).join('');
+  $$('#domList .dom').forEach(b=>b.onclick=()=>{
+    const id=+b.dataset.d; cfg.domains=cfg.domains.includes(id)?cfg.domains.filter(x=>x!==id):[...cfg.domains,id].sort();
+    b.setAttribute('aria-pressed',cfg.domains.includes(id)); refreshSetup();
+  });
+  $('#selAll').onclick=()=>{cfg.domains=[1,2,3,4,5];$$('#domList .dom').forEach(b=>b.setAttribute('aria-pressed',true));refreshSetup()};
+  $('#selNone').onclick=()=>{cfg.domains=[];$$('#domList .dom').forEach(b=>b.setAttribute('aria-pressed',false));refreshSetup()};
+  $$('.mode').forEach(b=>b.onclick=()=>{cfg.mode=b.dataset.mode;if(cfg.mode==='exam'&&cfg.count==20){cfg.count=65}refreshSetup()});
+  $('#countSeg').innerHTML=[10,20,30,65,0].map(n=>`<button type="button" data-n="${n}">${n||'全部'}</button>`).join('');
+  $$('#countSeg button').forEach(b=>b.onclick=()=>{cfg.count=+b.dataset.n;refreshSetup()});
+  $('#timeSeg').innerHTML=[0,30,60,90].map(n=>`<button type="button" data-t="${n}">${n?n+' 分':'不計時'}</button>`).join('');
+  $$('#timeSeg button').forEach(b=>b.onclick=()=>{cfg.time=+b.dataset.t;refreshSetup()});
+  [['#optShuffleQ','shuffleQ'],['#optShuffleO','shuffleO'],['#optWeighted','weighted']].forEach(([s,k])=>{
+    $(s).checked=cfg[k]; $(s).onchange=e=>{cfg[k]=e.target.checked;refreshSetup()};
+  });
+  $('#startBtn').onclick=()=>start();
+  $('#wrongStart').onclick=()=>{const ids=store.get('aif.wrong',[]);start(DB.questions.filter(q=>ids.includes(q.id)))};
+  $('#wrongClear').onclick=()=>{store.set('aif.wrong',[]);refreshSetup()};
+  refreshSetup();
+}
+function refreshSetup(){
+  store.set('aif.cfg',cfg);
+  $$('.mode').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===cfg.mode));
+  $$('#countSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===cfg.count));
+  $$('#timeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.t===cfg.time));
+  $('#timeRow').classList.toggle('hidden',cfg.mode!=='exam');
+  const pool=poolFor(cfg.domains), n=cfg.count?Math.min(cfg.count,pool.length):pool.length;
+  $('#startBtn').disabled=!pool.length;
+  $('#startBtn').textContent=pool.length?(cfg.mode==='exam'?`開始模擬考（${n} 題）`:`開始練習（${n} 題）`):'請至少選擇一個領域';
+  $('#poolLine').textContent=pool.length?`所選領域共 ${pool.length} 題`:'';
+  const w=store.get('aif.wrong',[]).filter(id=>DB.questions.some(q=>q.id===id));
+  $('#wrongBox').classList.toggle('hidden',!w.length); $('#wrongN').textContent=w.length;
+}
+
+/* ---------- pick ---------- */
+function pick(){
+  const pool=poolFor(cfg.domains); const n=cfg.count?Math.min(cfg.count,pool.length):pool.length;
+  let out;
+  if(cfg.weighted && cfg.domains.length>1){
+    const tw=cfg.domains.reduce((s,d)=>s+DOMS[d].weight,0);
+    const by={};cfg.domains.forEach(d=>by[d]=shuffle(pool.filter(q=>q.domain===d)));
+    let quota=cfg.domains.map(d=>({d,k:Math.floor(n*DOMS[d].weight/tw),r:(n*DOMS[d].weight/tw)%1}));
+    let left=n-quota.reduce((s,x)=>s+x.k,0); quota.sort((a,b)=>b.r-a.r).forEach(x=>{if(left>0){x.k++;left--}});
+    out=[];quota.forEach(x=>out.push(...by[x.d].slice(0,x.k)));
+    if(out.length<n){const used=new Set(out.map(q=>q.id));out.push(...shuffle(pool.filter(q=>!used.has(q.id))).slice(0,n-out.length))}
+    out=cfg.shuffleQ?shuffle(out):out.sort((a,b)=>a.id-b.id);
+  }else{
+    out=cfg.shuffleQ?shuffle(pool).slice(0,n):[...pool].sort((a,b)=>a.id-b.id).slice(0,n);
+  }
+  return out;
+}
+
+/* ---------- session ---------- */
+function start(list){
+  const qs=list?(cfg.shuffleQ?shuffle(list):list):pick();
+  if(!qs.length)return;
+  S={mode:list&&cfg.mode==='exam'?'practice':cfg.mode,i:0,
+     items:qs.map(q=>({q,
+        order:q.options?(cfg.shuffleO?shuffle(q.options.map(o=>o.key)):q.options.map(o=>o.key)):null,
+        resp:q.type==='ordering'?shuffle(q.items):(q.type==='matching'?q.prompts.map(()=>''):[]),
+        touched:false,done:false,correct:null,flag:false})),
+     end:null};
+  if(S.mode==='exam'&&cfg.time){S.end=Date.now()+cfg.time*60000;tick();timerId=setInterval(tick,1000)}
+  $('#timer').classList.toggle('hidden',!S.end);
+  $('#lgOk').classList.toggle('hidden',S.mode==='exam');$('#lgNo').classList.toggle('hidden',S.mode==='exam');
+  $('#submitAll').textContent=S.mode==='exam'?'交卷':'結束並看成績';
+  show('vQuiz'); renderQ(); window.scrollTo(0,0);
+}
+function show(id){['vSetup','vQuiz','vResult'].forEach(v=>$('#'+v).classList.toggle('hidden',v!==id))}
+function tick(){
+  const ms=S.end-Date.now(); if(ms<=0){clearInterval(timerId);finish();return}
+  const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60;
+  $('#timer').textContent=`⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  $('#timer').classList.toggle('warn',ms<5*60000);
+}
+const isMulti=q=>q.type==='multiple';
+function grade(it){
+  const q=it.q;
+  if(q.type==='single'||q.type==='multiple'){const a=[...it.resp].sort().join(),b=[...q.answer].sort().join();return a===b}
+  if(q.type==='matching')return it.resp.every((v,i)=>v===q.answer[i]);
+  if(q.type==='ordering')return it.resp.every((v,i)=>v===q.answer[i]);
+}
+function answered(it){
+  const q=it.q;
+  if(q.type==='single')return it.resp.length===1;
+  if(q.type==='multiple')return it.resp.length===q.select;
+  if(q.type==='matching')return it.resp.every(v=>v);
+  if(q.type==='ordering')return it.touched;
+}
+function dispLetter(it,key){return it.order?LET[it.order.indexOf(key)]:key}
+
+function renderQ(){
+  const it=S.items[S.i], q=it.q, d=DOMS[q.domain], total=S.items.length;
+  const reveal=S.mode==='practice'&&it.done;
+  $('#qCount').textContent=`${S.i+1} / ${total}`;
+  $('#qProg').style.width=`${(S.items.filter(x=>S.mode==='practice'?x.done:answered(x)).length/total)*100}%`;
+  let h=`<div class="qmeta">
+    <span class="tag" style="--c:${DCOL[q.domain]}">D${q.domain}・${esc(d.name)}</span>
+    <span class="tag gray mono">#${q.id}</span>
+    ${q.type==='multiple'?`<span class="tag gray">複選</span>`:q.type==='matching'?`<span class="tag gray">配對題</span>`:q.type==='ordering'?`<span class="tag gray">排序題</span>`:''}
+    <button class="flagbtn" type="button" id="flagBtn" aria-pressed="${it.flag}">${it.flag?'★ 已標記':'☆ 標記'}</button>
+  </div>
+  <div class="qtext">${esc(q.question)}</div>`;
+  if(q.type==='multiple')h+=`<div class="hint">請選擇 ${q.select} 個答案（已選 ${it.resp.length}）</div>`;
+  if(q.type==='single'||q.type==='multiple'){
+    h+=`<div class="opts">`+it.order.map((k,idx)=>{
+      const o=q.options.find(x=>x.key===k); let cls='opt'+(isMulti(q)?' multi':'');
+      const chosen=it.resp.includes(k);
+      if(reveal){if(q.answer.includes(k))cls+=' correct';else if(chosen)cls+=' wrong'}
+      else if(chosen)cls+=' chosen';
+      return `<button class="${cls}" type="button" data-k="${k}" ${reveal?'disabled':''}><span class="k">${LET[idx]}</span><span class="tx">${esc(o.text)}</span></button>`;
+    }).join('')+`</div>`;
+  }else if(q.type==='matching'){
+    h+=`<div class="match">`+q.prompts.map((p,i)=>{
+      const v=it.resp[i]; let cls='mrow';
+      if(reveal)cls+=v===q.answer[i]?' correct':' wrong';
+      return `<div class="${cls}"><div class="p">${esc(p)}</div>
+        <select data-i="${i}" ${reveal?'disabled':''} aria-label="選擇對應項目"><option value="">— 請選擇 —</option>${q.choices.map(c=>`<option ${c===v?'selected':''}>${esc(c)}</option>`).join('')}</select>
+        ${reveal&&v!==q.answer[i]?`<div class="fix">正確：${esc(q.answer[i])}</div>`:''}</div>`;
+    }).join('')+`</div>`;
+  }else if(q.type==='ordering'){
+    h+=`<div class="hint">使用 ↑ ↓ 調整順序</div><div class="order">`+it.resp.map((t,i)=>{
+      let cls='oitem'; if(reveal)cls+=t===q.answer[i]?' correct':' wrong';
+      return `<div class="${cls}"><span class="n">${i+1}</span><span class="t">${esc(t)}</span>
+        ${reveal?'':`<button type="button" data-up="${i}" ${i===0?'disabled':''} aria-label="上移">↑</button><button type="button" data-dn="${i}" ${i===it.resp.length-1?'disabled':''} aria-label="下移">↓</button>`}</div>`;
+    }).join('')+`</div>`;
+  }
+  if(reveal)h+=feedbackHTML(it);
+  const last=S.i===total-1;
+  h+=`<div class="actions">
+    <button class="btn sec" type="button" id="prevBtn" ${S.i===0?'disabled':''}>← 上一題</button>`;
+  if(S.mode==='practice'&&!it.done) h+=`<button class="btn primary grow" type="button" id="checkBtn" ${answered(it)?'':'disabled'}>確認答案</button>`;
+  else h+=`<button class="btn primary grow" type="button" id="nextBtn">${last?(S.mode==='exam'?'檢查並交卷':'看成績'):'下一題 →'}</button>`;
+  h+=`</div><div class="kbd">鍵盤：A–E 或 1–5 選答 · Enter 確認／下一題 · ← → 切換題目</div>`;
+  $('#qCard').innerHTML=h;
+  bindQ(); renderGrid();
+}
+function feedbackHTML(it){
+  const q=it.q, ok=it.correct;
+  let ans;
+  if(q.options)ans=q.answer.map(k=>`${dispLetter(it,k)}. ${esc(q.options.find(o=>o.key===k).text)}`).join('<br>');
+  else if(q.type==='matching')ans=q.prompts.map((p,i)=>`${esc(p)} → <b>${esc(q.answer[i])}</b>`).join('<br>');
+  else ans=q.answer.map((t,i)=>`${i+1}. ${esc(t)}`).join('<br>');
+  return `<div class="feedback ${ok?'ok':'no'}"><div class="verdict">${ok?'✓ 答對了！':'✗ 答錯了'}</div>
+    <div class="ans">正確答案：<br>${ans}</div>
+    <div class="exp">💡 ${esc(q.explanation)}</div>
+    ${q.note?`<div class="note">⚠ ${esc(q.note)}</div>`:''}</div>`;
+}
+function bindQ(){
+  const it=S.items[S.i], q=it.q;
+  $('#flagBtn').onclick=()=>{it.flag=!it.flag;renderQ()};
+  $$('#qCard .opt').forEach(b=>b.onclick=()=>choose(b.dataset.k));
+  $$('#qCard select').forEach(s=>s.onchange=()=>{it.resp[+s.dataset.i]=s.value;it.touched=true;renderQ()});
+  $$('#qCard [data-up]').forEach(b=>b.onclick=()=>move(+b.dataset.up,-1));
+  $$('#qCard [data-dn]').forEach(b=>b.onclick=()=>move(+b.dataset.dn,1));
+  $('#prevBtn').onclick=()=>go(S.i-1);
+  const c=$('#checkBtn'); if(c)c.onclick=check;
+  const n=$('#nextBtn'); if(n)n.onclick=next;
+}
+function choose(k){
+  const it=S.items[S.i],q=it.q; if(S.mode==='practice'&&it.done)return;
+  if(q.type==='single')it.resp=[k];
+  else{ if(it.resp.includes(k))it.resp=it.resp.filter(x=>x!==k); else if(it.resp.length<q.select)it.resp=[...it.resp,k]; else it.resp=[...it.resp.slice(1),k]; }
+  it.touched=true; renderQ();
+}
+function move(i,dir){const it=S.items[S.i];const r=it.resp,j=i+dir;[r[i],r[j]]=[r[j],r[i]];it.touched=true;renderQ()}
+function check(){
+  const it=S.items[S.i]; if(!answered(it))return;
+  it.done=true; it.correct=grade(it); recordWrong(it); renderQ();
+  const fb=$('#qCard .feedback'); if(fb&&innerWidth<900)fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function next(){
+  if(S.i<S.items.length-1)go(S.i+1);
+  else confirmFinish();
+}
+function go(i){if(i<0||i>=S.items.length)return;S.i=i;renderQ();closeNav();window.scrollTo({top:0,behavior:'smooth'})}
+function recordWrong(it){
+  let w=store.get('aif.wrong',[]);
+  if(it.correct)w=w.filter(x=>x!==it.q.id); else if(!w.includes(it.q.id))w.push(it.q.id);
+  store.set('aif.wrong',w);
+}
+function renderGrid(){
+  $('#gridN').innerHTML=S.items.map((it,i)=>{
+    let c='gn'; if(S.mode==='practice'&&it.done)c+=it.correct?' ok':' no'; else if(answered(it))c+=' ans';
+    if(i===S.i)c+=' cur'; if(it.flag)c+=' flag';
+    return `<button class="${c} mono" type="button" data-i="${i}">${i+1}</button>`;
+  }).join('');
+  $$('#gridN .gn').forEach(b=>b.onclick=()=>go(+b.dataset.i));
+  const a=S.items.filter(answered).length; $('#answeredN').textContent=`${a}/${S.items.length}`;
+}
+function confirmFinish(){
+  const un=S.items.filter(x=>!answered(x)).length, fl=S.items.filter(x=>x.flag).length;
+  if(S.mode==='exam'&&(un||fl)){
+    showConfirm(`還有 ${un} 題未作答${fl?`、${fl} 題已標記`:''}，確定要交卷嗎？`,finish);
+  }else finish();
+}
+function showConfirm(msg,ok){
+  const card=$('#qCard');
+  const box=document.createElement('div');
+  box.className='feedback no';box.innerHTML=`<div class="verdict">${esc(msg)}</div><div class="actions"><button class="btn primary" type="button" id="cfYes">確定交卷</button><button class="btn sec" type="button" id="cfNo">繼續作答</button></div>`;
+  const old=card.querySelector('.confirm');if(old)old.remove();box.classList.add('confirm');card.appendChild(box);
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+  $('#cfYes').onclick=ok;$('#cfNo').onclick=()=>box.remove();
+}
+
+/* ---------- finish ---------- */
+function finish(){
+  clearInterval(timerId); closeNav();
+  S.items.forEach(it=>{
+    if(S.mode==='exam'||!it.done){ if(answered(it)){it.correct=grade(it);recordWrong(it)} else it.correct=false; it.done=true; }
+  });
+  const items=S.mode==='practice'?S.items.filter(x=>x.touched||x.done):S.items;
+  const tot=S.items.length, ok=S.items.filter(x=>x.correct).length, pct=Math.round(ok/tot*100);
+  const scaled=Math.round(100+900*ok/tot), pass=scaled>=700;
+  const ring=$('#ring'); ring.style.setProperty('--p',pct); ring.style.setProperty('--rc',pass?'var(--ok)':'var(--bad)');
+  $('#rPct').textContent=pct+'%'; $('#rScore').textContent=`${ok} / ${tot} 題`;
+  $('#rVerdict').textContent=pass?'🎉 達到及格水準':'💪 再加把勁';
+  $('#rSub').innerHTML=`換算分數約 <b>${scaled}</b> / 1000（及格 700）· 僅供自我評估參考`;
+  const un=S.items.filter(x=>!answered(x)).length;
+  $('#rStats').innerHTML=`<div class="stat"><b style="color:var(--ok)">${ok}</b><span>答對</span></div>
+    <div class="stat"><b style="color:var(--bad)">${tot-ok-un}</b><span>答錯</span></div>
+    <div class="stat"><b>${un}</b><span>未作答</span></div>
+    <div class="stat"><b>${store.get('aif.wrong',[]).length}</b><span>錯題本累計</span></div>`;
+  const byD={};S.items.forEach(it=>{const d=it.q.domain;byD[d]=byD[d]||{n:0,ok:0};byD[d].n++;if(it.correct)byD[d].ok++});
+  $('#rBars').innerHTML=Object.keys(byD).sort().map(d=>{const v=byD[d],p=Math.round(v.ok/v.n*100);
+    return `<div class="bar" style="--c:${DCOL[d]}"><span class="n">D${d} ${esc(DOMS[d].name)}</span><span class="track"><i style="width:${p}%"></i></span><span class="v mono">${v.ok}/${v.n}・${p}%</span></div>`}).join('');
+  $('#retryWrong').disabled=!S.items.some(x=>!x.correct);
+  $('#retryWrong').onclick=()=>start(S.items.filter(x=>!x.correct).map(x=>x.q));
+  $('#backSetup').onclick=()=>{show('vSetup');refreshSetup();window.scrollTo(0,0)};
+  renderReview('wrong');
+  $$('#rFilter button').forEach(b=>b.onclick=()=>{$$('#rFilter button').forEach(x=>x.setAttribute('aria-pressed',x===b));renderReview(b.dataset.f)});
+  $$('#rFilter button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.f==='wrong'));
+  show('vResult'); window.scrollTo(0,0);
+}
+function respText(it){
+  const q=it.q; if(!answered(it))return '（未作答）';
+  if(q.options)return it.resp.map(k=>dispLetter(it,k)).sort().join('、');
+  if(q.type==='matching')return it.resp.join(' / ');
+  return it.resp.join(' → ');
+}
+function ansText(it){
+  const q=it.q;
+  if(q.options)return q.answer.map(k=>`${dispLetter(it,k)}. ${q.options.find(o=>o.key===k).text}`).join('；');
+  if(q.type==='matching')return q.answer.join(' / ');
+  return q.answer.join(' → ');
+}
+function renderReview(f){
+  const list=S.items.map((it,i)=>({it,i})).filter(x=>f==='all'||!x.it.correct);
+  $('#rList').innerHTML=list.length?list.map(({it,i})=>`<div class="ritem ${it.correct?'okk':''}">
+      <div class="qmeta" style="margin:0"><span class="tag" style="--c:${DCOL[it.q.domain]}">D${it.q.domain}</span><span class="tag gray mono">第 ${i+1} 題・#${it.q.id}</span><span class="tag gray">${it.correct?'✓ 答對':'✗ 答錯'}</span></div>
+      <div class="rq">${esc(it.q.question)}</div>
+      <div class="ra">你的答案：<span class="${it.correct?'c':'y'}">${esc(respText(it))}</span></div>
+      <div class="ra">正確答案：<span class="c">${esc(ansText(it))}</span></div>
+      <div class="re">💡 ${esc(it.q.explanation)}</div>
+    </div>`).join(''):'<div style="color:var(--muted);text-align:center;padding:20px">全部答對，太厲害了！🎉</div>';
+}
+
+/* ---------- nav drawer & misc ---------- */
+function closeNav(){$('#nav').classList.remove('open');$('#drawerBg').classList.remove('open')}
+$('#navOpen').onclick=()=>{$('#nav').classList.add('open');$('#drawerBg').classList.add('open')};
+$('#drawerBg').onclick=closeNav;
+$('#submitAll').onclick=()=>{closeNav();confirmFinish()};
+$('#quitBtn').onclick=()=>{
+  if(!S)return; const a=S.items.filter(x=>x.touched||x.done).length;
+  if(a===0){clearInterval(timerId);show('vSetup');refreshSetup();return}
+  showConfirm('要結束這次測驗並查看成績嗎？',finish);
+};
+document.addEventListener('keydown',e=>{
+  if($('#vQuiz').classList.contains('hidden')||!S)return;
+  if(e.target.tagName==='SELECT'||e.metaKey||e.ctrlKey||e.altKey)return;
+  const it=S.items[S.i];
+  const k=e.key.toUpperCase();
+  if(it.order){let idx='ABCDE'.indexOf(k);if(idx<0)idx='12345'.indexOf(k);if(idx>=0&&idx<it.order.length){choose(it.order[idx]);return}}
+  if(e.key==='Enter'){e.preventDefault();const c=$('#checkBtn');if(c&&!c.disabled)c.click();else{const n=$('#nextBtn');if(n)n.click()}}
+  if(e.key==='ArrowRight')go(S.i+1);
+  if(e.key==='ArrowLeft')go(S.i-1);
+});
+window.addEventListener('beforeunload',e=>{if(S&&!$('#vQuiz').classList.contains('hidden')){e.preventDefault();e.returnValue=''}});
+})();
+</script>
+</body>
+</html>
