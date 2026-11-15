@@ -1,0 +1,1689 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DOP-C02 服務速查</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+/* 版面：固定頁首＋分頁切換，內容為單欄最大 1180px，表格各自可橫向捲動 */
+:root{
+  --bg:#f7f5ef; --surface:#ffffff; --surface-alt:#efebe0; --border:#ddd6c4;
+  --text:#211d16; --text-dim:#6e6656; --accent:#b45309; --accent-soft:#fdf0e0;
+  --accent-contrast:#fffaf2; --good:#0d7f72; --good-soft:#ddf3ee;
+  --bad:#b3261e; --bad-soft:#fbe2e0; --info:#3c4fb8; --info-soft:#e6e9fb;
+  --shadow:0 1px 2px rgba(33,29,22,.06), 0 4px 14px rgba(33,29,22,.05);
+  --sans:'Inter',system-ui,-apple-system,'PingFang TC','Noto Sans TC',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#17150f; --surface:#211e17; --surface-alt:#2a261d; --border:#3d382c;
+  --text:#ece7da; --text-dim:#a39c8a; --accent:#f0a44a; --accent-soft:#3a2a14;
+  --accent-contrast:#17150f; --good:#5fd3c0; --good-soft:#123c36;
+  --bad:#f08b83; --bad-soft:#43201d; --info:#9fb0ff; --info-soft:#1f2448;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#17150f; --surface:#211e17; --surface-alt:#2a261d; --border:#3d382c;
+  --text:#ece7da; --text-dim:#a39c8a; --accent:#f0a44a; --accent-soft:#3a2a14;
+  --accent-contrast:#17150f; --good:#5fd3c0; --good-soft:#123c36;
+  --bad:#f08b83; --bad-soft:#43201d; --info:#9fb0ff; --info-soft:#1f2448;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
+header.top .wrap{padding-block:12px}
+.brandline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;background:var(--accent);color:var(--accent-contrast);padding:3px 7px;border-radius:5px}
+h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.01em}
+.sub{font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+nav.tabs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+nav.tabs button{font-family:var(--mono);font-size:13px;padding:7px 13px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none;background:var(--surface-alt);color:var(--text-dim);cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--accent);font-weight:700;box-shadow:inset 0 2px 0 var(--accent)}
+nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:22px 60px}
+section.panel{display:flex;flex-direction:column;gap:22px}
+section.panel[hidden]{display:none}
+h2{font-size:16px;margin:0;font-family:var(--mono);letter-spacing:.02em;display:flex;align-items:center;gap:9px}
+h2::before{content:"";width:4px;height:17px;background:var(--accent);border-radius:2px;flex:none}
+h3{font-size:14.5px;margin:0 0 2px;font-weight:700}
+p.lede{margin:0;color:var(--text-dim);font-size:13.5px;max-width:68ch}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:11px;min-width:0}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--border)}
+th{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--text-dim);text-transform:uppercase;font-weight:600;background:var(--surface-alt);position:sticky;top:0;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.svc{font-weight:600;white-space:nowrap}
+td.num{font-variant-numeric:tabular-nums;text-align:right;color:var(--text-dim);font-family:var(--mono);font-size:12px}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--surface-alt);color:var(--text-dim);border:1px solid var(--border);white-space:nowrap}
+.pill.on{background:var(--accent);color:var(--accent-contrast);border-color:var(--accent)}
+.pill.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.pill.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.pill.info{background:var(--info-soft);color:var(--info);border-color:transparent}
+.controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+input[type=search]{font-family:var(--sans);font-size:13.5px;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);min-width:0;flex:1 1 220px}
+input[type=search]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.chip{font-family:var(--mono);font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-contrast);border-color:var(--accent);font-weight:600}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.k{color:var(--text-dim);font-size:12.5px}
+code,.mono{font-family:var(--mono);font-size:.92em}
+code{background:var(--surface-alt);padding:1px 5px;border-radius:4px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.note{font-size:12.5px;color:var(--text-dim);border-left:3px solid var(--accent);padding:2px 0 2px 11px;margin:0}
+.warn{border-left-color:var(--bad);color:var(--bad)}
+.domhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.wt{font-family:var(--mono);font-size:12px;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px;font-weight:700}
+ul.pts{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:5px;font-size:13.5px}
+ul.pts li::marker{color:var(--accent)}
+.svclist{display:flex;flex-wrap:wrap;gap:6px}
+footer{border-top:1px solid var(--border);margin-top:34px;padding-top:16px;font-size:12px;color:var(--text-dim);font-family:var(--mono)}
+@media (max-width:520px){ h1{font-size:17px} table{font-size:12.5px} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandline">
+      <span class="badge">DOP-C02</span>
+      <h1>AWS 服務速查與易混淆對照</h1>
+      <span class="sub">101 項服務 · 依 451 題題庫統計</span>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" id="t-all" aria-selected="true" aria-controls="p-all">服務總表</button>
+      <button role="tab" id="t-vs" aria-selected="false" aria-controls="p-vs">易混淆比較</button>
+      <button role="tab" id="t-dom" aria-selected="false" aria-controls="p-dom">依考試領域</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="panel" id="p-all" role="tabpanel" aria-labelledby="t-all">
+  <div>
+    <h2>服務總表</h2>
+    <p class="lede">「題數」是該服務名稱在 451 題題幹或選項中出現的題數，可當作複習優先序。題數 0 的服務考綱提過但這份題庫沒考到。</p>
+  </div>
+  <div class="card">
+    <div class="controls">
+      <input type="search" id="q" placeholder="搜尋服務名稱、定位或考點…" aria-label="搜尋服務">
+      <span class="sub" id="count"></span>
+    </div>
+    <div class="controls" id="cats"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>一句話定位</th><th>常考什麼</th><th style="text-align:right">題數</th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<section class="panel" id="p-vs" role="tabpanel" aria-labelledby="t-vs" hidden>
+  <div>
+    <h2>易混淆服務與觀念對照</h2>
+    <p class="lede">這 24 組是 DOP-C02 最常拿來互相當誘答的組合。每一組先看「選它的關鍵字」，考試時題幹幾乎都會把那個關鍵字寫出來。</p>
+  </div>
+
+  <div class="card">
+    <h3>1 · CloudTrail vs Config vs CloudWatch</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>服務</th><th>記錄什麼</th><th>選它的關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">CloudTrail</td><td><b>誰</b>在什麼時候呼叫了哪個 API</td><td>「是誰做的」「API 呼叫」「稽核」「誰刪除了…」</td></tr>
+        <tr><td class="svc">Config</td><td>資源<b>組態</b>的歷史與是否合規</td><td>「組態變更」「是否符合規範」「不合規自動修復」「資源關係」</td></tr>
+        <tr><td class="svc">CloudWatch</td><td>執行時的<b>指標與日誌</b></td><td>「效能」「使用率」「告警」「應用程式日誌」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">三者常一起出現：Config 發現不合規 → EventBridge → Lambda／SSM Automation 修復 → SNS 通知。要「即時」偵測 API 行為用 EventBridge 比對 CloudTrail 事件，不要用「每 5 分鐘查一次 Athena」這種誘答。</p>
+  </div>
+
+  <div class="card">
+    <h3>2 · SCP vs RCP vs 權限邊界 vs IAM 政策</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>機制</th><th>約束對象</th><th>能不能授權</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">SCP</td><td>組織內帳戶的 <b>IAM 主體</b>（管理帳戶除外）</td><td>只設上限，不授權</td><td>「不論帳戶管理員權限多大都不能…」</td></tr>
+        <tr><td class="svc">RCP<br><span class="pill">2024 新</span></td><td>組織內帳戶的<b>資源</b>（含來自組織外的主體）</td><td>只設上限</td><td>「擋掉組織外部的存取」「只有自家組織能讀這個 S3」</td></tr>
+        <tr><td class="svc">權限邊界</td><td>單一 IAM 使用者／角色的<b>權限天花板</b></td><td>只設上限</td><td>「讓開發者能自己建角色但不能擴權」</td></tr>
+        <tr><td class="svc">IAM 身分／資源政策</td><td>主體或資源</td><td>實際授權</td><td>一般授權</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">SCP 拒絕清單 vs 允許清單：要「只能用核准過的服務」＝允許清單，必須<b>移除 FullAWSAccess</b> 再掛只允許核准服務的 SCP。SCP 的 <code>Allow</code> 陳述式不接受 <code>Principal</code>，要排除特定角色請用 <code>Deny</code> ＋ <code>aws:PrincipalArn</code> 條件。</p>
+    <p class="note warn">阻擋 root 的標準寫法是 <code>Deny *</code> ＋ <code>StringLike: aws:PrincipalArn = arn:aws:iam::*:root</code>，不是「Allow 非 root」。</p>
+  </div>
+
+  <div class="card">
+    <h3>3 · Organizations vs Control Tower vs Config 合規套件 vs Security Hub</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>服務</th><th>定位</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Organizations</td><td>帳戶結構、OU、SCP／RCP、委派管理員</td><td>「政策護欄」「多帳戶」</td></tr>
+        <tr><td class="svc">Control Tower</td><td>開箱即用的著陸區：自動建帳戶＋套護欄</td><td>「新帳戶要有一致基線」「最少維運」→ Account Factory／AFC 藍圖</td></tr>
+        <tr><td class="svc">Config 合規套件</td><td>一包 Config 規則＋修復動作，可組織層級部署</td><td>「整個組織統一的合規檢查」</td></tr>
+        <tr><td class="svc">Security Hub</td><td>彙整 GuardDuty／Inspector／Macie／Config 的發現事項</td><td>「跨帳戶集中檢視安全發現事項」</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>4 · 安全偵測四兄弟：GuardDuty / Inspector / Macie / Detective</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>服務</th><th>看什麼</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">GuardDuty</td><td>行為威脅：CloudTrail／VPC 流程／DNS 日誌</td><td>「遭入侵的執行個體」「異常 API 活動」「可疑網路行為」</td></tr>
+        <tr><td class="svc">Inspector</td><td>弱點：EC2／ECR 映像／Lambda 的 CVE</td><td>「弱點掃描」「CVE」「容器映像掃描」</td></tr>
+        <tr><td class="svc">Macie</td><td>S3 中的敏感資料</td><td>「個資」「敏感資料外洩」「自訂資料識別碼」</td></tr>
+        <tr><td class="svc">Detective</td><td>事件根因調查與關聯圖</td><td>「調查事件的來龍去脈」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Inspector 的 ECR 掃描：<b>基本掃描</b>只比對作業系統套件、推送時掃一次；<b>強化掃描</b>才有持續掃描與語言套件，EC2 強化掃描還需要 SSM Agent ＋ 執行個體設定檔。</p>
+  </div>
+
+  <div class="card">
+    <h3>5 · CodeDeploy 部署類型與流量切換</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>運算平台</th><th>可用部署方式</th><th>重點</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">EC2／地端</td><td>In-place、Blue/Green</td><td>Blue/Green 需 ELB；標籤群組是<b>群組內 OR、群組間 AND</b></td></tr>
+        <tr><td class="svc">Lambda</td><td>Canary、Linear、AllAtOnce</td><td>用別名加權；CloudFormation 用 <code>AWS::CodeDeploy::DeploymentConfig</code> ＋ TimeBasedCanary</td></tr>
+        <tr><td class="svc">ECS</td><td>Blue/Green（經 CodeDeploy）</td><td>測試用 <code>AfterAllowTestTraffic</code>，正式流量後用 <code>AfterAllowTraffic</code></td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">AppSpec hooks 順序（EC2 藍綠）：BeforeBlockTraffic → AfterBlockTraffic → <b>ApplicationStop → DownloadBundle → BeforeInstall → Install → AfterInstall → ApplicationStart → ValidateService</b> → BeforeAllowTraffic → AfterAllowTraffic。<br>「切流量前要先驗證」＝ BeforeAllowTraffic／AfterAllowTestTraffic；<code>DownloadBundle</code> 與 <code>Install</code> 是 CodeDeploy 自己的，不能掛腳本。</p>
+  </div>
+
+  <div class="card">
+    <h3>6 · Elastic Beanstalk 六種部署策略</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>策略</th><th>停機</th><th>需額外容量</th><th>回滾</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">All at once</td><td>有</td><td>否</td><td>需再部署一次</td></tr>
+        <tr><td class="svc">Rolling</td><td>無（容量下降）</td><td>否</td><td>需再部署一次</td></tr>
+        <tr><td class="svc">Rolling with additional batch</td><td>無（維持容量）</td><td>是</td><td>需再部署一次</td></tr>
+        <tr><td class="svc">Immutable</td><td>無</td><td>是（整組新機）</td><td><b>快，直接丟掉新 ASG</b></td></tr>
+        <tr><td class="svc">Traffic splitting</td><td>無</td><td>是</td><td>快，且可做金絲雀</td></tr>
+        <tr><td class="svc">Blue/Green（換 URL）</td><td>無</td><td>是（兩套環境）</td><td>換回原 URL</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">題目說「自動回滾」「失敗影響最小」→ Immutable 或 Traffic splitting。資料庫一定要建在 Beanstalk 環境<b>之外</b>，否則環境刪除時資料跟著消失。</p>
+  </div>
+
+  <div class="card">
+    <h3>7 · Route 53 七種路由政策</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>政策</th><th>用途</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Simple</td><td>單一目標</td><td>—</td></tr>
+        <tr><td class="svc">Weighted</td><td>依比例分流</td><td>「1% 流量做金絲雀」「A/B 測試」</td></tr>
+        <tr><td class="svc">Latency</td><td>導到延遲最低的區域</td><td>「使用者就近存取」</td></tr>
+        <tr><td class="svc">Failover</td><td>主／備切換</td><td>「主區域故障時切到備援」</td></tr>
+        <tr><td class="svc">Geolocation</td><td>依使用者所在國家／地區</td><td>「法遵」「在地語系」</td></tr>
+        <tr><td class="svc">Geoproximity</td><td>依地理距離＋偏置值</td><td>「調整流量偏向某區」</td></tr>
+        <tr><td class="svc">Multivalue answer</td><td>回傳多筆健康的記錄</td><td>「簡易負載分散＋健康檢查」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note warn">任何「容錯／自動切換」的選項，<b>沒有搭配健康檢查就是錯的</b>。ALB 沒有固定 IP，只能用別名記錄，不能把 IP 填進 A 記錄。</p>
+  </div>
+
+  <div class="card">
+    <h3>8 · CloudFront vs Global Accelerator vs ALB vs NLB</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>層級</th><th>快取</th><th>靜態 IP</th><th>選它的關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">CloudFront</td><td>七層 HTTP(S)</td><td>有</td><td>否</td><td>「靜態內容」「邊緣快取」「WAF 掛前面」</td></tr>
+        <tr><td class="svc">Global Accelerator</td><td>四層 TCP/UDP</td><td>無</td><td>有（Anycast）</td><td>「跨區域最低延遲」「非 HTTP 協定」「WebSocket」「固定 IP」</td></tr>
+        <tr><td class="svc">ALB</td><td>七層</td><td>無</td><td>否</td><td>「路徑／主機路由」「目標群組」</td></tr>
+        <tr><td class="svc">NLB</td><td>四層</td><td>無</td><td>有</td><td>「極低延遲」「固定 IP」「TCP/UDP」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">CloudFront 的原始來源群組只做<b>故障轉移</b>，不做跨區域加權分流。要同時「低延遲」又「跨區域」且是動態內容 → NLB ＋ Global Accelerator。</p>
+  </div>
+
+  <div class="card">
+    <h3>9 · EventBridge vs SNS vs SQS vs Kinesis</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>服務</th><th>模型</th><th>可重播</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">EventBridge</td><td>事件匯流排＋規則比對</td><td>封存可重播</td><td>「AWS 服務事件」「依內容過濾」「排程」「跨帳戶事件」</td></tr>
+        <tr><td class="svc">SNS</td><td>發布／訂閱，推送</td><td>否</td><td>「扇出通知」「寄信給團隊」</td></tr>
+        <tr><td class="svc">SQS</td><td>佇列，拉取</td><td>到期前可重讀</td><td>「削峰」「解耦」「死信佇列」「重試」</td></tr>
+        <tr><td class="svc">Kinesis Data Streams</td><td>有序串流，多消費者</td><td>是（保留期內）</td><td>「即時串流」「多個消費者讀同一份」「分片」</td></tr>
+        <tr><td class="svc">Data Firehose</td><td>串流落地</td><td>否</td><td>「近即時把日誌寫進 S3／OpenSearch」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">降低 Kinesis→Lambda 延遲的三招：<b>增強型 fan-out</b>、提高 <code>ParallelizationFactor</code>、<b>增加分片數</b>。預留並行是「配額上限」不是加速器；加大批次反而增加延遲。</p>
+  </div>
+
+  <div class="card">
+    <h3>10 · 日誌要查詢時：Logs Insights vs Athena vs OpenSearch</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>方式</th><th>資料在哪</th><th>延遲</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">CloudWatch Logs Insights</td><td>CloudWatch Logs</td><td>近即時</td><td>「兩種日誌一起查」「最少設定」</td></tr>
+        <tr><td class="svc">Athena</td><td>S3</td><td>查詢時才掃</td><td>「查 CloudTrail／VPC 流程／ALB 存取日誌」「成本低」「非即時」</td></tr>
+        <tr><td class="svc">OpenSearch</td><td>自有叢集</td><td>近即時</td><td>「全文檢索」「儀表板」但<b>營運負擔高</b></td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">要「近即時告警」用<b>指標篩選條件＋告警</b>；要「近即時落地 S3」用<b>訂閱篩選條件＋Firehose</b>；CloudWatch agent <b>不能</b>直接把日誌送到 S3。</p>
+  </div>
+
+  <div class="card">
+    <h3>11 · CloudWatch 告警設定三個必考細節</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>設定</th><th>意義</th><th>陷阱</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Datapoints to alarm</td><td>M out of N：N 個評估期內有 M 個越界就告警</td><td>「12 小時內至少 3 小時」＝ 3 out of 12，不是 9 out of 12</td></tr>
+        <tr><td class="svc">遺失資料處理</td><td>notBreaching／breaching／ignore／missing</td><td>「沒資料時不要動作」＝ <b>notBreaching</b></td></tr>
+        <tr><td class="svc">異常偵測 vs 靜態門檻</td><td>異常偵測學習基線帶狀範圍</td><td>題目給了明確數字門檻（如 CPU &lt; 2%）就是<b>靜態</b></td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">停止／重啟 EC2 要用 <b>EC2 動作</b>；跑 runbook 才用 SSM 動作。</p>
+  </div>
+
+  <div class="card">
+    <h3>12 · Systems Manager 各功能模組</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>模組</th><th>做什麼</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Run Command</td><td>一次性在機群上執行命令</td><td>「立刻在所有機器上跑一段指令」</td></tr>
+        <tr><td class="svc">Automation</td><td>多步驟 runbook（可跨服務）</td><td>「自動修復」「AWS-RestartEC2Instance」</td></tr>
+        <tr><td class="svc">State Manager</td><td>持續維持期望狀態</td><td>「確保代理程式一直都裝著」</td></tr>
+        <tr><td class="svc">Patch Manager</td><td>修補基準與掃描／安裝</td><td>「自訂修補儲存庫」「AWS-RunPatchBaseline」</td></tr>
+        <tr><td class="svc">Maintenance Windows</td><td>只在時段內執行工作</td><td>「在排定的維護時段內」</td></tr>
+        <tr><td class="svc">Inventory</td><td>收集已安裝軟體清單</td><td>搭 Config 規則 <code>ec2-managedinstance-applications-blacklisted</code> 抓禁用軟體</td></tr>
+        <tr><td class="svc">Session Manager</td><td>免開 SSH 埠的連線</td><td>「不開 22 埠」「稽核連線」</td></tr>
+        <tr><td class="svc">Parameter Store</td><td>參數／設定值</td><td>見第 13 組</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note warn">題幹出現「<b>在維護時段內</b>修復」時，答案是由 Lambda <b>註冊一個維護時段工作</b>，不是把 EventBridge 直接指向 Automation runbook（那會立刻執行）。</p>
+  </div>
+
+  <div class="card">
+    <h3>13 · Secrets Manager vs Parameter Store</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>自動輪替</th><th>費用</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Secrets Manager</td><td><b>有</b>（RDS 等有內建範本）</td><td>按機密計費</td><td>「自動輪替」「資料庫憑證」「跨帳戶共用機密」</td></tr>
+        <tr><td class="svc">Parameter Store</td><td>無（要自己寫 Lambda）</td><td>標準參數免費</td><td>「設定值」「成本最低」「不需輪替」</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">跨帳戶／最小權限取用機密：要建<b>客戶受管 KMS 金鑰</b>（AWS 受管的預設金鑰政策改不了），金鑰政策信任 Secrets Manager 並允許該執行角色解密。</p>
+  </div>
+
+  <div class="card">
+    <h3>14 · RDS 高可用選項（最常被混淆）</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>選項</th><th>備援可讀</th><th>跨區域</th><th>支援引擎</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Multi-AZ DB <b>instance</b></td><td>否（純待命）</td><td>否</td><td>全部，含 SQL Server</td></tr>
+        <tr><td class="svc">Multi-AZ DB <b>cluster</b></td><td>是（2 個可讀備援）</td><td>否</td><td><b>只有 MySQL／PostgreSQL</b></td></tr>
+        <tr><td class="svc">唯讀複本</td><td>是</td><td>可跨區</td><td>多數引擎（SQL Server 需 EE）</td></tr>
+        <tr><td class="svc">Aurora 全域資料庫</td><td>是</td><td>是，典型 &lt; 1 秒</td><td>Aurora MySQL／PostgreSQL</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Aurora 端點：<b>cluster endpoint</b>＝寫入、<b>reader endpoint</b>＝自動輪詢讀取、<b>custom endpoint</b>＝自選成員。既有 Aurora 叢集沒有「開啟 Multi-AZ」的選項，要高可用就是<b>新增 reader 執行個體</b>。全域資料庫若設了 RPO 參數，寫入可能被阻擋，減少次要叢集數量可降低發生頻率。</p>
+  </div>
+
+  <div class="card">
+    <h3>15 · Auto Scaling 生命週期與更新</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>機制</th><th>用途</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">生命週期掛鉤</td><td>Pending:Wait／Terminating:Wait 暫停等你處理</td><td>「終止前先把日誌收走」→ <b>Terminating:Wait</b> ＋ EventBridge ＋ SSM Run Command</td></tr>
+        <tr><td class="svc">Instance refresh</td><td>依新啟動範本逐批換掉現有執行個體</td><td>「讓現有機器也套用新 AMI／設定」</td></tr>
+        <tr><td class="svc">預熱池</td><td>預先開好但停機的執行個體</td><td>「開機太久、擴充太慢」</td></tr>
+        <tr><td class="svc">健康檢查類型</td><td>EC2 只看硬體，ELB 才看應用程式</td><td>「應用程式掛了但機器還在」→ 改用 <b>ELB</b> 健康檢查</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>16 · CloudFormation 的各種武器</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>功能</th><th>解決什麼</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Change Set</td><td>部署前先看會改動什麼（尤其是會不會取代資源）</td></tr>
+        <tr><td class="svc">漂移偵測</td><td>找出有人在主控台手改過的資源</td></tr>
+        <tr><td class="svc">堆疊政策</td><td>保護特定資源不被更新／刪除</td></tr>
+        <tr><td class="svc">巢狀堆疊</td><td>重用共用元件、強制部署順序</td></tr>
+        <tr><td class="svc">StackSets</td><td>一次部署到多帳戶多區域</td></tr>
+        <tr><td class="svc">Git sync（CodeConnections）</td><td>堆疊直接跟 Git 儲存庫同步，<b>不必自建 CodePipeline</b></td></tr>
+        <tr><td class="svc">IaC generator</td><td>掃描既有資源產生範本，把手建資源納管</td></tr>
+        <tr><td class="svc">DeletionPolicy / UpdateReplacePolicy</td><td>刪堆疊時保留資料庫、S3 等有狀態資源</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>StackSets 權限模式</b>：自我管理＝要自己在每個目標帳戶建 IAM 角色；<b>服務管理</b>＝整合 Organizations，可開<b>自動部署</b>讓新帳戶自動套用。題目說「現有與未來所有帳戶」就是服務管理＋自動部署。</p>
+  </div>
+
+  <div class="card">
+    <h3>17 · CodePipeline 的執行模式與結構</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>項目</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">V1 vs V2</td><td>標籤觸發、觸發篩選條件、變數、QUEUED／PARALLEL 模式都只有 <b>V2</b> 有</td></tr>
+        <tr><td class="svc">SUPERSEDED</td><td>預設：新的執行會取代還在等待的舊執行</td></tr>
+        <tr><td class="svc">QUEUED</td><td>排隊，等前一次跑完才跑下一次</td></tr>
+        <tr><td class="svc">runOrder</td><td>同一個 stage 內<b>數字相同＝並行</b>，不同＝依序</td></tr>
+        <tr><td class="svc">跨區域動作</td><td>每一個有動作的區域都必須有自己的 artifact bucket</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>18 · 備份、複寫與災難復原</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>DR 策略</th><th>RTO／RPO</th><th>成本</th><th>長相</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">Backup &amp; Restore</td><td>數小時</td><td>最低</td><td>只有備份</td></tr>
+        <tr><td class="svc">Pilot Light</td><td>數十分鐘</td><td>低</td><td>資料持續複寫，運算關機</td></tr>
+        <tr><td class="svc">Warm Standby</td><td>數分鐘</td><td>中</td><td>縮小規模但一直在跑</td></tr>
+        <tr><td class="svc">Multi-Site Active/Active</td><td>近乎零</td><td>最高</td><td>兩邊都在服務流量</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">「近即時複寫」：DynamoDB 全域資料表、Aurora 全域資料庫、S3 跨區域複寫。<b>AWS Backup 與快照最快只到小時級</b>，看到「每 30 秒備份一次」「每 5 分鐘複製快照」就是誘答。</p>
+  </div>
+
+  <div class="card">
+    <h3>19 · 儲存四選一：S3 / EBS / EFS / FSx</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>協定</th><th>共享</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">S3</td><td>HTTP API</td><td>是</td><td>「物件」「靜態網站」「資料湖」</td></tr>
+        <tr><td class="svc">EBS</td><td>區塊</td><td>單一執行個體（io2 可多掛）</td><td>「開機磁碟」「資料庫磁碟」</td></tr>
+        <tr><td class="svc">EFS</td><td><b>只有 NFS</b></td><td>是，多 AZ</td><td>「Linux 多台共用」「Lambda 共用儲存」</td></tr>
+        <tr><td class="svc">FSx</td><td>SMB／Lustre／ONTAP</td><td>是</td><td>「<b>Windows SMB</b>」「多協定」「次毫秒延遲」「HPC」</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>20 · 跨帳戶監控：OAM sink/link vs 跨帳戶角色</h3>
+    <p class="k">CloudWatch 跨帳戶可觀測性的正確順序：</p>
+    <ul class="pts">
+      <li>監控帳戶建立 <b>OAM sink</b>，在 Select data 勾選 Logs／Metrics／Traces，指定來源帳戶或組織 ID。</li>
+      <li>要連結整個組織時，<b>CloudWatch 主控台會產生一份 CloudFormation 範本</b>，由管理帳戶用 StackSets 部署到全組織建立 <b>link</b>。</li>
+      <li>查詢者在監控帳戶用掛 <code>CloudWatchLogsReadOnlyAccess</code> 的角色即可。</li>
+    </ul>
+    <p class="note warn">實際動作是 <code>oam:CreateSink</code>／<code>oam:CreateLink</code> 與各資料類型的 <code>logs:Link</code>、<code>cloudwatch:Link</code>。看到 <code>iam:CreateSink</code> 這種寫法直接排除。</p>
+  </div>
+
+  <div class="card">
+    <h3>21 · ECS 任務啟動後馬上停止，可能原因</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>原因</th><th>症狀</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">日誌群組不存在</td><td>ResourceInitializationError，容器根本起不來（awslogs 驅動預設不會自動建群組）</td></tr>
+        <tr><td class="svc">必要容器結束</td><td>essential container 退出 → 整個任務停止</td></tr>
+        <tr><td class="svc">目標群組健康檢查失敗</td><td>任務起得來但被 ECS 停掉並重啟，部署卡住</td></tr>
+        <tr><td class="svc">執行角色權限不足</td><td>拉不到 ECR 映像或讀不到 Secrets</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>任務執行角色</b>（拉映像、送日誌）vs <b>任務角色</b>（應用程式自己呼叫 AWS API），兩者是不同的角色，常被互換當誘答。</p>
+  </div>
+
+  <div class="card">
+    <h3>22 · 成品與映像：CodeArtifact vs ECR vs S3</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>放什麼</th><th>關鍵字</th></tr></thead>
+      <tbody>
+        <tr><td class="svc">CodeArtifact</td><td>npm／pip／Maven／NuGet 套件</td><td>「代理公開套件來源」「內部共用函式庫」</td></tr>
+        <tr><td class="svc">ECR</td><td>容器映像</td><td>「映像掃描」「生命週期政策」「跨區複寫」</td></tr>
+        <tr><td class="svc">S3</td><td>任何檔案</td><td>「公開下載」→ 記得<b>關閉成品加密</b>，SSE-KMS 物件無法匿名讀取</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>23 · ABAC：PrincipalTag vs ResourceTag</h3>
+    <p class="k">「每個人只能存取自己部門／專案的資源」的標準寫法：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>寫法</th><th>正確嗎</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">"ec2:ResourceTag/department": "${aws:PrincipalTag/department}"</td><td><span class="pill good">正確</span>一條政策涵蓋所有部門</td></tr>
+        <tr><td class="mono">"aws:PrincipalTag/department": "${aws:ResourceTag/department}"</td><td><span class="pill bad">方向寫反</span></td></tr>
+        <tr><td class="mono">"ForAllValues:StringEquals": {"aws:TagKeys": [...]}</td><td><span class="pill bad">只檢查鍵，不比對值</span></td></tr>
+        <tr><td class="mono">"ec2:ResourceTag/department": ["d1","d2","d3"]</td><td><span class="pill bad">寫死值，新增部門要改政策</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><code>sts:AssumeRole</code> 要放在<b>使用者（主體）</b>的身分政策裡，不是放在被承擔的角色上。</p>
+  </div>
+
+  <div class="card">
+    <h3>24 · 「最少營運負擔」題型的通用判斷</h3>
+    <ul class="pts">
+      <li>有受管功能就不要自己寫 Lambda 解析（例：Config 受管規則 &gt; 自己解析 Inventory 檔）。</li>
+      <li>有原生整合就不要自己接膠水（例：CloudFormation Git sync &gt; 自建 CodePipeline）。</li>
+      <li>有組織層級設定就不要逐帳戶部署（例：委派管理員＋自動啟用 &gt; 邀請制＋StackSet 接受邀請）。</li>
+      <li>選項裡出現「自行維運叢集／自架設備／第三方軟體裝在單一 EC2」通常是誘答，尤其題目同時要求「高可用」。</li>
+      <li>選項出現「每 5 分鐘輪詢」「排程查一次」而題目要「近即時」，直接排除。</li>
+    </ul>
+  </div>
+</section>
+<section class="panel" id="p-dom" role="tabpanel" aria-labelledby="t-dom" hidden>
+  <div>
+    <h2>依考試領域分類</h2>
+    <p class="lede">百分比是 AWS 官方考綱的計分權重；「本題庫題數」是 451 題實際落在該領域的數量，兩者大致吻合，可以直接照這個順序排讀書時間。</p>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>1 · SDLC 自動化</h3><span class="wt">官方 22%</span><span class="pill">本題庫 122 題</span></div>
+    <div class="svclist"><span class="pill on">CodePipeline</span><span class="pill on">CodeBuild</span><span class="pill on">CodeDeploy</span><span class="pill">CodeCommit</span><span class="pill">CodeConnections</span><span class="pill">CodeArtifact</span><span class="pill">CodeGuru</span><span class="pill">ECR</span><span class="pill">Lambda</span><span class="pill">SAM</span><span class="pill">CDK</span><span class="pill">Elastic Beanstalk</span></div>
+    <ul class="pts">
+      <li><b>部署策略與回滾</b>是這個領域的核心：CodeDeploy 的 Canary／Linear、Beanstalk 的 Immutable、ECS 藍綠、Lambda 別名加權。</li>
+      <li>測試要擋在對的階段：單元測試與安全掃描放<b>建置階段</b>並讓建置失敗；冒煙測試放部署階段並讓部署階段失敗。</li>
+      <li>CodePipeline 結構題：runOrder 並行、V2 觸發篩選條件、跨區域 artifact bucket。</li>
+      <li>成品治理：CodeArtifact 代理公開套件、ECR 映像掃描、公開下載要關加密。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>2 · 設定管理與 IaC</h3><span class="wt">官方 17%</span><span class="pill">本題庫 54 題</span></div>
+    <div class="svclist"><span class="pill on">CloudFormation</span><span class="pill on">Systems Manager</span><span class="pill">StackSets</span><span class="pill">Service Catalog</span><span class="pill">EC2 Image Builder</span><span class="pill">Auto Scaling</span><span class="pill">Parameter Store</span><span class="pill">AppConfig</span><span class="pill">CDK</span></div>
+    <ul class="pts">
+      <li>CloudFormation 七件武器：Change Set、漂移偵測、堆疊政策、巢狀堆疊、StackSets、Git sync、IaC generator。</li>
+      <li>StackSets 服務管理權限＋自動部署＝「現有與未來所有帳戶」。</li>
+      <li>SSM 八大模組要能一眼分辨（見易混淆第 12 組），尤其維護時段與 Patch Manager。</li>
+      <li>黃金 AMI 流程：Image Builder 建映像 → 新啟動範本 → <b>instance refresh</b> 讓現有機器也換掉。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>3 · 安全與合規</h3><span class="wt">官方 17%</span><span class="pill">本題庫 88 題</span></div>
+    <div class="svclist"><span class="pill on">IAM</span><span class="pill on">Organizations</span><span class="pill on">Config</span><span class="pill">Control Tower</span><span class="pill">KMS</span><span class="pill">Secrets Manager</span><span class="pill">GuardDuty</span><span class="pill">Inspector</span><span class="pill">Macie</span><span class="pill">Security Hub</span><span class="pill">IAM Identity Center</span><span class="pill">WAF</span></div>
+    <ul class="pts">
+      <li>SCP 允許清單 vs 拒絕清單、移除 FullAWSAccess、<code>aws:PrincipalArn</code> 條件、2024 新增的 RCP。</li>
+      <li>ABAC：資源標籤比對主體標籤，一條政策涵蓋所有部門。</li>
+      <li>KMS 金鑰政策：AWS 受管金鑰改不了，跨帳戶一定要客戶受管金鑰。</li>
+      <li>安全服務分工（GuardDuty／Inspector／Macie／Security Hub）＋委派管理員＋自動納入新帳戶。</li>
+      <li>合規自動化：Config 規則 → 修復動作，或 EventBridge → Lambda／SSM Automation。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>4 · 監控與日誌</h3><span class="wt">官方 15%</span><span class="pill">本題庫 72 題</span></div>
+    <div class="svclist"><span class="pill on">CloudWatch</span><span class="pill on">CloudWatch Logs</span><span class="pill on">CloudTrail</span><span class="pill">EventBridge</span><span class="pill">Athena</span><span class="pill">Kinesis Firehose</span><span class="pill">X-Ray</span><span class="pill">Container Insights</span><span class="pill">OpenSearch</span><span class="pill">Synthetics</span></div>
+    <ul class="pts">
+      <li>告警三細節：M out of N、遺失資料處理、異常偵測 vs 靜態門檻。</li>
+      <li>日誌路線圖：指標篩選條件＝告警、訂閱篩選條件＝近即時外送、Logs Insights／Athena＝查詢。</li>
+      <li>跨帳戶集中：CloudTrail 組織追蹤、OAM sink/link、Config 彙總器。</li>
+      <li>容器診斷：EKS 的 CloudWatch Observability 附加元件 → Container Insights。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>5 · 高可用與韌性</h3><span class="wt">官方 15%</span><span class="pill">本題庫 63 題</span></div>
+    <div class="svclist"><span class="pill on">Route 53</span><span class="pill on">ELB/ALB/NLB</span><span class="pill on">Auto Scaling</span><span class="pill">RDS/Aurora</span><span class="pill">DynamoDB</span><span class="pill">S3 複寫</span><span class="pill">AWS Backup</span><span class="pill">Global Accelerator</span><span class="pill">CloudFront</span><span class="pill">EFS/FSx</span></div>
+    <ul class="pts">
+      <li>多區域題先看兩件事：<b>有沒有健康檢查</b>、<b>資料怎麼跨區複寫</b>。</li>
+      <li>RPO／RTO 對照 DR 四策略；「近即時」只有全域資料表／全域資料庫／CRR 做得到。</li>
+      <li>Route 53 路由政策選擇；ALB 沒有固定 IP。</li>
+      <li>ASG 生命週期掛鉤、instance refresh、ELB 健康檢查類型。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="domhead"><h3>6 · 事件與意外回應</h3><span class="wt">官方 14%</span><span class="pill">本題庫 45 題</span></div>
+    <div class="svclist"><span class="pill on">EventBridge</span><span class="pill on">Lambda</span><span class="pill on">SNS</span><span class="pill">SQS</span><span class="pill">SSM Automation</span><span class="pill">AWS Health</span><span class="pill">Config</span><span class="pill">Step Functions</span><span class="pill">CloudTrail</span></div>
+    <ul class="pts">
+      <li>通用樣板：<b>事件來源 → EventBridge 規則 → Lambda／SSM Automation → SNS 通知</b>。</li>
+      <li>事件來源分辨：AWS Health（執行個體退役）、Config（不合規）、CloudTrail（API 呼叫）、ASG（生命週期）、CodePipeline（階段狀態）。</li>
+      <li>排程與時段：排程規則 vs 維護時段工作。</li>
+      <li>失敗處理：SQS 死信佇列、Lambda OnFailure 目的地（注意：只在函式<b>已被叫用</b>後才作用）。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>最後 48 小時速記</h3>
+    <ul class="pts">
+      <li>看到「<b>最少營運負擔</b>」→ 找原生受管整合，不要自己寫 Lambda／自建叢集。</li>
+      <li>看到「<b>近即時</b>」→ 排除所有排程輪詢與批次查詢。</li>
+      <li>看到「<b>高可用</b>」→ 排除單一 EC2 上的自架軟體、沒有健康檢查的路由。</li>
+      <li>看到「<b>所有現有與未來帳戶</b>」→ Organizations 委派管理員／服務管理 StackSets ＋自動部署。</li>
+      <li>看到「<b>不影響既有管理員權限但要限制</b>」→ SCP／RCP／權限邊界。</li>
+      <li>看到「<b>最小權限</b>」→ 主體、資源、條件三者同時收斂。</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  資料來源：DOP-C02 V20.17 題庫（451 題）＋ AWS 官方文件 · 題數為服務名稱在題幹／選項出現的題數 · 僅供讀書規劃參考
+</footer>
+
+<script>
+const SERVICES = [
+{
+"n": "CodePipeline",
+"c": "開發工具",
+"d": "把 source→build→test→deploy 串起來的編排器",
+"k": "V2 型別支援 tag/分支觸發與 QUEUED 模式；同 stage 內 runOrder 相同＝並行；跨區域動作每區都要有 artifact bucket",
+"q": 80,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "CodeBuild",
+"c": "開發工具",
+"d": "受管建置／測試執行環境，靠 buildspec.yml 驅動",
+"k": "buildspec 的 phases 可設 on-failure: ABORT；report group 收測試報告（保留上限 30 天）；artifact 可關閉加密以供公開下載",
+"q": 63,
+"dm": [
+"SDLC 自動化",
+"安全與合規"
+]
+},
+{
+"n": "CodeDeploy",
+"c": "開發工具",
+"d": "把成品部署到 EC2／Lambda／ECS 並負責流量切換與回滾",
+"k": "EC2 用 in-place 或 blue/green；Lambda／ECS 用 Canary／Linear／AllAtOnce；AppSpec hooks 與自動回滾是必考",
+"q": 56,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "CodeCommit",
+"c": "開發工具",
+"d": "受管 Git 儲存庫（已停止對新客戶開放）",
+"k": "核准規則範本、分支層級 IAM 條件（refs/heads/main）、跨帳戶存取",
+"q": 24,
+"dm": [
+"SDLC 自動化",
+"安全與合規"
+]
+},
+{
+"n": "CodeConnections",
+"c": "開發工具",
+"d": "連接 GitHub／GitLab／Bitbucket 的受管連線（原 CodeStar Connections）",
+"k": "可給 CodePipeline 用，也可給 CloudFormation Git sync 用；可用 SCP 限制 provider 類型",
+"q": 12,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "CodeArtifact",
+"c": "開發工具",
+"d": "受管套件儲存庫，可代理 npm／pip／Maven 公開來源",
+"k": "上游儲存庫（upstream）與外部連線設定；跨帳戶網域權限",
+"q": 16,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "CodeGuru",
+"c": "開發工具",
+"d": "原始碼安全掃描與執行效能分析",
+"k": "Security 掃原始碼（放建置階段）；Profiler 看執行時效能",
+"q": 4,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "CloudFormation",
+"c": "IaC",
+"d": "AWS 原生 IaC，以堆疊為單位宣告資源",
+"k": "Change Set、漂移偵測、堆疊政策、巢狀堆疊、StackSets、Git sync、IaC generator、刪除保留策略",
+"q": 91,
+"dm": [
+"設定管理與 IaC",
+"安全與合規"
+]
+},
+{
+"n": "CDK",
+"c": "IaC",
+"d": "用程式語言產生 CloudFormation 範本",
+"k": "assertions 模組寫基礎設施單元測試；cdk diff／deploy 在 CodeBuild 中執行",
+"q": 9,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "SAM",
+"c": "IaC",
+"d": "Serverless 專用的 CloudFormation 擴充語法",
+"k": "AutoPublishAlias＋DeploymentPreference 即可做 Lambda 漸進式部署與自動回滾",
+"q": 7,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "Elastic Beanstalk",
+"c": "IaC",
+"d": "平台即服務，自動建立 ASG／ELB／環境",
+"k": "六種部署策略（尤其 Immutable 與 Traffic splitting）；RDS 要建在環境之外；通知信箱設定",
+"q": 10,
+"dm": [
+"SDLC 自動化",
+"高可用架構"
+]
+},
+{
+"n": "OpsWorks",
+"c": "IaC",
+"d": "Chef／Puppet 受管設定管理（已停止服務）",
+"k": "只需認得生命週期事件（Setup／Configure／Deploy）",
+"q": 4,
+"dm": [
+"設定管理與 IaC",
+"SDLC 自動化"
+]
+},
+{
+"n": "Service Catalog",
+"c": "IaC",
+"d": "把核准過的 CloudFormation 範本包成產品組合發布給團隊",
+"k": "啟動限制（launch constraint）讓使用者不需資源本身權限",
+"q": 6,
+"dm": [
+"設定管理與 IaC",
+"SDLC 自動化"
+]
+},
+{
+"n": "Systems Manager (SSM)",
+"c": "IaC",
+"d": "混合環境的機群管理工具箱",
+"k": "Run Command／Automation／State Manager／Patch Manager／Maintenance Windows／Inventory／Session Manager／Parameter Store 要分清楚",
+"q": 72,
+"dm": [
+"設定管理與 IaC",
+"SDLC 自動化"
+]
+},
+{
+"n": "AppConfig",
+"c": "IaC",
+"d": "功能旗標與應用程式組態的受控發布",
+"k": "漸進式推出＋CloudWatch 告警自動回滾",
+"q": 1,
+"dm": [
+"高可用架構"
+]
+},
+{
+"n": "Terraform",
+"c": "IaC",
+"d": "第三方 IaC（題庫僅作對照選項出現）",
+"k": "出現時通常是「非 AWS 原生、需自行維運狀態檔」的誘答",
+"q": 2,
+"dm": [
+"安全與合規"
+]
+},
+{
+"n": "EC2",
+"c": "運算",
+"d": "虛擬機器",
+"k": "啟動範本版本、使用者資料、執行個體設定檔、中繼資料 IMDSv2",
+"q": 178,
+"dm": [
+"SDLC 自動化",
+"高可用架構"
+]
+},
+{
+"n": "Auto Scaling",
+"c": "運算",
+"d": "維持容量並自動擴縮的群組",
+"k": "生命週期掛鉤（Pending:Wait／Terminating:Wait）、instance refresh、預熱池、健康檢查類型 EC2 vs ELB",
+"q": 66,
+"dm": [
+"高可用架構",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Application Auto Scaling",
+"c": "運算",
+"d": "對 ECS／DynamoDB／Aurora 等非 EC2 目標做擴縮",
+"k": "目標追蹤 vs 步階擴縮；目標追蹤只能用 CloudWatch 指標",
+"q": 2,
+"dm": [
+"事件回應",
+"高可用架構"
+]
+},
+{
+"n": "Lambda",
+"c": "運算",
+"d": "事件驅動無伺服器函式",
+"k": "版本與別名、RoutingConfig 加權別名、預留／佈建並行、事件來源對應的 ParallelizationFactor、資源政策 vs 執行角色",
+"q": 190,
+"dm": [
+"SDLC 自動化",
+"事件回應"
+]
+},
+{
+"n": "ECS",
+"c": "容器",
+"d": "AWS 原生容器編排",
+"k": "任務定義的 awslogs 驅動、任務角色 vs 執行角色、rolling vs CodeDeploy 藍綠部署",
+"q": 29,
+"dm": [
+"SDLC 自動化",
+"監控與日誌"
+]
+},
+{
+"n": "EKS",
+"c": "容器",
+"d": "受管 Kubernetes",
+"k": "IRSA／Pod Identity、受管節點群組、Auto Mode（不會自動升級控制平面）、Container Insights",
+"q": 22,
+"dm": [
+"監控與日誌",
+"SDLC 自動化"
+]
+},
+{
+"n": "ECR",
+"c": "容器",
+"d": "容器映像檔儲存庫",
+"k": "基本掃描 vs Inspector 強化掃描（持續掃描）、生命週期政策、跨帳戶／跨區域複寫",
+"q": 31,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Fargate",
+"c": "容器",
+"d": "免管理節點的容器運算",
+"k": "無法用 DaemonSet／主機層代理，監控要用 sidecar",
+"q": 14,
+"dm": [
+"SDLC 自動化",
+"高可用架構"
+]
+},
+{
+"n": "EC2 Image Builder",
+"c": "運算",
+"d": "自動化建置與測試黃金 AMI／容器映像",
+"k": "映像管道＋配方＋元件；可排程重建以套用修補",
+"q": 11,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Batch",
+"c": "運算",
+"d": "批次運算作業排程",
+"k": "",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "App Runner",
+"c": "運算",
+"d": "容器化 Web 服務的全受管部署",
+"k": "",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "Lightsail",
+"c": "運算",
+"d": "簡化版 VPS",
+"k": "",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "S3",
+"c": "儲存",
+"d": "物件儲存",
+"k": "版本控制、生命週期、複寫（CRR/SRR）、事件通知、Object Lock、儲存貯體政策 vs ACL、伺服器存取日誌 vs CloudTrail 資料事件",
+"q": 150,
+"dm": [
+"SDLC 自動化",
+"監控與日誌"
+]
+},
+{
+"n": "EBS",
+"c": "儲存",
+"d": "區塊儲存磁碟",
+"k": "快照、快照生命週期管理員（DLM）、預設加密",
+"q": 13,
+"dm": [
+"高可用架構",
+"安全與合規"
+]
+},
+{
+"n": "EFS",
+"c": "儲存",
+"d": "NFS 共用檔案系統",
+"k": "Lambda 可掛載（需 VPC）、跨帳戶需 VPC peering＋檔案系統政策、存取點",
+"q": 8,
+"dm": [
+"高可用架構",
+"安全與合規"
+]
+},
+{
+"n": "FSx",
+"c": "儲存",
+"d": "Windows／ONTAP／Lustre 檔案系統",
+"k": "要 SMB 或多協定時選 FSx（EFS 只支援 NFS）",
+"q": 5,
+"dm": [
+"高可用架構",
+"SDLC 自動化"
+]
+},
+{
+"n": "Storage Gateway",
+"c": "儲存",
+"d": "地端與 AWS 的混合儲存閘道",
+"k": "",
+"q": 2,
+"dm": [
+"事件回應",
+"高可用架構"
+]
+},
+{
+"n": "AWS Backup",
+"c": "儲存",
+"d": "跨服務集中備份與保存政策",
+"k": "備份計畫、備份保存庫鎖定、跨區域／跨帳戶複製；最小頻率是小時級，非秒級",
+"q": 7,
+"dm": [
+"高可用架構"
+]
+},
+{
+"n": "RDS",
+"c": "資料庫",
+"d": "受管關聯式資料庫",
+"k": "Multi-AZ DB instance vs Multi-AZ DB cluster（僅 MySQL／PostgreSQL）、唯讀複本、自動備份複寫",
+"q": 25,
+"dm": [
+"高可用架構",
+"SDLC 自動化"
+]
+},
+{
+"n": "Aurora",
+"c": "資料庫",
+"d": "AWS 自研相容 MySQL／PostgreSQL 的資料庫",
+"k": "叢集／讀取／自訂端點、全域資料庫與 RPO 參數、Serverless v2、快速複製",
+"q": 17,
+"dm": [
+"高可用架構",
+"監控與日誌"
+]
+},
+{
+"n": "DynamoDB",
+"c": "資料庫",
+"d": "受管 NoSQL",
+"k": "全域資料表（近即時跨區複寫）、PITR、Streams、隨需 vs 佈建容量",
+"q": 27,
+"dm": [
+"高可用架構",
+"事件回應"
+]
+},
+{
+"n": "ElastiCache",
+"c": "資料庫",
+"d": "受管 Redis／Memcached",
+"k": "Redis 可做多 AZ 自動容錯移轉",
+"q": 7,
+"dm": [
+"高可用架構",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Redshift",
+"c": "資料庫",
+"d": "資料倉儲",
+"k": "稽核日誌可直送 CloudWatch Logs（2022 起）",
+"q": 9,
+"dm": [
+"監控與日誌",
+"高可用架構"
+]
+},
+{
+"n": "DocumentDB",
+"c": "資料庫",
+"d": "受管 MongoDB 相容資料庫",
+"k": "",
+"q": 1,
+"dm": [
+"高可用架構"
+]
+},
+{
+"n": "DMS",
+"c": "資料庫",
+"d": "資料庫遷移與持續複寫",
+"k": "出現時常是「需自行維運、無自動故障切換」的誘答",
+"q": 4,
+"dm": [
+"高可用架構",
+"安全與合規"
+]
+},
+{
+"n": "VPC",
+"c": "網路",
+"d": "虛擬私有網路",
+"k": "流程日誌（可送 CloudWatch Logs 或 S3）、端點、NAT 閘道、安全群組 vs NACL",
+"q": 30,
+"dm": [
+"安全與合規",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Route 53",
+"c": "網路",
+"d": "DNS 與健康檢查",
+"k": "七種路由政策：Simple／Weighted／Latency／Failover／Geolocation／Geoproximity／Multivalue；別名記錄 vs A 記錄",
+"q": 36,
+"dm": [
+"高可用架構",
+"SDLC 自動化"
+]
+},
+{
+"n": "CloudFront",
+"c": "網路",
+"d": "CDN 邊緣快取",
+"k": "原始來源群組只做故障轉移（不做跨區加權）、自訂標頭＋授權方配合 API Gateway、簽署 URL",
+"q": 15,
+"dm": [
+"高可用架構",
+"安全與合規"
+]
+},
+{
+"n": "Global Accelerator",
+"c": "網路",
+"d": "Anycast 靜態 IP，流量就近進 AWS 骨幹",
+"k": "跨區域最低延遲且支援 TCP/UDP 與 WebSocket；與 CloudFront 的差別是它不快取",
+"q": 3,
+"dm": [
+"高可用架構"
+]
+},
+{
+"n": "ELB/ALB/NLB",
+"c": "網路",
+"d": "負載平衡",
+"k": "ALB 七層、無固定 IP、只能用別名記錄；NLB 四層、有靜態 IP、可搭 Global Accelerator；存取日誌送 S3",
+"q": 60,
+"dm": [
+"高可用架構",
+"SDLC 自動化"
+]
+},
+{
+"n": "API Gateway",
+"c": "網路",
+"d": "API 前門",
+"k": "階段、使用方案、Lambda 授權方、REST vs HTTP API",
+"q": 25,
+"dm": [
+"高可用架構",
+"SDLC 自動化"
+]
+},
+{
+"n": "Direct Connect",
+"c": "網路",
+"d": "專線連接地端與 AWS",
+"k": "交付時間長（數週～數月），題目限時兩週內通常選 VPN",
+"q": 4,
+"dm": [
+"設定管理與 IaC",
+"監控與日誌"
+]
+},
+{
+"n": "Site-to-Site VPN",
+"c": "網路",
+"d": "IPsec VPN 連線",
+"k": "要高可用就建兩條連線；受管服務優於自架 EC2 VPN 設備",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "Transit Gateway",
+"c": "網路",
+"d": "多 VPC／多帳戶的網路樞紐",
+"k": "",
+"q": 1,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "PrivateLink/VPC Endpoint",
+"c": "網路",
+"d": "不經網際網路存取 AWS 服務",
+"k": "私有子網路取得 S3／ECR 等服務存取的標準解",
+"q": 6,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "CloudWatch",
+"c": "監控",
+"d": "指標、告警、儀表板",
+"k": "Datapoints to alarm（M out of N）、遺失資料處理方式、異常偵測 vs 靜態門檻、複合告警、EC2 動作 vs SSM 動作",
+"q": 109,
+"dm": [
+"監控與日誌",
+"SDLC 自動化"
+]
+},
+{
+"n": "CloudWatch Logs",
+"c": "監控",
+"d": "日誌集中與查詢",
+"k": "指標篩選條件、訂閱篩選條件（可送 Lambda／Kinesis／Firehose）、保留期、Logs Insights、跨帳戶 OAM",
+"q": 53,
+"dm": [
+"監控與日誌",
+"SDLC 自動化"
+]
+},
+{
+"n": "CloudWatch Synthetics",
+"c": "監控",
+"d": "金絲雀腳本定期探測端點",
+"k": "偵測的是可用性／錯誤，不是回應時間分布",
+"q": 3,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "Container Insights",
+"c": "監控",
+"d": "ECS／EKS 容器層級指標與日誌",
+"k": "EKS 用 CloudWatch Observability 附加元件啟用；診斷容器重啟就靠它",
+"q": 6,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "X-Ray",
+"c": "監控",
+"d": "分散式追蹤",
+"k": "找跨服務延遲瓶頸；服務地圖",
+"q": 10,
+"dm": [
+"監控與日誌",
+"SDLC 自動化"
+]
+},
+{
+"n": "Managed Prometheus",
+"c": "監控",
+"d": "受管 Prometheus 工作區",
+"k": "自訂／JVM 指標；但 Fargate 目標追蹤擴縮不能直接吃 Prometheus 指標",
+"q": 3,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "Managed Grafana",
+"c": "監控",
+"d": "受管 Grafana 視覺化",
+"k": "",
+"q": 0,
+"dm": []
+},
+{
+"n": "OpenSearch",
+"c": "監控",
+"d": "日誌搜尋與分析叢集",
+"k": "需自行維運叢集，常是「營運負擔較高」的誘答",
+"q": 8,
+"dm": [
+"監控與日誌",
+"高可用架構"
+]
+},
+{
+"n": "Athena",
+"c": "監控",
+"d": "直接查詢 S3 的無伺服器 SQL",
+"k": "查 CloudTrail／VPC 流程日誌／ALB 存取日誌；非即時",
+"q": 30,
+"dm": [
+"監控與日誌",
+"安全與合規"
+]
+},
+{
+"n": "QuickSight",
+"c": "監控",
+"d": "BI 儀表板",
+"k": "",
+"q": 9,
+"dm": [
+"監控與日誌",
+"SDLC 自動化"
+]
+},
+{
+"n": "Kinesis Data Streams",
+"c": "事件",
+"d": "可重播的即時串流",
+"k": "分片數與 ParallelizationFactor 決定並行度；增強型 fan-out 降延遲",
+"q": 11,
+"dm": [
+"監控與日誌",
+"事件回應"
+]
+},
+{
+"n": "Kinesis Data Firehose",
+"c": "事件",
+"d": "近即時把串流送進 S3／OpenSearch／Redshift",
+"k": "要把 CloudWatch Logs 近即時落地 S3 就用訂閱篩選條件＋Firehose",
+"q": 12,
+"dm": [
+"監控與日誌",
+"事件回應"
+]
+},
+{
+"n": "Managed Flink",
+"c": "事件",
+"d": "串流分析（原 Kinesis Data Analytics）",
+"k": "",
+"q": 3,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "EventBridge",
+"c": "事件",
+"d": "事件匯流排與規則路由",
+"k": "預設匯流排接 AWS 服務事件；排程規則；跨帳戶匯流排；輸入轉換；與 CloudTrail 搭配抓 API 呼叫",
+"q": 125,
+"dm": [
+"事件回應",
+"SDLC 自動化"
+]
+},
+{
+"n": "SNS",
+"c": "事件",
+"d": "發布／訂閱通知",
+"k": "扇出到 SQS／Lambda／HTTP／Email；FIFO 主題",
+"q": 56,
+"dm": [
+"事件回應",
+"監控與日誌"
+]
+},
+{
+"n": "SQS",
+"c": "事件",
+"d": "訊息佇列",
+"k": "可見性逾時、死信佇列、長輪詢、FIFO；削峰填谷",
+"q": 19,
+"dm": [
+"事件回應",
+"監控與日誌"
+]
+},
+{
+"n": "Step Functions",
+"c": "事件",
+"d": "工作流程編排",
+"k": "標準 vs 快速工作流程；錯誤重試與 catch",
+"q": 13,
+"dm": [
+"事件回應",
+"SDLC 自動化"
+]
+},
+{
+"n": "SES",
+"c": "事件",
+"d": "郵件發送",
+"k": "",
+"q": 2,
+"dm": [
+"事件回應"
+]
+},
+{
+"n": "AWS Health",
+"c": "事件",
+"d": "AWS 服務與你的資源的健康事件",
+"k": "排定的執行個體停用／退役事件走 EventBridge 觸發自動化",
+"q": 7,
+"dm": [
+"事件回應",
+"SDLC 自動化"
+]
+},
+{
+"n": "CloudTrail",
+"c": "治理",
+"d": "誰在什麼時候呼叫了哪個 API",
+"k": "管理事件 vs 資料事件、組織追蹤、日誌檔案驗證、Insights；預設不含資料事件",
+"q": 48,
+"dm": [
+"監控與日誌",
+"事件回應"
+]
+},
+{
+"n": "Config",
+"c": "治理",
+"d": "資源組態的持續記錄與合規評估",
+"k": "受管規則 vs 自訂 Lambda 規則（需資源政策讓 config 呼叫）、修復動作、合規套件、組織層級規則、彙總器",
+"q": 63,
+"dm": [
+"安全與合規",
+"事件回應"
+]
+},
+{
+"n": "Organizations",
+"c": "治理",
+"d": "多帳戶的組織結構與政策",
+"k": "SCP 允許清單 vs 拒絕清單、移除 FullAWSAccess、RCP、委派管理員、信任存取",
+"q": 78,
+"dm": [
+"安全與合規",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Control Tower",
+"c": "治理",
+"d": "多帳戶著陸區的開箱即用版",
+"k": "Account Factory 與 AFC 藍圖、護欄（預防性／偵測性／主動性）",
+"q": 20,
+"dm": [
+"安全與合規",
+"SDLC 自動化"
+]
+},
+{
+"n": "IAM",
+"c": "治理",
+"d": "身分與權限",
+"k": "政策評估順序、權限邊界、信任政策、ABAC（PrincipalTag vs ResourceTag）、執行個體設定檔",
+"q": 96,
+"dm": [
+"安全與合規",
+"設定管理與 IaC"
+]
+},
+{
+"n": "IAM Identity Center",
+"c": "治理",
+"d": "集中身分與單一登入",
+"k": "屬性式存取控制、權限集、外部 IdP 的 SAML 屬性對應",
+"q": 14,
+"dm": [
+"安全與合規",
+"事件回應"
+]
+},
+{
+"n": "KMS",
+"c": "治理",
+"d": "金鑰管理",
+"k": "AWS 受管金鑰不能改政策、客戶受管金鑰可、金鑰政策 vs IAM 政策、多區域金鑰、授權",
+"q": 13,
+"dm": [
+"安全與合規",
+"SDLC 自動化"
+]
+},
+{
+"n": "Secrets Manager",
+"c": "治理",
+"d": "機密儲存與自動輪替",
+"k": "內建輪替（RDS 等有現成範本）；跨帳戶靠金鑰政策＋機密資源政策",
+"q": 12,
+"dm": [
+"SDLC 自動化",
+"設定管理與 IaC"
+]
+},
+{
+"n": "Parameter Store",
+"c": "治理",
+"d": "參數與設定值儲存",
+"k": "免費、無自動輪替；進階參數有大小與數量上限",
+"q": 13,
+"dm": [
+"設定管理與 IaC",
+"SDLC 自動化"
+]
+},
+{
+"n": "GuardDuty",
+"c": "安全",
+"d": "威脅偵測（分析 CloudTrail／VPC 流程／DNS 日誌）",
+"k": "委派管理員＋自動啟用新帳戶；發現事項走 EventBridge 轉 SNS",
+"q": 20,
+"dm": [
+"安全與合規",
+"事件回應"
+]
+},
+{
+"n": "Inspector",
+"c": "安全",
+"d": "弱點掃描（EC2／ECR／Lambda）",
+"k": "強化掃描需 SSM Agent＋執行個體設定檔；ECR 持續掃描",
+"q": 21,
+"dm": [
+"SDLC 自動化",
+"監控與日誌"
+]
+},
+{
+"n": "Macie",
+"c": "安全",
+"d": "S3 中的敏感資料探索",
+"k": "自訂資料識別碼可用正規表示式比對自家格式",
+"q": 7,
+"dm": [
+"事件回應",
+"監控與日誌"
+]
+},
+{
+"n": "Security Hub",
+"c": "安全",
+"d": "彙整各安全服務的發現事項與合規分數",
+"k": "組織層級自動納入新帳戶；標準與控制項",
+"q": 14,
+"dm": [
+"安全與合規",
+"事件回應"
+]
+},
+{
+"n": "Detective",
+"c": "安全",
+"d": "安全事件根因調查",
+"k": "",
+"q": 2,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "WAF",
+"c": "安全",
+"d": "七層 Web 應用防火牆",
+"k": "託管規則群組、速率限制；掛在 CloudFront／ALB／API Gateway",
+"q": 9,
+"dm": [
+"安全與合規",
+"監控與日誌"
+]
+},
+{
+"n": "Shield",
+"c": "安全",
+"d": "DDoS 防護",
+"k": "",
+"q": 2,
+"dm": [
+"安全與合規",
+"高可用架構"
+]
+},
+{
+"n": "Firewall Manager",
+"c": "安全",
+"d": "跨帳戶集中管理 WAF／安全群組／Network Firewall 政策",
+"k": "",
+"q": 5,
+"dm": [
+"安全與合規",
+"監控與日誌"
+]
+},
+{
+"n": "Network Firewall",
+"c": "安全",
+"d": "VPC 層級的狀態感知防火牆",
+"k": "",
+"q": 5,
+"dm": [
+"安全與合規",
+"事件回應"
+]
+},
+{
+"n": "ACM",
+"c": "安全",
+"d": "憑證管理與自動更新",
+"k": "",
+"q": 1,
+"dm": [
+"未分類"
+]
+},
+{
+"n": "Cognito",
+"c": "安全",
+"d": "使用者身分池與使用者集區",
+"k": "",
+"q": 1,
+"dm": [
+"安全與合規"
+]
+},
+{
+"n": "Trusted Advisor",
+"c": "治理",
+"d": "最佳實務檢查（成本／效能／安全／容錯／配額）",
+"k": "服務配額檢查可搭 EventBridge 告警",
+"q": 8,
+"dm": [
+"監控與日誌",
+"事件回應"
+]
+},
+{
+"n": "Artifact",
+"c": "治理",
+"d": "AWS 合規報告下載入口",
+"k": "",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "Fault Injection Service",
+"c": "韌性",
+"d": "受控的混沌工程實驗",
+"k": "",
+"q": 1,
+"dm": [
+"SDLC 自動化"
+]
+},
+{
+"n": "Resilience Hub",
+"c": "韌性",
+"d": "評估應用程式的 RTO／RPO 達成度",
+"k": "",
+"q": 0,
+"dm": []
+},
+{
+"n": "Elastic Disaster Recovery",
+"c": "韌性",
+"d": "地端／雲端工作負載的區塊級持續複寫",
+"k": "",
+"q": 0,
+"dm": []
+},
+{
+"n": "Glue",
+"c": "資料",
+"d": "ETL 與資料目錄",
+"k": "爬蟲建表供 Athena 查詢",
+"q": 6,
+"dm": [
+"監控與日誌",
+"事件回應"
+]
+},
+{
+"n": "Lake Formation",
+"c": "資料",
+"d": "資料湖權限治理",
+"k": "",
+"q": 0,
+"dm": []
+},
+{
+"n": "Cost Explorer",
+"c": "成本",
+"d": "成本分析",
+"k": "",
+"q": 1,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "Compute Optimizer",
+"c": "成本",
+"d": "右規格建議",
+"k": "",
+"q": 0,
+"dm": []
+},
+{
+"n": "Resource Groups/Tag Editor",
+"c": "治理",
+"d": "以標籤批次管理資源",
+"k": "",
+"q": 1,
+"dm": [
+"監控與日誌"
+]
+},
+{
+"n": "Lookout for Metrics",
+"c": "監控",
+"d": "時序異常偵測（已停止服務）",
+"k": "題庫舊題仍出現；今日應改用 CloudWatch Logs 異常偵測",
+"q": 1,
+"dm": [
+"監控與日誌"
+]
+}
+];
+const CATS = [];
+SERVICES.forEach(s=>{ if(CATS.indexOf(s.c)===-1) CATS.push(s.c); });
+let activeCat = '全部';
+const tb = document.getElementById('tb'), qEl = document.getElementById('q'), countEl = document.getElementById('count');
+
+function buildChips(){
+  const box = document.getElementById('cats');
+  ['全部'].concat(CATS).forEach(c=>{
+    const b = document.createElement('button');
+    b.className='chip'; b.type='button'; b.textContent = c;
+    b.setAttribute('aria-pressed', c===activeCat ? 'true':'false');
+    b.addEventListener('click', ()=>{ activeCat=c; box.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', x.textContent===c?'true':'false')); render(); });
+    box.appendChild(b);
+  });
+}
+function render(){
+  const term = (qEl.value||'').trim().toLowerCase();
+  const rows = SERVICES.filter(s=>{
+    if(activeCat!=='全部' && s.c!==activeCat) return false;
+    if(!term) return true;
+    return (s.n+' '+s.d+' '+s.k+' '+s.c).toLowerCase().indexOf(term)!==-1;
+  });
+  tb.textContent='';
+  rows.forEach(s=>{
+    const tr=document.createElement('tr');
+    const td1=document.createElement('td'); td1.className='svc';
+    td1.appendChild(document.createTextNode(s.n));
+    const br=document.createElement('br');
+    td1.appendChild(br);
+    const cat=document.createElement('span'); cat.className='pill'; cat.textContent=s.c; td1.appendChild(cat);
+    const td2=document.createElement('td'); td2.textContent=s.d;
+    const td3=document.createElement('td'); td3.className='k'; td3.textContent=s.k||'—';
+    const td4=document.createElement('td'); td4.className='num'; td4.textContent=s.q;
+    tr.append(td1,td2,td3,td4); tb.appendChild(tr);
+  });
+  countEl.textContent = '顯示 '+rows.length+' / '+SERVICES.length+' 項';
+}
+qEl.addEventListener('input', render);
+buildChips(); render();
+
+const tabs=[...document.querySelectorAll('nav.tabs button')];
+function show(id){
+  tabs.forEach(t=>{
+    const on = t.id===id;
+    t.setAttribute('aria-selected', on?'true':'false');
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+  });
+  try{ localStorage.setItem('dopref-tab', id); }catch(e){}
+}
+tabs.forEach(t=>t.addEventListener('click', ()=>show(t.id)));
+try{ const saved=localStorage.getItem('dopref-tab'); if(saved && document.getElementById(saved)) show(saved); }catch(e){}
+</script>
+
+</body>
+</html>
