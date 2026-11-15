@@ -252,6 +252,7 @@
   }
   .opt input{ margin-top:3px; accent-color:var(--accent); width:15px; height:15px; flex:none; }
   .opt .otext{ flex:1; }
+  .opt .otext.code{ white-space:pre-wrap; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; line-height:1.45; }
   .opt .oletter{ font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--text-dim); }
   .opt.correct-picked{ background:var(--good-soft); border-color:var(--good); }
   .opt.wrong-picked{ background:var(--bad-soft); border-color:var(--bad); }
@@ -941,7 +942,8 @@
       input.value = L;
       label.appendChild(input);
       var letterSpan = el('span','oletter', L+'. ');
-      var textSpan = el('span','otext', q.opts[L]);
+      var optTxt = q.opts[L];
+      var textSpan = el('span', /\n/.test(optTxt) ? 'otext code' : 'otext', optTxt);
       var wrap = document.createElement('span');
       wrap.appendChild(letterSpan);
       wrap.appendChild(textSpan);
