@@ -77,7 +77,7 @@ const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math
 const pool=()=>DATA.filter(q=>cfg.topics.includes(q.dm)&&cfg.subs.includes(q.sub)&&cfg.sources.includes(q.code));
 const tagD=q=>'Domain '+q.dm+'・'+q.sub;
 const app=document.getElementById('app');
-function show(n){app.replaceChildren(...[].concat(n));window.scrollTo(0,0)}
+function show(n){app.replaceChildren(...[n].flat(Infinity).filter(Boolean));window.scrollTo(0,0)}
 
 function home(){
  const p=pool();cfg.count=Math.max(1,Math.min(cfg.count,p.length||1));
