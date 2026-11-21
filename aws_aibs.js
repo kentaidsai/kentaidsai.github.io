@@ -1,4 +1,4 @@
-// AIB-C01 題庫（320 題）：id、考試 Domain(dm/domain)、子主題(sub)、來源(code)、題幹(stem)、選項(opts)、正確答案(fin)、解析(expl)
+// AIB-C01 題庫（403 題）：id、考試 Domain(dm/domain)、子主題(sub)、來源(code)、題幹(stem)、選項(opts)、正確答案(fin)、解析(expl)
 const DATA=[
 {
 "id": "CC-001",
@@ -1249,6 +1249,633 @@ const DATA=[
 "B"
 ],
 "expl": "B 正確：擴大前定義漂移的負責人、指標、檢討頻率與回應行動。",
+"multi": false
+},
+{
+"id": "PE-001",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A business strategist asks a data scientist to explain the concept of a 'training dataset' and a 'test dataset.' The data scientist explains that keeping them strictly separate is critical. Why is this separation essential in machine learning?",
+"opts": {
+"A": "To reduce the computational cost of training by using a smaller dataset for model fitting.",
+"B": "To allow the model to train on both sets simultaneously and then compare which produced better results.",
+"C": "To evaluate how well the model generalizes to unseen data, ensuring performance is not simply a result of memorizing training examples.",
+"D": "To ensure that the data science team and the business team each have their own separate dataset to review."
+},
+"fin": [
+"C"
+],
+"expl": "In supervised machine learning, a dataset is split into at least two partitions: the training set (used to fit model parameters) and the test set (held out entirely from training and used only for final unbiased evaluation). If any test data is exposed during training or hyperparameter tuning, the evaluation metric becomes optimistically biased and does not reflect true generalization. A common split is 70-80% training, 20-30% test, with an optional validation set used during training for hyperparameter tuning. This discipline is foundational to reliable ML project delivery.",
+"multi": false
+},
+{
+"id": "PE-002",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A product manager is reviewing an AI model deployed for customer churn prediction. The model achieves 95% accuracy on the test set but the data science team warns that the accuracy metric alone may be misleading. In which business scenario would this warning be MOST relevant?",
+"opts": {
+"A": "When the dataset is highly imbalanced, such as when only 3% of customers actually churn, making a model that always predicts 'no churn' appear 97% accurate without ever identifying a true churner.",
+"B": "When the dataset has equal numbers of churners and non-churners, making precision and recall redundant.",
+"C": "When the model is deployed in multiple AWS Regions simultaneously, causing accuracy to vary by geography.",
+"D": "When the business team prefers a simpler model even if it has lower accuracy than a complex neural network."
+},
+"fin": [
+"A"
+],
+"expl": "In binary classification problems with imbalanced class distributions, accuracy is a deceptive metric. Consider a customer churn dataset where 97% of customers do not churn: a model that always predicts 'no churn' achieves 97% accuracy while having 0% recall for actual churners. In such scenarios, appropriate evaluation metrics are Precision, Recall, F1-Score, and AUC-ROC. Amazon SageMaker supports all these metrics natively in its evaluation framework.",
+"multi": false
+},
+{
+"id": "PE-003",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A team is building a generative AI application that allows users to ask questions about competitor pricing using publicly available internet data. The application architect proposes using an AI agent with web search tools rather than a static RAG knowledge base. What is the PRIMARY advantage of the agentic approach for this specific use case?",
+"opts": {
+"A": "AI agents are always cheaper to run than RAG systems because they do not require a vector database.",
+"B": "AI agents guarantee perfectly accurate outputs because they access live data sources, eliminating hallucination.",
+"C": "AI agents can be deployed without any prompt engineering, unlike RAG systems which require careful prompt design.",
+"D": "AI agents can dynamically retrieve and synthesize current real-time data, which is essential for use cases requiring up-to-date information that a static knowledge base cannot provide."
+},
+"fin": [
+"D"
+],
+"expl": "The key architectural difference between RAG and agentic AI is temporal: RAG retrieves from a static, pre-indexed knowledge store, while an AI agent can invoke tools (web search, database queries, API calls) at inference time to retrieve fresh, real-time data. For use cases like competitor pricing, market news, regulatory updates, or live inventory, agents are architecturally superior because the data changes faster than any ingestion pipeline can refresh. Amazon Bedrock Agents enables the construction of agentic workflows with tool use on AWS.",
+"multi": false
+},
+{
+"id": "PE-004",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A data science lead is explaining the concept of 'feature engineering' to a group of business analysts preparing to sponsor an AI initiative. Which description best captures the business importance of feature engineering?",
+"opts": {
+"A": "Feature engineering is the process of selecting which cloud infrastructure features to provision before starting a machine learning project.",
+"B": "Feature engineering transforms raw data into meaningful inputs that make patterns more learnable for the model, directly determining whether a project can meet its business accuracy targets.",
+"C": "Feature engineering is exclusively a post-deployment activity that tunes a deployed model's outputs based on end-user feedback.",
+"D": "Feature engineering is only relevant for deep learning models and has no impact on traditional machine learning algorithms."
+},
+"fin": [
+"B"
+],
+"expl": "Feature engineering is the discipline of transforming raw data into representations that machine learning algorithms can learn from effectively. This includes creating new features by combining existing ones (e.g., computing 'days since last purchase' from a timestamp), encoding categorical variables (e.g., one-hot encoding), scaling numeric features, handling missing values, and removing irrelevant or redundant variables. Business sponsors need to understand that the quality of feature engineering directly determines whether a model can meet its accuracy targets. AWS services supporting feature engineering include Amazon SageMaker Data Wrangler (visual feature engineering) and Amazon SageMaker Feature Store (centralized feature repository).",
+"multi": false
+},
+{
+"id": "PE-005",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A technology executive asks their AI team to explain the difference between a discriminative AI model and a generative AI model. Which answer correctly distinguishes the two?",
+"opts": {
+"A": "Discriminative models learn to classify or predict labels for existing inputs, while generative models learn to create new data samples — such as text, images, or audio — that resemble the training distribution.",
+"B": "Discriminative models are always more accurate than generative models because they focus on a single prediction task.",
+"C": "Generative models are only used for image generation and cannot be applied to text or audio domains.",
+"D": "Discriminative and generative models are interchangeable terms that describe the same type of algorithm from different vendor perspectives."
+},
+"fin": [
+"A"
+],
+"expl": "The discriminative versus generative distinction is a fundamental AI taxonomy concept. Discriminative models learn a conditional probability P(label | input) — given this input, what is the most likely label? They are used for classification, regression, and detection tasks. Generative models learn a joint probability P(input, label) or the full data distribution P(input), enabling them to synthesize new examples. Modern large language models like Amazon Nova and Anthropic Claude are generative models that learn the distribution of human language to generate coherent, contextually appropriate text. Understanding this distinction is important for selecting the right AI approach for a business problem.",
+"multi": false
+},
+{
+"id": "PE-006",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "An enterprise is evaluating whether to use a large language model (LLM) or a traditional machine learning model for predicting customer lifetime value from structured CRM data with 40 numerical and categorical features. Which recommendation is most appropriate?",
+"opts": {
+"A": "Use a large language model exclusively because LLMs always outperform traditional models on any structured business dataset.",
+"B": "Use an LLM to process the 40 features by first converting all numerical values into natural language descriptions, then fine-tuning for regression.",
+"C": "Use a traditional gradient boosting or random forest model, which are purpose-built for structured tabular prediction tasks and generally outperform LLMs on this data type.",
+"D": "Use a diffusion model because diffusion architectures are the most advanced generative approach and will produce the best prediction accuracy."
+},
+"fin": [
+"C"
+],
+"expl": "Selecting the right AI model type for the data modality is a critical business strategy decision. For structured tabular data with numerical and categorical features, ensemble tree-based methods — particularly gradient boosting algorithms such as XGBoost — are the empirically proven leaders in accuracy, interpretability, and computational efficiency. LLMs are optimized for unstructured text, image, and multimodal tasks. Using an LLM for a 40-feature tabular regression task would be orders of magnitude more expensive in compute cost and would typically underperform a well-tuned XGBoost model. Amazon SageMaker Autopilot automatically selects the optimal algorithm for a given dataset, including gradient boosting for tabular tasks.",
+"multi": false
+},
+{
+"id": "PE-007",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A machine learning engineer explains to business stakeholders that the team is using 'cross-validation' during model development. Which business-relevant explanation of cross-validation is most accurate?",
+"opts": {
+"A": "Cross-validation is a security audit process that verifies a model has not been trained on data that belongs to a different business department.",
+"B": "Cross-validation means the model is reviewed by two independent teams who each assess the model from a business and technical perspective simultaneously.",
+"C": "Cross-validation is a technique for multiplying the size of a training dataset by generating synthetic additional training samples from the existing data.",
+"D": "Cross-validation is a technique that partitions the training data into multiple folds, trains the model on some folds, and evaluates it on the remaining fold in rotation, providing a more reliable estimate of real-world performance than a single train-test split."
+},
+"fin": [
+"D"
+],
+"expl": "Cross-validation is particularly valuable when the dataset is small and a single train-test split would produce high variance in the performance estimate depending on how the data was randomly divided. K-fold cross-validation (typically with K=5 or K=10) is the standard approach. The business relevance is that it provides a more reliable estimate of how the model will perform in production before committing to deployment. Amazon SageMaker supports cross-validation configurations in its AutoML and training workflows.",
+"multi": false
+},
+{
+"id": "PE-008",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A financial services company is building a document processing pipeline for analyzing thousands of analyst research reports written in English, German, French, and Mandarin. The AI team recommends using a multilingual foundation model. What is the KEY business advantage of using a multilingual model over training four separate single-language models?",
+"opts": {
+"A": "Multilingual models always achieve higher accuracy on each individual language compared to models trained exclusively on that language.",
+"B": "A single multilingual model significantly reduces training costs, infrastructure complexity, and maintenance overhead compared to building and operating four separate language-specific models.",
+"C": "Multilingual models are the only way to prevent cross-language hallucination, since single-language models invariably hallucinate when given text in an unrecognized language.",
+"D": "Multilingual models do not require any training data and can be deployed immediately to production without a fine-tuning step for specialized financial terminology."
+},
+"fin": [
+"B"
+],
+"expl": "The business case for multilingual foundation models centers on operational efficiency and total cost of ownership reduction. Maintaining separate ML models for each language involves: separate data curation and labeling costs for each language, separate training infrastructure and compute costs, separate deployment endpoints and serving infrastructure, separate monitoring and drift detection pipelines, and separate retraining cycles. A single multilingual model (such as Amazon Nova or Anthropic Claude, which support dozens of languages) consolidates all of these into one system. Amazon Bedrock's multilingual models enable organizations to process text in multiple languages without managing separate model versions.",
+"multi": false
+},
+{
+"id": "PE-009",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "PE",
+"stem": "A company is evaluating whether to use zero-shot prompting, few-shot prompting, or fine-tuning for deploying a foundation model to classify customer support tickets into 15 support categories. They have 200 labeled examples. Which approach is most appropriate given the constraints?",
+"opts": {
+"A": "Few-shot prompting, by including representative labeled examples of each category directly in the prompt, is the most efficient approach given the small labeled dataset of 200 examples.",
+"B": "Fine-tuning the foundation model on all 200 examples is the best approach because fine-tuning always outperforms prompting for classification tasks.",
+"C": "Zero-shot prompting is the best approach because it requires no labeled examples and will automatically learn the 15 categories from the model's pre-training.",
+"D": "The team should collect at least 100,000 labeled examples before making any deployment decision because 200 examples are insufficient for any AI classification approach."
+},
+"fin": [
+"A"
+],
+"expl": "The progression from zero-shot to few-shot prompting to fine-tuning represents an increasing investment in labeled data and compute: Zero-shot requires no labeled examples but relies entirely on the model's general knowledge; Few-shot provides a small number of labeled examples directly in the prompt context window; Fine-tuning trains the model's weights on a larger labeled dataset to specialize its behavior. For 15 support categories with 200 labeled examples (~13 per category), few-shot prompting is the pragmatic choice. Amazon Bedrock supports few-shot prompting natively through the prompt API, and Amazon Bedrock Prompt Management helps teams version and iterate on prompt configurations.",
+"multi": false
+},
+{
+"id": "PE-010",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "An AI product manager is evaluating a foundation model for a customer-facing application and notices that the model's responses sometimes include very confident statements about events that occurred after the model's training cutoff date. What fundamental limitation of foundation models does this behavior illustrate?",
+"opts": {
+"A": "The model is malfunctioning due to a software bug in the inference endpoint and should be restarted.",
+"B": "The model has been adversarially attacked by a user who injected false future event data into its training dataset.",
+"C": "Foundation models have a fixed knowledge cutoff date and lack access to information about events after training, yet may still generate plausible-sounding but incorrect content about those events rather than acknowledging uncertainty.",
+"D": "The model requires hardware upgrades to process information about recent events because newer events require more computational resources."
+},
+"fin": [
+"C"
+],
+"expl": "All foundation models have a training data cutoff date beyond which they have no information. When asked about events or facts after the cutoff, the model does not know that it lacks knowledge — it may generate plausible, confident-sounding but entirely fabricated responses. This is a critical risk for business applications where users may trust model outputs without verification. Mitigations include: implementing Retrieval-Augmented Generation (RAG) with regularly updated knowledge bases, using Amazon Bedrock Knowledge Bases with current documents, clearly communicating the model's knowledge cutoff to users in the application UI, and implementing Amazon Bedrock Guardrails contextual grounding checks.",
+"multi": false
+},
+{
+"id": "PE-011",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A business strategist is reviewing a proposed AI solution that uses reinforcement learning from human feedback (RLHF) to improve a customer service chatbot over time. Which description best explains what RLHF accomplishes in this context?",
+"opts": {
+"A": "RLHF trains the chatbot exclusively on historical customer service transcripts without requiring any ongoing human involvement after the initial training phase.",
+"B": "RLHF replaces the chatbot's underlying language model with a reinforcement learning agent that learns through trial-and-error interactions in a simulated customer service environment.",
+"C": "RLHF randomly reassigns customer service agents to different roles based on performance metrics collected from the chatbot interaction logs.",
+"D": "RLHF uses ratings or preferences provided by human reviewers on model outputs to train a reward model, which then guides further fine-tuning of the chatbot to produce more helpful, accurate, and appropriate responses."
+},
+"fin": [
+"D"
+],
+"expl": "Reinforcement Learning from Human Feedback (RLHF) is the training technique behind major improvements in conversational AI systems. The process works in three stages: (1) Supervised Fine-Tuning — the model is trained on high-quality demonstrations of desired behavior; (2) Reward Model Training — human raters compare pairs of model outputs and their preferences are used to train a reward model; (3) RL Fine-Tuning — the chatbot is further fine-tuned using the reward model's scores as feedback signals, using algorithms like Proximal Policy Optimization (PPO). RLHF is how models like ChatGPT and Claude are aligned with human preferences for helpfulness, harmlessness, and honesty.",
+"multi": false
+},
+{
+"id": "PE-024",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A retail company wants to build a product image search feature allowing customers to upload a photo of a product and find visually similar items in the catalog. Which AWS service is most appropriate for implementing this visual similarity search capability?",
+"opts": {
+"A": "Amazon Comprehend, configured with a custom entity recognition model trained on product catalog descriptions.",
+"B": "Amazon Rekognition combined with a vector similarity search using Amazon OpenSearch to enable image-based product discovery.",
+"C": "Amazon Transcribe, which can convert product image metadata into spoken descriptions for audio-based catalog search.",
+"D": "Amazon Polly, configured to read product descriptions aloud and match audio waveforms to identify visually similar products."
+},
+"fin": [
+"B"
+],
+"expl": "Visual similarity search (also called reverse image search) is implemented through a two-stage architecture: (1) Feature extraction — Amazon Rekognition or a multimodal foundation model via Amazon Bedrock extracts visual feature embeddings (high-dimensional numerical vectors) from product catalog images and from the customer-uploaded query image; (2) Similarity search — the query image embedding is compared against all catalog embeddings using approximate nearest-neighbor (ANN) vector search in Amazon OpenSearch Service with k-NN plugin or Amazon Aurora with pgvector. Items with embeddings closest to the query embedding are returned as visually similar results. Amazon Bedrock also supports multimodal embeddings for combined text-image similarity.",
+"multi": false
+},
+{
+"id": "PE-025",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A logistics company wants to use AI to transcribe and analyze thousands of recorded customer service calls to identify the most common complaint categories and agent performance issues. What is the correct sequence of AWS services for this pipeline?",
+"opts": {
+"A": "Amazon Textract to extract audio from MP3 files, then Amazon Lex to categorize complaints, then Amazon QuickSight to visualize results.",
+"B": "Amazon Polly to convert call recordings to text, then Amazon Kendra to index and search the transcripts, then Amazon Athena to analyze them.",
+"C": "Amazon Connect to record all calls, then Amazon SageMaker to transcribe audio to text, then Amazon Comprehend to classify complaints.",
+"D": "Amazon Transcribe to convert call recordings to text transcripts, then Amazon Comprehend to identify complaint categories and sentiment, then Amazon QuickSight to visualize patterns across categories and agents."
+},
+"fin": [
+"D"
+],
+"expl": "The voice analytics pipeline on AWS uses three complementary services: Amazon Transcribe provides automatic speech recognition (ASR) with speaker diarization (distinguishing agent vs. customer speech), medical or specialized vocabulary support, and PII redaction. Amazon Comprehend then processes the transcribed text to extract sentiment (positive, negative, neutral, mixed), key phrases, entities (product names, complaint types), and custom categories trained on labeled call examples. Amazon QuickSight consumes the structured output from Comprehend and creates executive dashboards with complaint category heat maps, agent sentiment trends, and escalation rate tracking. This pipeline is available as a pre-built solution via AWS Contact Center Intelligence.",
+"multi": false
+},
+{
+"id": "PE-026",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A media company wants to automatically moderate user-generated content on its platform by detecting nudity, violence, and hate speech symbols in uploaded images and videos before they are published. Which AWS service directly supports this use case?",
+"opts": {
+"A": "Amazon Rekognition Content Moderation, which provides pre-built ML models for detecting explicit content, violence, hate symbols, and other categories of unsafe visual content in images and video frames.",
+"B": "Amazon Comprehend Dominant Language Detection, which identifies the primary language in image metadata to flag content from high-risk geographies.",
+"C": "Amazon SageMaker Ground Truth, which assigns the moderation task to human labelers who review each uploaded image manually and approve or reject it.",
+"D": "Amazon Kendra, which builds a searchable index of all uploaded images and allows administrators to query for potentially inappropriate content using natural language searches."
+},
+"fin": [
+"A"
+],
+"expl": "Amazon Rekognition Content Moderation is purpose-built for automated visual content moderation. It uses pre-trained deep learning models to detect: Explicit nudity and partial nudity, Suggestive content, Violence and graphic violence, Visually disturbing content (such as body parts or physical trauma), Hate symbols (such as Nazi swastikas), and Drug, tobacco, and alcohol imagery. For video moderation, Rekognition can process stored videos in Amazon S3 and detect unsafe frames across the timeline. The service returns bounding boxes for detected content, confidence scores, and hierarchical category labels. Human-in-the-loop review workflows can be implemented using Amazon Augmented AI (A2I) for low-confidence cases.",
+"multi": false
+},
+{
+"id": "PE-027",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A global bank wants to enable its 50,000 employees to find policy documents, regulatory guidelines, and internal procedures by asking natural language questions across content stored in SharePoint, Confluence, and internal S3 buckets. The solution must require minimal custom development and support native enterprise content source connectors. Which AWS solution is the BEST fit?",
+"opts": {
+"A": "Amazon Lex with a custom-built document retrieval API that connects to SharePoint, Confluence, and S3 via hand-coded integrations.",
+"B": "Amazon OpenSearch Service with a custom Elasticsearch connector for each content source, requiring the bank's engineering team to build and maintain three separate ingestion pipelines.",
+"C": "Amazon Kendra with native connectors for SharePoint, Confluence, and S3, enabling intelligent natural language search across all three enterprise content sources without custom integration development.",
+"D": "Amazon SageMaker Canvas with built-in document connectors for enterprise content management systems and a no-code NLP configuration interface."
+},
+"fin": [
+"C"
+],
+"expl": "Amazon Kendra is the correct solution when requirements include: (1) natural language question answering over enterprise content, (2) native connectors to multiple enterprise content sources without custom development, (3) intelligent ranking that understands document semantics beyond keyword matching. Kendra provides over 40 native data source connectors including SharePoint Online/On-premises, Confluence Cloud/Server, Amazon S3, ServiceNow, Salesforce, Google Drive, Box, Zendesk, and others. Each connector handles authentication, incremental document sync, access control list (ACL) synchronization, and metadata extraction. For a bank with 50,000 users searching complex policy and regulatory documents, Kendra's intelligent natural language ranking is critical for finding relevant answers rather than just matching keywords.",
+"multi": false
+},
+{
+"id": "PE-028",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A technology startup wants to build a multilingual customer support chatbot that handles conversations in English, Spanish, French, and Portuguese, maintains multi-turn conversation context, and can escalate to a human agent when it cannot resolve an issue. Which AWS service is the foundational service for building this conversational experience?",
+"opts": {
+"A": "Amazon Lex, which provides multi-turn dialog management, intent recognition, slot filling, and built-in fulfillment hooks for escalation to human agents — combined with Amazon Translate for multilingual support.",
+"B": "Amazon Polly, configured with conversation flow templates for each language, which can both understand and generate spoken responses.",
+"C": "Amazon Transcribe, configured with intent recognition plugins for each of the four languages.",
+"D": "Amazon Comprehend with a custom intent classifier trained on support ticket examples in all four languages."
+},
+"fin": [
+"A"
+],
+"expl": "Amazon Lex is AWS's conversational AI service, providing: (1) Natural Language Understanding (NLU) for intent classification — understanding what the user wants; (2) Slot filling — collecting required information through guided conversation; (3) Dialog management — maintaining multi-turn context across a conversation; (4) Fulfillment — invoking AWS Lambda functions to execute actions or look up information; (5) Built-in Amazon Connect integration for escalating to live human agents. For multilingual support, Amazon Translate can be integrated to detect the user's language and translate between it and English for Lex processing. Amazon Lex supports multiple languages natively, and additional languages can be served through translate-and-route architectures.",
+"multi": false
+},
+{
+"id": "PE-029",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "An enterprise software company wants to add AI-powered code completion and security vulnerability scanning to its developer IDE. The solution should be instantly usable by developers with no custom model training and must suggest code based on the developer's existing codebase context. Which AWS service directly addresses this use case?",
+"opts": {
+"A": "Amazon SageMaker Studio, which provides a Jupyter notebook environment where developers can write and test ML models.",
+"B": "Amazon CodeGuru Profiler, which analyzes application performance metrics to identify the slowest and most expensive lines of code at runtime.",
+"C": "AWS CloudFormation, which can generate infrastructure-as-code templates automatically from natural language architecture descriptions.",
+"D": "Amazon Q Developer (formerly Amazon CodeWhisperer), which provides real-time AI-powered code suggestions based on code context and comments, and includes automated security scanning to detect common vulnerabilities in the developer's code."
+},
+"fin": [
+"D"
+],
+"expl": "Amazon Q Developer (formerly CodeWhisperer) is AWS's AI-powered developer productivity service. Its key capabilities include: Real-time code suggestions based on context (the developer's current file, language, and comments); Multi-line code generation from natural language prompts; Reference tracking that identifies open-source training data matches for license compliance; Security scanning that detects common vulnerability types (OWASP Top 10, CWE categories) in the developer's code with remediation suggestions; Support for 15+ programming languages; and native IDE plugins for VS Code, JetBrains IDEs, and AWS Cloud9. For enterprise teams, Amazon Q Developer Professional tier provides organizational usage controls and additional security features.",
+"multi": false
+},
+{
+"id": "PE-030",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A healthcare company wants to extract structured clinical information — such as diagnoses, medications, dosages, and medical conditions — from unstructured physician clinical notes stored as PDF files. The extracted data will be used to populate a clinical data warehouse. Which combination of AWS services best solves this problem?",
+"opts": {
+"A": "Amazon Transcribe Medical to convert clinical note PDFs to audio, then Amazon Lex to parse the audio for medical entities.",
+"B": "Amazon Textract to extract text from clinical note PDFs, then Amazon Comprehend Medical to detect and structure medical entities such as diagnoses, medications, dosages, and conditions.",
+"C": "Amazon Kendra to index all PDF clinical notes and build a searchable medical record repository for clinicians to query.",
+"D": "Amazon SageMaker with a custom NER model trained from scratch on medical text, which will always outperform pre-built services for clinical entity extraction."
+},
+"fin": [
+"B"
+],
+"expl": "Amazon Comprehend Medical is a HIPAA-eligible NLP service specialized for medical text analysis. It detects: Medications (with dosage, frequency, route, and duration), Medical conditions and diagnoses, Anatomy references (body parts and systems), Test, treatment, and procedure names, Time expressions, and Entity relationships (such as which medication treats which condition). When combined with Amazon Textract for PDF text extraction, this pipeline can process large volumes of clinical notes, progress notes, discharge summaries, and clinical trial documentation to populate structured clinical databases. Both services support HIPAA-eligible workloads under a Business Associate Agreement (BAA) with AWS.",
+"multi": false
+},
+{
+"id": "PE-031",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A manufacturing company wants to use AI to monitor product quality on the assembly line by analyzing images from cameras mounted above the conveyor belt and automatically detecting surface defects in manufactured parts. The operations team has no data scientists. Which AWS solution enables this with the least technical complexity?",
+"opts": {
+"A": "Amazon Rekognition custom labels with a custom training dataset of 50,000 defect images that the manufacturing team must collect and label manually before the service can be used.",
+"B": "Deploying a custom PyTorch convolutional neural network on Amazon EC2 G5 instances with a custom training loop designed by an external consulting firm.",
+"C": "Amazon Lookout for Vision, which allows manufacturing teams to train a defect detection model using only a small set of labeled good and defective product images and deploy it to edge devices on the factory floor.",
+"D": "Amazon QuickSight with embedded camera integration that generates real-time dashboards showing assembly line throughput metrics."
+},
+"fin": [
+"C"
+],
+"expl": "Amazon Lookout for Vision is specifically designed for industrial quality inspection use cases with minimal ML expertise requirements. Its key capabilities include: training visual anomaly detection models with as few as 30 images (far fewer than general-purpose computer vision services), a guided console interface for dataset management and model training, automatic anomaly detection that distinguishes normal products from defective ones, cloud-based inference via API or edge deployment via AWS Panorama for low-latency factory floor inspection, and continuous model improvement as new defect examples are added. This combination of small data requirements, no-code interface, and edge deployment makes it ideal for manufacturing operations teams without in-house data science expertise. 【備註】Amazon Lookout for Vision 已於 2025-10-31 終止支援；此題在考試概念上仍以 C（低技術門檻、少量影像即可訓練的託管式瑕疵偵測）為答案。",
+"multi": false
+},
+{
+"id": "PE-032",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A company is building a customer-facing AI assistant powered by a large language model. Product leadership requires the ability to prevent the assistant from answering competitor-related questions, discussing pricing without authorization, and generating any content that could be construed as financial advice. Which Amazon Bedrock capability enables these specific behavioral restrictions?",
+"opts": {
+"A": "Amazon Bedrock Guardrails with configured denied topics for competitor discussions, pricing topics, and financial advice, applied to both user inputs and model outputs.",
+"B": "Amazon Bedrock Knowledge Bases with a knowledge source that contains approved competitor, pricing, and financial advice information to guide the model's responses.",
+"C": "Amazon Bedrock Model Evaluation, which can be run periodically to detect which model responses mention competitors or financial advice and generate a report for remediation.",
+"D": "Amazon Bedrock Fine-Tuning, which retrains the model with a dataset that includes examples of refusing competitor, pricing, and financial advice questions, so the model learns to avoid these topics."
+},
+"fin": [
+"A"
+],
+"expl": "Amazon Bedrock Guardrails provides runtime content policy enforcement for generative AI applications. Denied topics allow administrators to define topic categories in natural language (e.g., 'Do not discuss our competitors or their products,' 'Do not provide specific pricing quotes without sales approval,' 'Do not provide financial investment advice'). When activated, Guardrails intercepts user inputs that match prohibited topics and returns a configured refusal message rather than passing them to the LLM, and also intercepts model outputs that contain prohibited content before they reach the user. Additional Guardrails capabilities include content filters (for harmful content categories), word filters, sensitive information redaction, and contextual grounding checks.",
+"multi": false
+},
+{
+"id": "PE-033",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A company is building a complex AI workflow in which a master orchestrator agent must delegate tasks to specialized sub-agents: a data retrieval agent, a calculation agent, and a report generation agent. The orchestrator must coordinate multi-step tasks and synthesize results. Which Amazon Bedrock capability enables this multi-agent orchestration architecture?",
+"opts": {
+"A": "Amazon Bedrock Knowledge Bases, which can be configured to create separate knowledge indexes for each specialized agent domain.",
+"B": "Amazon Bedrock Fine-Tuning, which can train the master model to include sub-agent reasoning patterns in its weights so that it implicitly delegates tasks internally.",
+"C": "Amazon Bedrock Model Evaluation, which runs all agents simultaneously against a benchmark and selects the one with the highest score as the orchestrator.",
+"D": "Amazon Bedrock Agents with a multi-agent collaboration architecture, where a supervisor agent delegates tasks to specialized sub-agents using a defined orchestration protocol and synthesizes their outputs into a final response."
+},
+"fin": [
+"D"
+],
+"expl": "Amazon Bedrock Agents supports multi-agent orchestration through a supervisor-collaborator pattern: the supervisor agent receives the user's complex request, decomposes it into sub-tasks, delegates each sub-task to the appropriate specialized collaborator agent (with its own tool configuration, knowledge base access, and prompt instructions), and synthesizes the results from all collaborators into a coherent final response. This architecture enables: parallel task execution for faster processing, specialized expertise encapsulated in purpose-built agents, modular agent design that can be updated independently, and scalable task decomposition for complex workflows. Each Amazon Bedrock Agent can be equipped with action groups (Lambda functions), knowledge bases, and memory capabilities.",
+"multi": false
+},
+{
+"id": "PE-034",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "An energy company wants to build an AI model to predict power grid equipment failures using real-time sensor telemetry data streaming from thousands of sensors at 1-second intervals. The model must generate predictions within 100 milliseconds and cannot depend on a stable internet connection at remote substation sites. Which deployment pattern best meets these requirements?",
+"opts": {
+"A": "Deploy the predictive model as a centralized Amazon SageMaker real-time inference endpoint, and stream all sensor data to the endpoint via the public internet.",
+"B": "Deploy the predictive model to edge devices at each substation using AWS IoT Greengrass, enabling sub-100ms inference directly on local sensor data without requiring a cloud connection.",
+"C": "Store all 1-second sensor readings in Amazon Kinesis Data Streams, batch them into 15-minute windows, then run a SageMaker batch transform job every 15 minutes to generate failure predictions.",
+"D": "Use Amazon QuickSight to visualize sensor data dashboards and configure threshold-based alerts when sensor readings exceed predefined limits as a substitute for ML-based failure prediction."
+},
+"fin": [
+"B"
+],
+"expl": "Edge AI deployment using AWS IoT Greengrass is the correct pattern for use cases requiring: sub-100ms inference latency (cloud round-trips typically take 50-500ms), offline operation capability (remote sites with intermittent connectivity), high-frequency real-time data streams that are too expensive to transmit entirely to the cloud, and data privacy requirements that prevent raw sensor data from leaving the site. AWS IoT Greengrass allows trained SageMaker models to be packaged as Greengrass components and deployed to edge hardware (industrial gateways, ruggedized edge servers). The model runs locally, generating real-time failure predictions from sensor streams, and aggregated results are synced to AWS when connectivity is available for central monitoring and model retraining.",
+"multi": false
+},
+{
+"id": "PE-035",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A company's business intelligence team wants to explore and visualize its Amazon S3 data lake without writing SQL or managing any database infrastructure. They need to perform ad hoc queries and create interactive dashboards for business stakeholders. Which combination of AWS services best enables this with the least infrastructure management overhead?",
+"opts": {
+"A": "Amazon RDS for MySQL with Amazon QuickSight — load all S3 data into a MySQL relational database, then connect QuickSight for visualization.",
+"B": "Amazon Redshift with a dedicated cluster — load all S3 data via COPY commands, then use Redshift's built-in data visualization console.",
+"C": "Amazon Athena to query S3 data directly using SQL without loading or ETL, combined with Amazon QuickSight for interactive dashboard visualization.",
+"D": "Amazon DynamoDB to store all S3 data in a NoSQL key-value format, then use Amazon CloudWatch dashboards for business metric visualization."
+},
+"fin": [
+"C"
+],
+"expl": "The Amazon Athena + Amazon QuickSight combination is the standard serverless data lake analytics architecture on AWS. Amazon Athena provides: serverless SQL queries directly against S3-stored data (Parquet, CSV, JSON, ORC, Avro), no data loading or ETL required, payment based only on data scanned (approximately $5 per TB), the ability to query AWS Glue Data Catalog for table schema discovery, and high-concurrency parallel query execution. Amazon QuickSight provides: native Athena data source integration, drag-and-drop dashboard builder for business analysts, ML-powered insights (anomaly detection, forecasting), and embedded analytics for sharing dashboards with stakeholders. This combination enables a fully serverless analytics stack with no infrastructure management.",
+"multi": false
+},
+{
+"id": "PE-059",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "PE",
+"stem": "An AI solutions architect is tuning a large language model on Amazon Bedrock for an enterprise legal summarization assistant. The legal team complains that the model occasionally introduces creative variations rather than sticking strictly to the text. Which parameter adjustment is MOST effective in reducing output variability and making responses more deterministic?",
+"opts": {
+"A": "Increase the maximum token generation limit to allow the model more room to explain its legal reasoning.",
+"B": "Lower the temperature parameter towards 0 and decrease the Top-P (nucleus sampling) threshold to restrict token selection to the most statistically probable choices.",
+"C": "Increase the temperature parameter above 1.0 so the model explores a wider vocabulary of formal legal terminology.",
+"D": "Enable multi-region model failover to ensure inference requests are routed to the lowest-latency endpoint."
+},
+"fin": [
+"B"
+],
+"expl": "Large language models use sampling parameters to control token selection during autoregressive generation. Temperature controls the entropy (randomness) of the probability distribution over the vocabulary: low temperature (near 0) makes the model greedy and deterministic (ideal for legal, financial, and analytical summarization), while high temperature increases diversity and creativity. Top-P (nucleus sampling) restricts candidate tokens to the smallest set whose cumulative probability reaches P (e.g., 0.9), filtering out low-probability tails. Top-K limits candidates to the top K most likely tokens. For deterministic enterprise workflows, lowering temperature and Top-P is the standard best practice.",
+"multi": false
+},
+{
+"id": "PE-060",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A Chief Data Officer is evaluating model compression techniques to deploy an AI vision model onto resource-constrained mobile inspection devices. The data science team proposes post-training quantization from FP32 (32-bit floating point) to INT8 (8-bit integer). What is the primary business trade-off associated with this technique?",
+"opts": {
+"A": "Quantization completely eliminates the need for test set evaluation while doubling training duration.",
+"B": "Quantization increases the model memory footprint by four times while guaranteeing zero loss in mathematical precision.",
+"C": "Quantization enables the model to automatically process unstructured tabular data without feature engineering.",
+"D": "Quantization significantly reduces model size, memory footprint, and inference latency with only a minimal, acceptable degradation in predictive accuracy."
+},
+"fin": [
+"D"
+],
+"expl": "Model quantization is a cornerstone optimization technique in modern AI deployment. By mapping continuous high-precision floating-point values (FP32 or FP16) to discrete lower-bit integer representations (INT8 or INT4), organizations achieve: (1) up to 75% reduction in RAM/VRAM footprint, (2) lower memory bandwidth bottlenecks, (3) higher inference throughput and lower latency on edge and CPU/GPU hardware, and (4) lower operational hosting costs. In exchange, there is a minor loss in theoretical precision that rarely impacts business performance. Amazon SageMaker Neo and AWS Neuron support automated model compilation and quantization for AWS Inferentia and edge devices.",
+"multi": false
+},
+{
+"id": "PE-061",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "During the training of a customer churn neural network, the data science team observes that training loss continues to decrease steadily across epochs, while validation loss decreases initially, bottoms out, and begins to rise sharply. What phenomenon is occurring, and what is the strategic implication for the project?",
+"opts": {
+"A": "The model is overfitting to the training data by memorizing noise and specific examples; the team should implement regularization, early stopping, or gather more diverse training data.",
+"B": "The model is underfitting due to insufficient model complexity; the team must immediately add more hidden layers to the neural network.",
+"C": "The validation dataset has suffered from catastrophic hardware failure and must be re-ingested from Amazon S3 Glacier.",
+"D": "The model has achieved optimal generalization; the project manager should immediately approve production deployment without further testing."
+},
+"fin": [
+"A"
+],
+"expl": "Monitoring training versus validation loss curves is fundamental to evaluating model learning dynamics. Overfitting occurs when a model with high capacity memorizes the training data, achieving near-zero training loss while its error on unseen validation data increases. Key mitigation strategies include: (1) Early Stopping (halting training when validation loss stops improving), (2) Regularization (L1/L2 penalties, dropout layers), (3) Data Augmentation (expanding sample variety), and (4) Pruning/simplifying model architecture. Conversely, underfitting occurs when the model is too simple to capture underlying relationships, resulting in high training and validation loss. Amazon SageMaker Experiments and Model Dashboard track these curves automatically.",
+"multi": false
+},
+{
+"id": "PE-062",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "PE",
+"stem": "A security operations center is deploying an AI system to detect unauthorized network intrusions. The security director states: 'Missing an actual cyberattack is catastrophic for the organization, whereas investigating a false alarm is manageable for our analyst team.' Which metric should the AI project prioritize optimizing?",
+"opts": {
+"A": "Accuracy, because an overall high accuracy percentage ensures all security threats are equally addressed.",
+"B": "Precision, because minimizing false positive alerts ensures security analysts never waste time on harmless traffic.",
+"C": "Recall (Sensitivity), because maximizing recall minimizes false negatives, ensuring that nearly all true intrusion attempts are captured for investigation.",
+"D": "Specificity, because maximizing true negatives guarantees that normal user traffic is never delayed by logging systems."
+},
+"fin": [
+"C"
+],
+"expl": "The precision-recall trade-off is one of the most critical business decisions in machine learning. Precision answers: 'Of all alerts generated, how many were actual threats?' Recall answers: 'Of all actual threats that occurred, how many did the system catch?' In high-stakes detection environments (cybersecurity intrusion detection, cancer screening, fraud detection, aviation safety), the cost of a False Negative (undetected threat/disease) vastly outweighs the operational cost of a False Positive (human triage). Therefore, organizations tune decision thresholds to maximize Recall. Conversely, for customer-facing spam filters or automated account suspension systems, high Precision is prioritized to avoid alienating legitimate users.",
+"multi": false
+},
+{
+"id": "PE-063",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "PE",
+"stem": "An enterprise search engineering team is replacing traditional lexical keyword search with a vector embedding search engine. A business stakeholder asks why vector embeddings provide superior search results for complex technical queries. How should the team explain vector embeddings?",
+"opts": {
+"A": "Vector embeddings encrypt user queries into cryptographic hashes that prevent competitors from indexing search keywords.",
+"B": "Vector embeddings map words, sentences, and documents into high-dimensional numerical vectors where semantic meaning and conceptual similarity are captured by spatial proximity.",
+"C": "Vector embeddings convert unstructured text into structured SQL database tables that execute relational JOIN operations at hardware speed.",
+"D": "Vector embeddings compress full text documents into compressed ZIP archives stored directly inside GPU registers."
+},
+"fin": [
+"B"
+],
+"expl": "Vector embeddings are numerical representations of data (text, images, audio) in a continuous vector space where distance corresponds to semantic similarity. Unlike traditional keyword matching (e.g., BM25 or TF-IDF), which relies on exact lexical token overlap, embedding models (such as Amazon Titan Text Embeddings or Cohere Embed on Amazon Bedrock) capture deep semantic context, polysemy, synonyms, and conceptual intent. When indexed in a vector store like Amazon OpenSearch Service, Amazon Aurora pgvector, or Amazon Bedrock Knowledge Bases, similarity search uses algorithms like HNSW (Hierarchical Navigable Small World) to retrieve the most contextually relevant content for downstream generative AI synthesis.",
+"multi": false
+},
+{
+"id": "PE-069",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "PE",
+"stem": "A pharmaceutical research company has accumulated 50 million pages of specialized organic chemistry literature, molecular biology papers, and internal lab research reports. The team wants a foundation model that deeply understands rare biochemical terminology and synthesizes new compound structures. Standard prompt engineering and small-scale fine-tuning have yielded suboptimal domain fluency. Which model adaptation strategy on AWS is most appropriate?",
+"opts": {
+"A": "Deploy a basic zero-shot prompt with a 100-token context window on Amazon Lex.",
+"B": "Apply few-shot prompting with five chemistry examples in the Amazon QuickSight Q search bar.",
+"C": "Execute Continual Pre-training (Domain Adaptation) on Amazon Bedrock using the company's vast corpus of unlabeled scientific text, followed by instruction fine-tuning.",
+"D": "Convert all 50 million pages into base64 images and process them exclusively through Amazon Rekognition text detection."
+},
+"fin": [
+"C"
+],
+"expl": "When general-purpose foundation models lack domain-specific vocabulary and conceptual knowledge (e.g., organic chemistry, specialized legal codes, telecommunications standards), organizations use Continual Pre-training (also called Domain-Specific Pre-training). Amazon Bedrock allows customers to provide large volumes of raw, unlabeled domain text to continue pre-training a base model (such as Amazon Titan or custom models). This adjusts the model's fundamental token probability distributions to the domain before downstream instruction fine-tuning or RAG application. This bridges the gap between generic public models and specialized enterprise domain expertise.",
+"multi": false
+},
+{
+"id": "PE-070",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "PE",
+"stem": "An aerospace manufacturing firm is building a RAG-based maintenance assistant for aircraft technicians. Technicians query the system for exact alphanumeric part numbers (e.g., 'O-RING-XB92-04') as well as broad conceptual troubleshooting guidance (e.g., 'hydraulic pressure drop during descent'). Pure vector semantic search frequently misses exact part numbers, while pure keyword search misses conceptual troubleshooting steps. Which search strategy on Amazon Bedrock Knowledge Bases best resolves this problem?",
+"opts": {
+"A": "Disable document indexing entirely and require technicians to memorize all part numbers before submitting natural language queries.",
+"B": "Implement Hybrid Search (combining dense vector semantic search with sparse lexical/BM25 keyword search) in Amazon Bedrock Knowledge Bases with Amazon OpenSearch Serverless.",
+"C": "Replace the knowledge base with an Amazon Polly text-to-speech audio stream.",
+"D": "Increase the vector embedding dimension to 1,000,000 floats without indexing document text."
+},
+"fin": [
+"B"
+],
+"expl": "Hybrid Search is the industry best practice for enterprise RAG systems spanning both conceptual and exact-match data. Dense semantic retrieval (vector embeddings) excels at understanding semantic intent, context, and paraphrased questions, but can struggle with exact keyword matching for rare terms, acronyms, product SKUs, and alphanumeric part numbers. Sparse lexical retrieval (such as BM25 in Amazon OpenSearch Service) excels at exact string matching. Hybrid search executes both retrieval paths in parallel and merges the result sets using Reciprocal Rank Fusion (RRF) to generate a balanced, highly relevant context window for the foundation model. Amazon Bedrock Knowledge Bases supports hybrid search out of the box.",
+"multi": false
+},
+{
+"id": "PE-071",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A software engineering team is building an enterprise generative AI workflow that requires: (1) extracting entities from a customer email, (2) querying an ERP database via AWS Lambda, (3) evaluating customer sentiment, and (4) drafting a personalized response under strict brand guidelines. Instead of writing custom Python orchestration code and hardcoding prompt strings, which AWS capability should the team use to visually build, test, and version this multi-step prompt sequence?",
+"opts": {
+"A": "Amazon Simple Email Service (SES) receipt rule sets.",
+"B": "Amazon CloudWatch Logs Insights query interface.",
+"C": "Amazon Route 53 latency-based routing policies.",
+"D": "Amazon Bedrock Prompt Flows and Prompt Management."
+},
+"fin": [
+"D"
+],
+"expl": "Amazon Bedrock Prompt Flows is a visual workflow orchestration tool specifically designed for generative AI applications. It enables developers and business analysts to link prompt templates, foundation models, Amazon Bedrock Knowledge Bases, AWS Lambda business logic, and branching conditions into executable graphs without writing boilerplate orchestration code. Alongside Amazon Bedrock Prompt Management (which provides centralized versioning, prompt comparison, parameter tuning, and deployment tags), organizations can rapidly prototype, test, and maintain enterprise prompt pipelines with proper lifecycle governance.",
+"multi": false
+},
+{
+"id": "PE-072",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "An insurance firm needs an automated solution to ingest high volumes of incoming PDF claim packages, extract structured data from diverse tables, transcribe embedded audio voice notes from adjusters, and output standard JSON records to an underwriting system. Which AWS service is purpose-built to automate this end-to-end multimodal data extraction workflow using generative AI?",
+"opts": {
+"A": "Amazon Bedrock Data Automation, which provides pre-built multimodal generative AI models specifically tuned for automated document, image, and audio extraction into standardized schemas.",
+"B": "Amazon WorkSpaces, which provisions virtual Windows desktop machines for human claim adjusters to type data manually into spreadsheets.",
+"C": "Amazon Kinesis Video Streams with no downstream analytics consumers or Lambda processors.",
+"D": "Amazon FSx for Lustre configured as a high-performance scratch file system."
+},
+"fin": [
+"A"
+],
+"expl": "Amazon Bedrock Data Automation is designed to transform unstructured multimodal business content into structured insights using generative AI. It eliminates complex manual pipelines previously requiring separate OCR, layout parsing, transcription, and NLP steps. The service supports: (1) Document data extraction (standard and complex forms, multi-page tables, handwritten notes), (2) Image data extraction (visual scene parsing, object analysis), and (3) Audio/Video data extraction (transcription, action summarization). Output can be mapped directly to custom JSON schemas for automated ingestion by enterprise ERP, CRM, and underwriting systems.",
+"multi": false
+},
+{
+"id": "PE-073",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A financial risk committee asks an AI strategist to clarify the distinct roles of Amazon SageMaker Clarify and Amazon Bedrock Guardrails in the enterprise AI portfolio. Which statement accurately distinguishes their primary use cases?",
+"opts": {
+"A": "SageMaker Clarify is exclusively used for transcribing customer audio, while Bedrock Guardrails generates synthetic images for marketing campaigns.",
+"B": "SageMaker Clarify and Bedrock Guardrails are identical services with different names depending on whether the customer uses a Mac or Windows operating system.",
+"C": "SageMaker Clarify analyzes tabular and ML models for pre/post-training statistical bias and provides SHAP feature attribution explainability, whereas Bedrock Guardrails enforces runtime safety policies, PII redaction, and topic filtering on LLM conversations.",
+"D": "Bedrock Guardrails is used to train custom neural networks from scratch, while SageMaker Clarify replaces corporate legal counsel."
+},
+"fin": [
+"C"
+],
+"expl": "Understanding where different governance tools operate in the AI lifecycle is essential for AI strategists: (1) Amazon SageMaker Clarify operates primarily in the ML development and monitoring lifecycle for custom predictive models. It computes pre-training bias metrics (e.g., disparate impact, class imbalance), post-training bias metrics across demographic facets, and provides SHAP (Shapley Additive Explanations) values for global and local feature importance. (2) Amazon Bedrock Guardrails operates at inference runtime for generative AI foundation models, evaluating prompts and generated text against configurable safety thresholds (hate speech, violence, profanity), denied topics, PII masking rules, and contextual grounding thresholds. Together, they provide end-to-end governance across traditional and generative AI workloads.",
 "multi": false
 },
 {
@@ -2906,6 +3533,329 @@ const DATA=[
 "multi": false
 },
 {
+"id": "PE-012",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A Chief Strategy Officer wants to establish a clear process for prioritizing AI investments across the organization. The team has identified 20 potential AI initiatives across five business units. Which prioritization framework provides the most structured, repeatable, and business-aligned approach?",
+"opts": {
+"A": "Prioritize by departmental lobbying strength — the business unit with the most senior sponsorship automatically receives the first AI investment slot.",
+"B": "Fund all 20 initiatives simultaneously with equal budget allocation to avoid internal competition and ensure every team feels equally valued.",
+"C": "Score each initiative across multiple weighted dimensions — strategic alignment, expected business value, data and technology feasibility, required investment, and risk level — then rank and select top initiatives by composite score.",
+"D": "Prioritize whichever initiatives can be completed in the shortest calendar time regardless of their business value contribution."
+},
+"fin": [
+"C"
+],
+"expl": "A multi-criteria scoring matrix is the standard framework for AI investment prioritization. Typical weighted dimensions include: Strategic Alignment (how directly does this advance company strategy?), Expected Business Value (quantified ROI, cost savings, or revenue impact), Data Readiness (is the required data available, accessible, and of sufficient quality?), Technical Feasibility (does the team have the skills and infrastructure?), Implementation Risk (what could go wrong?), and Time to Value (how quickly can the organization realize benefits?). AWS recommends this approach in its AI Business Strategy guidance to ensure that AI investments are driven by business outcomes, not technology enthusiasm.",
+"multi": false
+},
+{
+"id": "PE-013",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "PE",
+"stem": "A global manufacturing company has just completed its first three AI pilots. The CEO wants to transition from piloting to scaling AI across the enterprise. Which organizational capability is MOST critical to develop FIRST to enable sustainable enterprise-wide AI scaling?",
+"opts": {
+"A": "Establishing standardized AI governance, MLOps infrastructure, and internal AI literacy programs before scaling, to ensure quality, compliance, and adoption readiness across all business units.",
+"B": "Purchasing the most powerful GPU cluster available to ensure maximum model training capacity before any other investments.",
+"C": "Immediately deploying AI into the 20 highest-revenue processes simultaneously to demonstrate scale quickly to investors.",
+"D": "Replacing all existing enterprise software systems with AI-native alternatives to build a fully AI-integrated technology stack as the first priority."
+},
+"fin": [
+"A"
+],
+"expl": "The transition from AI piloting to enterprise scaling is a major organizational transformation that requires three parallel foundational investments: (1) Governance — policies for responsible AI, model risk management, data access controls, and compliance frameworks; (2) MLOps Infrastructure — continuous integration and deployment pipelines for AI models, automated testing, model monitoring, and drift detection; (3) AI Literacy — training programs that enable business users, domain experts, and executives to work effectively with AI systems. Organizations that attempt to scale AI without these foundations typically encounter governance failures, model reliability issues, and poor adoption. AWS provides guidance on this AI scaling journey through its Cloud Adoption Framework for AI.",
+"multi": false
+},
+{
+"id": "PE-014",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "PE",
+"stem": "An e-commerce company runs an A/B test to measure the incremental business value of its new AI-powered product recommendation engine. The test shows a 2.3% increase in average order value in the AI-enabled group compared to the control group. The business team must now determine whether this result is statistically significant and commercially meaningful. Which approach is most appropriate for this evaluation?",
+"opts": {
+"A": "Declare the experiment a success because any positive percentage lift, however small, automatically confirms that the AI system adds business value.",
+"B": "Conclude that the experiment failed because a 2.3% lift is too small to justify the cost of an AI system, regardless of statistical significance.",
+"C": "Report the 2.3% lift to the board immediately without further statistical analysis since any positive result in an A/B test indicates the AI system is definitively superior.",
+"D": "Calculate the p-value and confidence interval to determine statistical significance, then translate the 2.3% lift into projected annual dollar impact to determine commercial significance and ROI against AI system costs."
+},
+"fin": [
+"D"
+],
+"expl": "Rigorous A/B test evaluation for AI systems requires both statistical and commercial significance analysis. Statistical significance (measured by p-value and confidence intervals) confirms that the observed difference is unlikely to be random chance. Commercial significance translates the result into business impact: a 2.3% average order value lift on a platform generating $500M in annual sales represents approximately $11.5M incremental revenue — a compelling ROI justification for most AI systems. However, if the platform generates $2M in annual sales, the same 2.3% represents only $46,000 incremental revenue, which may not justify a sophisticated AI recommendation system. Both dimensions are essential for a complete business value assessment.",
+"multi": false
+},
+{
+"id": "PE-015",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A professional services firm is designing its AI strategy and is debating whether AI will primarily be used to replace employees or to augment employee capabilities. The Chief Human Resources Officer insists on an 'AI as augmentation' framing. What is the most compelling strategic business argument for the augmentation approach?",
+"opts": {
+"A": "The augmentation approach is cheaper because it does not require purchasing any AI tools or model licenses.",
+"B": "AI augmentation enables employees to handle more complex tasks, apply better judgment, and deliver higher-quality output by offloading routine cognitive work to AI — amplifying human productivity without eliminating the human expertise the firm depends on.",
+"C": "The augmentation approach means the firm never has to retrain employees on any new tools or workflows.",
+"D": "Regulators require professional services firms to use AI only for augmentation and explicitly prohibit AI automation of any advisory work."
+},
+"fin": [
+"B"
+],
+"expl": "The AI augmentation strategy is particularly compelling for knowledge-intensive industries such as professional services, legal, healthcare, and financial advisory. In these industries, the competitive advantage derives from human expertise, judgment, and client trust — not from operational throughput. AI augmentation amplifies expert productivity by: handling routine drafting, summarization, and research; surfacing relevant precedents and insights faster; enabling experts to review more work in less time; and freeing cognitive capacity for complex judgment tasks. This creates a 'capability multiplier' that allows firms to serve more clients, respond faster, and deliver higher-quality outputs with the same expert headcount.",
+"multi": false
+},
+{
+"id": "PE-016",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "PE",
+"stem": "A multinational consumer packaged goods company is creating an AI business value framework. The Chief Analytics Officer asks the team to classify the company's current AI initiatives into four value categories: Cost Reduction, Revenue Growth, Risk Mitigation, and Customer Experience. Under which category does an AI model that predicts supply chain disruptions 4-6 weeks in advance BEST fit?",
+"opts": {
+"A": "Revenue Growth, because preventing supply disruptions allows the company to always have products available for customers to purchase, directly growing sales.",
+"B": "Customer Experience, because customers directly interact with the supply chain prediction model through a consumer-facing app.",
+"C": "Cost Reduction, because the model eliminates the cost of maintaining any safety stock inventory.",
+"D": "Risk Mitigation, because the model enables the company to proactively respond to predicted disruptions, avoiding production shutdowns, contractual penalties, and reputational damage from stockouts."
+},
+"fin": [
+"D"
+],
+"expl": "The AI business value classification framework helps organizations communicate the strategic relevance of AI investments to different executive stakeholders. Supply chain disruption prediction fits the Risk Mitigation category because its value is realized by avoiding adverse outcomes rather than creating new revenue or reducing direct operating costs. The measurable risk mitigation value includes: avoided production shutdown costs, avoided contractual penalty payments, avoided emergency procurement premiums, avoided revenue losses from stockouts, and preserved brand reputation with retail partners. Building AI business cases with explicit value category mapping makes it easier for executives to understand and approve investments.",
+"multi": false
+},
+{
+"id": "PE-017",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A company's AI strategy team is asked to define what a 'data flywheel' is and why it represents a sustainable competitive advantage. Which description is most accurate?",
+"opts": {
+"A": "A data flywheel is a self-reinforcing cycle where AI-powered products attract more users, who generate more behavioral data, which is used to improve the AI model, which makes the product better, which attracts even more users — compounding over time into a growing competitive moat.",
+"B": "A data flywheel is a cloud data storage service that rotates data between hot, warm, and cold storage tiers automatically to minimize storage costs.",
+"C": "A data flywheel is a backup mechanism that automatically spins up a secondary database when the primary database experiences a hardware failure.",
+"D": "A data flywheel is a legal term referring to the contractual obligation of a company to continuously share its data with regulatory bodies to demonstrate AI transparency compliance."
+},
+"fin": [
+"A"
+],
+"expl": "The data flywheel concept explains why AI-powered network effects create durable competitive moats. Classic examples include: Amazon's recommendation engine (more purchases, better recommendations, more purchases), Spotify's music recommendations (more listening, better taste modeling, more listening), and TikTok's content algorithm (more watching, better content matching, more watching). The key insight for business strategists is that a data flywheel creates an advantage that grows in proportion to accumulated usage history, making it increasingly difficult for new entrants to compete purely on algorithmic quality. For AWS-powered businesses, services like Amazon Personalize, Amazon Rekognition, and Amazon Comprehend can form the AI layer of a data flywheel.",
+"multi": false
+},
+{
+"id": "PE-018",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "An AI strategy director is evaluating the total cost of ownership (TCO) of building a generative AI application using Amazon Bedrock. A board member asks which cost categories should be included in a rigorous TCO analysis beyond the direct API token costs. Which response is most complete?",
+"opts": {
+"A": "TCO for a Bedrock application is simply the sum of input and output tokens charged at the published per-token rate; no other costs need to be considered.",
+"B": "TCO should include token costs and the annual salary of the one data scientist who maintains the prompt configuration.",
+"C": "TCO should include: API token costs at scale, application development and integration engineering, data infrastructure (vector databases, embedding pipelines, RAG data ingestion), evaluation and testing tooling, model monitoring and guardrails, security and compliance overhead, and ongoing maintenance and prompt optimization.",
+"D": "TCO for an AI application is equal to the cost of the GPU cluster required to run the model, which is the single largest cost driver in all generative AI deployments."
+},
+"fin": [
+"C"
+],
+"expl": "A comprehensive TCO analysis for a production generative AI application on Amazon Bedrock includes: (1) Direct AI costs — Amazon Bedrock on-demand or Provisioned Throughput token charges; (2) Application development — engineering hours to build, test, and iterate; (3) Data infrastructure — Amazon OpenSearch or pgvector for embeddings, S3 for document storage, ingestion pipelines; (4) Evaluation costs — human evaluation, automated metrics, Amazon Bedrock Model Evaluation; (5) Governance costs — Amazon Bedrock Guardrails configuration and maintenance; (6) Security costs — IAM role design, VPC configuration, encryption management; (7) Operational costs — monitoring, logging, incident response, and prompt optimization over time. Neglecting non-token costs typically leads to significant budget overruns and executive disappointment.",
+"multi": false
+},
+{
+"id": "PE-019",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A retail company's AI team presents three potential use cases to the investment committee: (A) an AI model to predict which products will trend virally on social media in the next 2 weeks using real-time sentiment data, (B) an AI model to forecast weekly store-level inventory replenishment needs using 3 years of historical sales data, and (C) an AI model to generate custom product descriptions using a foundation model. Which use case offers the fastest time to value with the lowest implementation risk?",
+"opts": {
+"A": "Use case A, because predicting viral social media trends offers the highest potential revenue upside if predictions are accurate.",
+"B": "Use case B, because inventory forecasting with 3 years of historical data is a proven, well-understood ML problem with measurable business value, available training data, and clear success metrics.",
+"C": "Use case C, because generating product descriptions with a foundation model requires no historical data and can be deployed in days using API calls.",
+"D": "All three use cases have identical time to value and risk profiles since they all use AI and are subject to the same AWS infrastructure constraints."
+},
+"fin": [
+"B"
+],
+"expl": "Use case selection for AI initiatives should favor use cases that maximize the intersection of available data, proven technical approach, and quantifiable business value. Inventory demand forecasting with 3 years of historical data checks all three boxes: the training data exists and is reliable, time series forecasting is a well-understood ML problem with mature AWS tooling (Amazon Forecast, SageMaker), and the business impact (reduced inventory cost, fewer stockouts) is directly measurable in dollars. In contrast, viral trend prediction suffers from limited data and high uncertainty, while product description generation requires quality review processes and integration work before measurable impact is realized. AWS offers Amazon Forecast as a purpose-built time series forecasting service for retail use cases.",
+"multi": false
+},
+{
+"id": "PE-020",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "組織變革、人才與溝通",
+"code": "PE",
+"stem": "A company is six months into an AI transformation program. The program director notes that three of the five AI pilots have delivered strong results but the business units have not changed their core processes to take advantage of the AI outputs. What organizational issue is the program director identifying?",
+"opts": {
+"A": "The AI models in the three successful pilots are technically defective and need to be retrained on better data.",
+"B": "The cloud infrastructure hosting the AI models is experiencing performance degradation that is preventing the AI outputs from reaching business users.",
+"C": "The program director should replace all business unit leaders who have not adopted the AI outputs with executives who are more technologically progressive.",
+"D": "The program is experiencing a 'last mile' adoption problem — successful AI models are not driving business value because organizational processes and employee behaviors have not been redesigned to act on AI-generated insights."
+},
+"fin": [
+"D"
+],
+"expl": "AI value realization requires both technical success (the model works) and organizational adoption (processes change to use the model's outputs). The 'last mile' adoption problem is a well-documented phenomenon in AI transformation: models that perform well in evaluation fail to deliver business value because: users do not trust or understand the AI outputs, workflows have not been redesigned to incorporate AI recommendations, incentive structures still reward the old behavior, and change management investment was insufficient. Solutions include: workflow redesign workshops, role-specific training on interpreting AI outputs, phased adoption plans, feedback mechanisms for users to flag AI errors, and linking adoption metrics to team performance objectives.",
+"multi": false
+},
+{
+"id": "PE-021",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A financial technology company CPTO is evaluating two business models for its AI-powered credit risk scoring product: (A) Selling perpetual licenses to banks for a fixed fee, or (B) Pricing the product as a per-prediction API service. What is the key strategic advantage of the per-prediction API model for an AI company?",
+"opts": {
+"A": "The per-prediction API model creates a direct revenue-to-usage relationship where revenue scales automatically with customer transaction volumes without requiring renegotiation of contracts, and the company captures more value as customers grow.",
+"B": "Perpetual license pricing is always superior because it provides immediate large upfront cash payments that eliminate revenue risk for the AI company.",
+"C": "The per-prediction API model allows the AI company to avoid all customer support obligations since API users are expected to be self-sufficient.",
+"D": "Per-prediction API pricing makes the product accessible only to enterprise customers with high transaction volumes, excluding small bank customers from the market."
+},
+"fin": [
+"A"
+],
+"expl": "Usage-based or consumption-based pricing (pricing per prediction, per API call, or per transaction) is the dominant commercial model for AI-powered API products. Its strategic advantages include: natural revenue scaling with customer growth, lower initial purchase barrier encouraging adoption, alignment of revenue with customer value realization, and automatic expansion revenue as existing customers grow. Amazon Bedrock itself uses this model (per-token pricing), which enables startups and enterprises alike to access foundation models. Building AI products with usage-based pricing creates a powerful combination: the product improves as more data is generated, and revenue grows as usage increases — the commercial equivalent of a data flywheel.",
+"multi": false
+},
+{
+"id": "PE-022",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "PE",
+"stem": "An AI program manager is presenting quarterly business reviews for an enterprise AI program. The executive team asks what the 'AI adoption rate' KPI measures and why it matters for demonstrating program success. Which explanation is most accurate?",
+"opts": {
+"A": "AI adoption rate measures the percentage of the company's total cloud budget allocated to AI and ML services, indicating the financial commitment to AI.",
+"B": "AI adoption rate measures the number of AI models currently deployed to production endpoints, regardless of whether those endpoints are receiving any user traffic.",
+"C": "AI adoption rate measures the percentage of intended users who are actively and regularly using the AI-powered tool in their workflows, providing a leading indicator of whether AI investments are translating into behavior change and business value realization.",
+"D": "AI adoption rate is a legal compliance metric that measures whether employees have signed the required AI usage policy acknowledgment forms."
+},
+"fin": [
+"C"
+],
+"expl": "AI adoption rate is a leading indicator of business value realization that bridges the gap between AI deployment and actual business impact. It measures: what percentage of the intended user population is actively using the AI tool, how frequently (daily, weekly, monthly active users), and often includes depth measures such as what percentage of workflows use AI assistance. Low adoption rates despite high model accuracy are a clear signal of organizational barriers — trust issues, insufficient training, poor workflow integration, or inadequate change management. Best-in-class AI programs track adoption as a primary program KPI alongside business outcome metrics.",
+"multi": false
+},
+{
+"id": "PE-023",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company is building an AI strategy and considers deploying AI for three different business functions: (1) customer churn prediction, (2) real-time autonomous trading execution, and (3) personalized email marketing subject line generation. A risk assessment framework categorizes each use case by potential harm severity. How should the company order these use cases from HIGHEST to LOWEST risk requiring the most stringent governance controls?",
+"opts": {
+"A": "Email marketing generation (highest risk), customer churn prediction (medium risk), autonomous trading execution (lowest risk).",
+"B": "Customer churn prediction (highest risk), autonomous trading execution (medium risk), email marketing generation (lowest risk).",
+"C": "All three use cases have equal risk profiles and should be governed identically regardless of the nature of the decisions they automate.",
+"D": "Autonomous trading execution (highest risk), customer churn prediction (medium risk), email marketing generation (lowest risk)."
+},
+"fin": [
+"D"
+],
+"expl": "Risk-based AI governance frameworks categorize use cases by potential harm severity to apply proportional controls. Key risk factors include: autonomy of decision-making (how much human oversight exists?), potential financial impact of errors, reversibility of decisions, affected population size, and regulatory obligations. Autonomous financial trading combines high autonomy with large financial stakes and time-pressured execution — the highest-risk profile. Customer churn prediction informs human decisions but requires human action before consequences, moderating the risk. Email content generation has low stakes and immediate human review before sending, making it lowest risk. The EU AI Act and AWS Responsible AI guidance both advocate risk-proportionate governance frameworks.",
+"multi": false
+},
+{
+"id": "PE-064",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "PE",
+"stem": "A retail bank's Chief Financial Officer is comparing the total cost of ownership (TCO) between: (Option A) Hosting an open-source 70-billion parameter LLM on dedicated Amazon EC2 GPU instances, and (Option B) Accessing foundation models via Amazon Bedrock serverless on-demand APIs. The bank's traffic consists of heavy morning spikes and near-zero nighttime volume. Which option provides superior cost-efficiency for this workload profile?",
+"opts": {
+"A": "Option B, because serverless on-demand pricing charges only for the exact tokens processed during peak hours, eliminating the idle GPU compute costs incurred during low-traffic periods.",
+"B": "Option A, because purchasing dedicated GPU instances is always cheaper than API token pricing regardless of traffic volume or idle time.",
+"C": "Option A, because open-source models hosted on EC2 automatically eliminate all software licensing, operating system, and MLOps maintenance overhead.",
+"D": "Both options have identical TCO because AWS calculates token pricing by dividing the EC2 hourly instance cost by the number of connected users."
+},
+"fin": [
+"A"
+],
+"expl": "Workload utilization patterns are the primary economic driver when choosing between managed foundation model APIs and dedicated self-hosted infrastructure. Dedicated compute (Amazon EC2 P4d/G5 instances or SageMaker Real-Time endpoints) incurs continuous baseline expenditure, making it cost-effective only when GPU utilization remains consistently high (>70-80% sustained 24/7). For spiky, business-hours-only, or unpredictable workloads, Amazon Bedrock serverless on-demand pricing converts capital and fixed operational expense into variable operating cost, charging strictly per input and output token. Furthermore, serverless APIs eliminate indirect MLOps labor costs for patching, driver updates, container scaling, and high availability management.",
+"multi": false
+},
+{
+"id": "PE-065",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A corporate audit discovers that employees across several business units are pasting confidential customer data, internal roadmaps, and proprietary source code into free, publicly accessible consumer AI tools on the internet to summarize documents. What is the most effective strategic response to address this 'Shadow AI' risk?",
+"opts": {
+"A": "Completely block all corporate internet access to prevent any external web browsing by employees.",
+"B": "Rely on annual employee honor-code attestations without providing any sanctioned enterprise generative AI alternatives.",
+"C": "Establish an enterprise AI policy and deploy a secure, company-sanctioned generative AI portal powered by Amazon Bedrock with strict data privacy, IAM access controls, and logging.",
+"D": "Encourage employees to continue using public consumer AI tools as long as they delete their browser history after each session."
+},
+"fin": [
+"C"
+],
+"expl": "Shadow AI refers to the unapproved, ungoverned use of external AI tools by employees within an organization. It poses severe enterprise risks: data exfiltration, regulatory privacy violations (GDPR, HIPAA), loss of trade secrets, and intellectual property exposure. The effective strategic response combines governance and enablement: (1) Formulate an explicit Enterprise AI Acceptable Use Policy, (2) Provide a secure, sanctioned enterprise AI environment (such as Amazon Q Business or custom Bedrock applications) configured with zero-data-retention for model training, VPC isolation, and KMS encryption, (3) Implement network DLP (Data Loss Prevention) rules, and (4) Conduct workforce training on approved vs. prohibited data handling.",
+"multi": false
+},
+{
+"id": "PE-066",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "PE",
+"stem": "According to enterprise AI maturity frameworks, which characteristic distinguishes an organization that has reached the 'Transformational' (or AI-First) stage from one in the 'Envision' or 'Experimentation' stage?",
+"opts": {
+"A": "The Transformational organization builds every foundation model from scratch using on-premises mainframes without cloud infrastructure.",
+"B": "The Transformational organization eliminates all human governance and allows autonomous AI agents to execute financial transactions with zero oversight.",
+"C": "The Transformational organization restricts AI development exclusively to one centralized data science laboratory to prevent other departments from participating.",
+"D": "The Transformational organization embeds AI deeply into core business workflows, product offerings, and strategic decision-making, supported by enterprise-wide MLOps platforms, mature governance, and quantifiable KPI flywheels."
+},
+"fin": [
+"D"
+],
+"expl": "AI Maturity Models (such as the AWS Cloud Adoption Framework for AI and Gartner AI Maturity Curve) typically define four to five stages: (1) Envision/Foundational (awareness, identifying opportunities), (2) Experiment/Pilot (isolated POCs, ad-hoc tooling, departmental silos), (3) Launch/Scale (repeatable MLOps patterns, standardized governance, CoE establishment), and (4) Transform/AI-First (AI embedded in business strategy, automated data flywheels, cultural fluency, end-to-end value realization across all units). Reaching the transformational stage requires aligning technology, data governance, people, and operating models.",
+"multi": false
+},
+{
+"id": "PE-067",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "PE",
+"stem": "An enterprise AI steering committee is creating a Balanced Scorecard to track the business value of an enterprise-wide Generative AI coding assistant rollout for 2,000 software engineers. Which set of metrics provides the most balanced view across financial, operational, and organizational dimensions?",
+"opts": {
+"A": "Total lines of raw code generated per day, total number of GitHub commits, and GPU power consumption in the developer data center.",
+"B": "Cycle time reduction for pull request delivery, developer satisfaction (NPS), automated security scan pass rate, and measurable cost savings from reduced bug remediation in production.",
+"C": "Number of software engineers terminated following the tool's deployment and total reduction in coffee consumption across development offices.",
+"D": "The total count of foundation models mentioned in executive quarterly press releases."
+},
+"fin": [
+"B"
+],
+"expl": "Measuring the business value of generative AI developer tools (such as Amazon Q Developer) requires a multi-dimensional Balanced Scorecard: (1) Operational Productivity: time-to-market reduction, pull request cycle time, task completion velocity; (2) Software Quality & Security: reduction in defect escape rate, security vulnerability remediation speed, test coverage improvement; (3) Developer Experience / Organizational Sentiment: tool adoption rate, active daily usage, developer satisfaction (NPS); and (4) Financial Return: developer hours reclaimed translated into business features delivered or reduced technical debt costs. Tracking vanity metrics like raw lines of code can incentivize poor code quality.",
+"multi": false
+},
+{
+"id": "PE-068",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "A Chief Technology Officer is formulating an enterprise foundation model sourcing strategy. The leadership team is debating whether to standardize on commercial proprietary models accessed via API or open-weight models self-hosted on AWS. What is a decisive strategic advantage of open-weight models over proprietary closed APIs?",
+"opts": {
+"A": "Open-weight models provide full control over model weights, enabling custom deep fine-tuning, independent air-gapped hosting for extreme compliance, and elimination of vendor-imposed API deprecation or pricing lock-in.",
+"B": "Open-weight models are always completely free of all infrastructure hosting, compute, and data engineering costs.",
+"C": "Open-weight models guarantee 100% factual accuracy and cannot hallucinate under any circumstances.",
+"D": "Open-weight models do not require any security vulnerability scanning or access control governance."
+},
+"fin": [
+"A"
+],
+"expl": "A robust enterprise AI sourcing strategy considers both proprietary API models and open-weight models based on strategic requirements: Proprietary API models (e.g., Anthropic Claude on Bedrock) deliver state-of-the-art benchmark reasoning with zero infrastructure overhead and built-in enterprise SLAs. Open-weight models (e.g., Meta Llama, Mistral) offer: (1) Complete architectural and weight ownership, (2) Deep customization via domain-specific weight adaptation (full fine-tuning, LoRA), (3) Operational independence from vendor API changes or model deprecation schedules, (4) Ability to run in isolated, air-gapped VPCs for sovereign or classified compliance, and (5) Predictable fixed infrastructure costs at massive continuous scale. Amazon Bedrock supports both proprietary and open-weight foundation models through a single unified API.",
+"multi": false
+},
+{
 "id": "SP-002",
 "dm": 2,
 "domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
@@ -4253,6 +5203,329 @@ const DATA=[
 "B"
 ],
 "expl": "B 正確：及早定義內容與安全要求，並評估分層控制（如 Guardrails）；僅靠系統提示或事後處理不夠，使用託管平台也不轉移責任。",
+"multi": false
+},
+{
+"id": "PE-036",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A company is developing internal guidelines for responsible AI use. The legal team identifies that one of the company's AI applications makes automated decisions about employee performance evaluations without any human review. Under responsible AI principles, what is the most critical concern with this design?",
+"opts": {
+"A": "The application will be too slow because processing performance evaluations without human input creates computational bottlenecks.",
+"B": "The application will be rejected by Amazon Bedrock's content filters because HR-related content is prohibited by AWS terms of service.",
+"C": "The application may generate predictions that are too accurate, making human managers feel their judgment is redundant and causing organizational morale issues.",
+"D": "Fully automated employee performance evaluation without human review removes meaningful accountability, denies employees the right to human review of consequential decisions, and may perpetuate or amplify bias against protected groups at scale."
+},
+"fin": [
+"D"
+],
+"expl": "Responsible AI principles require that consequential decisions affecting individuals — particularly employment, credit, healthcare, and legal matters — include meaningful human oversight. Fully automated performance evaluation without human review creates: Accountability gaps (no human takes responsibility for individual decisions), Fairness risks (bias in training data or model features can systematically disadvantage protected groups at scale without anyone reviewing individual cases), Legal exposure (many employment law frameworks require human decision-making for termination, demotion, and promotion), Violation of procedural fairness (employees cannot effectively contest an automated decision). The responsible design includes human-in-the-loop review for individual decisions, an audit trail of model inputs and outputs, employee notification and explanation rights, and regular bias audits using Amazon SageMaker Clarify.",
+"multi": false
+},
+{
+"id": "PE-037",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company CISO is reviewing security requirements for a generative AI application that will be deployed to external customers. The security team identifies that the application's system prompt contains sensitive business logic and proprietary rules. What is the primary security risk associated with exposing this system prompt, and how should it be mitigated?",
+"opts": {
+"A": "The system prompt contains too much text, causing inference latency to exceed acceptable response time thresholds for customer-facing applications.",
+"B": "An attacker could use prompt injection techniques to extract the system prompt's contents, revealing proprietary business rules and enabling them to bypass the application's intended behavioral constraints.",
+"C": "The system prompt must be stored in Amazon S3 rather than the application configuration because S3 provides automatic encryption that protects the prompt from being read by unauthorized users.",
+"D": "The system prompt can only be kept secure if the entire AI application is deployed in a private VPC with no internet-facing components, since public internet access is the primary vector for system prompt exposure."
+},
+"fin": [
+"B"
+],
+"expl": "System prompt confidentiality is a critical LLM application security concern. Defense strategies include: Instruction hierarchy enforcement — designing the LLM response pipeline so that user inputs cannot override system instructions; Amazon Bedrock Guardrails — configuring denied topics and content filters to prevent system prompt disclosure; Prompt hardening — explicitly instructing the model in the system prompt not to reveal its contents (though this is imperfect); Output filtering — implementing post-processing checks that detect and redact system prompt content before responses reach users; and Minimal disclosure — including only business-necessary information in system prompts, avoiding embedding credentials or highly sensitive intellectual property. The OWASP LLM Top 10 identifies Sensitive Information Disclosure and Prompt Injection as primary LLM application risks.",
+"multi": false
+},
+{
+"id": "PE-038",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A large online marketplace is using an AI model to determine which seller listings are shown at the top of search results. A seller advocacy group claims the algorithm systematically disadvantages new sellers relative to established sellers with longer sales histories. Which category of AI fairness concern does this represent, and what is the most appropriate mitigation?",
+"opts": {
+"A": "Historical bias — the model learned to favor sellers with long histories because its training data reflects a marketplace that historically rewarded incumbency; mitigation requires adding explicit features that balance new versus established seller opportunity and auditing ranking outputs by seller tenure cohort.",
+"B": "Infrastructure bias — the model performs worse for new sellers because their product pages load more slowly due to insufficient CDN caching, causing ranking penalties.",
+"C": "Sampling bias — the model was trained on too small a dataset and would perform fairly if the training set were expanded to include more product categories.",
+"D": "Hardware bias — the model runs on GPUs that process established seller listings faster than new seller listings, creating a performance gap."
+},
+"fin": [
+"A"
+],
+"expl": "Historical bias in marketplace ranking algorithms is a documented and commercially significant fairness concern. When AI ranking models are trained on historical marketplace data, they encode the competitive advantages that established players already had — more reviews, more purchase history, more click data — as positive ranking signals. This creates a self-reinforcing cycle where the rich get richer: established sellers rank higher, get more visibility, generate more data, and rank even higher. Mitigation approaches include: feature fairness audits (examining whether seller tenure receives disproportionate weight), cohort-based fairness evaluation (comparing ranking performance across new vs. established seller segments), counterfactual fairness analysis, and explicit fairness constraints in the objective function. Amazon SageMaker Clarify can detect such biases and generate fairness reports.",
+"multi": false
+},
+{
+"id": "PE-039",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A company is deploying an AI chatbot for customer service and wants to implement strong data privacy protections. The legal team specifies that the chatbot must not store, log, or use personally identifiable information (PII) from customer conversations for any purpose including model improvement. Which Amazon Bedrock capability directly supports this requirement?",
+"opts": {
+"A": "Amazon Bedrock Provisioned Throughput, which guarantees reserved model capacity that is isolated from other customers' requests, ensuring their data does not mix with the company's customer conversations.",
+"B": "Amazon Bedrock Model Evaluation, which can retrospectively review stored conversation logs and flag which entries contain PII for manual deletion.",
+"C": "Amazon Bedrock Guardrails with sensitive information redaction enabled, which automatically detects and redacts PII categories (names, email addresses, phone numbers, SSNs, credit card numbers) from both user inputs and model outputs in real time.",
+"D": "Amazon Bedrock Agents, which can be configured to redirect all conversations containing PII to a human agent who handles them outside the AI system."
+},
+"fin": [
+"C"
+],
+"expl": "Amazon Bedrock Guardrails sensitive information redaction provides automatic, real-time PII protection with the following capabilities: Detection of 30+ PII types including names, email addresses, phone numbers, SSNs, credit card numbers, IP addresses, dates of birth, and more; Configurable behavior — mask PII with a placeholder (e.g., [NAME]) or block the entire message; Bidirectional protection applied to both user inputs and model outputs; and No storage of identified PII in logs when Guardrails is configured correctly. This aligns with data minimization principles under GDPR and CCPA, which require that PII be collected and processed only to the extent necessary. Amazon Bedrock by default does not use customer conversations for model training, and Guardrails adds an additional technical control layer.",
+"multi": false
+},
+{
+"id": "PE-040",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "An AI governance board is reviewing a proposal to use AI for automated résumé screening at a large corporation. The board acknowledges the efficiency benefits but wants to implement governance controls commensurate with the risk level. Which set of governance controls is MOST appropriate for this high-stakes HR AI use case?",
+"opts": {
+"A": "No additional governance controls are needed beyond standard software development quality assurance processes because résumé screening is a low-stakes administrative task.",
+"B": "Implement the AI system and conduct a bias audit only if a discrimination complaint is formally filed by a rejected applicant.",
+"C": "Deploy the AI screening system across all roles and geographies simultaneously, since faster universal adoption maximizes ROI on the governance investment.",
+"D": "Conduct pre-deployment bias audits across protected demographic groups, implement human review of all AI-screened candidates before rejection, establish a candidate recourse process, and perform ongoing disparate impact monitoring post-deployment."
+},
+"fin": [
+"D"
+],
+"expl": "AI-based hiring and résumé screening is classified as high-risk under the EU AI Act (Annex III) and subject to enhanced scrutiny under EEOC guidelines in the United States. Appropriate governance for this use case includes: Pre-deployment bias audit measuring screening rates and false negative rates across race, gender, age, national origin, and disability status; Human-in-the-loop requirement where no candidate is rejected based solely on AI screening without human review; Adverse impact analysis measuring whether the screening system produces statistically significant disparate outcomes for protected groups; Candidate notification informing applicants that AI-assisted screening is used; Recourse process enabling candidates to request human review; and Ongoing monitoring with regular bias reports reviewed by the HR leadership team. Amazon SageMaker Clarify provides pre-deployment bias analysis and post-deployment monitoring for fairness metrics.",
+"multi": false
+},
+{
+"id": "PE-041",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company deploys a generative AI marketing assistant that can create promotional offers and discount codes. A security researcher discovers that a malicious user can craft a message that causes the AI assistant to create a 100% discount code and send it to an external email address. What category of AI security attack does this represent?",
+"opts": {
+"A": "Indirect prompt injection, where malicious instructions embedded in externally retrieved content (such as a product description or website the agent browsed) hijack the agent's actions to perform unauthorized operations.",
+"B": "Model poisoning, where the attacker corrupted the model's training weights by submitting malicious training examples during the model's original fine-tuning process.",
+"C": "DDoS attack, where the attacker floods the AI assistant's API endpoint with millions of requests to exhaust its processing capacity.",
+"D": "SQL injection, where the attacker embeds database query commands in their message to directly access and modify the discount code database without the AI model's involvement."
+},
+"fin": [
+"A"
+],
+"expl": "Indirect prompt injection is considered the most dangerous class of LLM application attack because it is difficult to detect and can be pre-positioned in content the agent will autonomously retrieve. Attack scenarios include: malicious instructions embedded in web pages an agent browses for research, hidden instructions in documents an agent reads and summarizes, and poisoned content in knowledge bases the agent retrieves from. In the described scenario, an attacker embedding malicious instructions in a product description or customer review that the marketing assistant retrieves causes the agent to execute unauthorized discount code creation and transmission. Defenses include: input sanitization at the retrieval layer, agent permission scoping (least privilege — the agent should only have permission to create codes within defined parameters), output validation before executing consequential actions, and Amazon Bedrock Guardrails content filtering.",
+"multi": false
+},
+{
+"id": "PE-042",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company operating in the European Union is planning to deploy an AI system to make real-time creditworthiness assessments for loan applications. Under the EU AI Act, which compliance requirement applies specifically to this system?",
+"opts": {
+"A": "The company must register the AI system in the EU AI database only after the system causes at least one documented incident of financial harm to a loan applicant.",
+"B": "As a high-risk AI system under Annex III of the EU AI Act, the creditworthiness assessment system requires a conformity assessment, technical documentation, a risk management system, data governance practices, human oversight mechanisms, and registration in the EU AI database before deployment.",
+"C": "The system is classified as minimal risk under the EU AI Act because credit decisions are made by financial professionals, not by the general public.",
+"D": "The EU AI Act only applies to AI systems deployed directly to consumers; B2B creditworthiness tools used internally by banks are exempt from compliance requirements."
+},
+"fin": [
+"B"
+],
+"expl": "The EU AI Act (Regulation (EU) 2024/1689) creates a risk-based regulatory framework. High-risk AI systems in financial services — explicitly including AI used in creditworthiness and credit scoring — must satisfy the following requirements before deployment: Risk Management System (documented identification and mitigation of known risks), Data Governance (training data quality, representativeness, and bias assessment), Technical Documentation (detailed model documentation enabling regulatory review), Logging and Record-keeping (maintaining audit logs of AI system operation), Transparency to users (clear disclosure of AI system use and its limitations), Human Oversight (mechanisms for human review and override of AI decisions), Accuracy, Robustness, and Cybersecurity (demonstrated performance standards), and Conformity Assessment and EU Registration. AWS provides compliance resources for the EU AI Act applicable to Amazon Bedrock and SageMaker deployments.",
+"multi": false
+},
+{
+"id": "PE-043",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company's Chief Ethics Officer is designing an AI ethics review process for new AI initiatives. She wants to ensure that ethical considerations are integrated into the development lifecycle rather than reviewed only at the end before deployment. Which process design best achieves this goal?",
+"opts": {
+"A": "Conduct a single comprehensive ethics review immediately before the production deployment approval gate to minimize disruption to the development process.",
+"B": "Allow data scientists to self-certify that their models are ethical by signing an attestation form, with formal ethics review reserved only for models that receive complaints after deployment.",
+"C": "Integrate ethics checkpoints at each major lifecycle stage: data collection and design, model training, evaluation, pre-deployment review, and post-deployment monitoring — with documented outcomes and sign-offs at each gate.",
+"D": "Create a dedicated AI Ethics Committee of philosophers and ethicists who review all AI initiatives once per year in a comprehensive annual review session."
+},
+"fin": [
+"C"
+],
+"expl": "Ethics-by-design (also called responsible AI by design) integrates ethical assessment as a continuous process throughout the AI development lifecycle rather than a single gate at the end. Each stage addresses different ethical concerns: Data Stage — consent, representation, privacy, and labeling fairness; Training Stage — emerging bias patterns, data leakage, objective function alignment; Evaluation Stage — fairness metrics across demographic groups, error rate analysis; Pre-deployment Stage — transparency, explainability, human oversight mechanisms; Post-deployment Stage — drift monitoring, real-world impact assessment, user feedback. This approach is consistent with the ISO/IEC 42001 AI Management System standard and AWS Responsible AI guidance, which both emphasize continuous lifecycle integration rather than point-in-time review.",
+"multi": false
+},
+{
+"id": "PE-044",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "An AI governance team is establishing criteria for when AI systems require external third-party audits versus internal governance reviews. Which category of AI application MOST clearly requires mandatory external third-party auditing?",
+"opts": {
+"A": "A chatbot that answers employee questions about company holiday schedules and office locations.",
+"B": "An AI tool that automatically selects which font to use in marketing email templates based on brand style guidelines.",
+"C": "An AI model that predicts which team-building activities employees are most likely to enjoy based on their historical participation data.",
+"D": "An AI system that makes real-time decisions about granting or denying individuals access to essential government benefits such as housing assistance or unemployment compensation."
+},
+"fin": [
+"D"
+],
+"expl": "External third-party auditing is required for AI systems where: (1) the potential harm from errors is severe or irreversible; (2) vulnerable populations are affected; (3) there is a public accountability obligation; or (4) regulatory frameworks mandate independent review. AI systems making government benefits eligibility decisions check all four criteria — they determine access to food assistance, housing, medical care, and income support for vulnerable individuals. The EU AI Act (Annex III) explicitly lists public benefits eligibility AI as high-risk and mandates conformity assessment. US executive orders on AI safety also identify government benefit AI as requiring enhanced oversight. AWS supports compliant deployment of high-risk AI systems with appropriate transparency and human oversight mechanisms.",
+"multi": false
+},
+{
+"id": "PE-045",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A company uses a large language model to generate financial analysis summaries for investment advisors. The compliance team is concerned that the model may present speculative predictions as established facts, creating liability. Which combination of technical controls most directly addresses this concern?",
+"opts": {
+"A": "Increasing the model's maximum output length to allow the model to provide more detailed explanations, which will naturally make speculation more obvious.",
+"B": "Implementing Amazon Bedrock Guardrails contextual grounding checks to verify that model outputs are supported by retrieved source content, combined with system prompt instructions that require the model to use explicit uncertainty language when the source material does not confirm a claim.",
+"C": "Disabling the model's temperature parameter by setting it to zero to make the model always select the most probable next token, which ensures factual accuracy.",
+"D": "Limiting the model's context window to 100 tokens to prevent it from processing complex financial data that might lead to speculative conclusions."
+},
+"fin": [
+"B"
+],
+"expl": "Preventing the conflation of speculation with established fact in LLM outputs requires both technical enforcement and model behavioral alignment: Guardrails contextual grounding (faithfulness checking) uses a secondary LLM or scoring model to verify that each factual claim in the output is supported by the retrieved source documents. Unsupported claims can be blocked or flagged. System prompt engineering can instruct the model to use epistemic markers — phrases like 'Based on the provided data...', 'This cannot be confirmed from the available information...', or 'This is a projection subject to uncertainty...' — to distinguish supported facts from inferences. Together these controls reduce the risk of presenting speculative outputs as established facts, which is particularly important for regulated financial communications. Amazon Bedrock Guardrails supports grounding configuration.",
+"multi": false
+},
+{
+"id": "PE-046",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "An AI project team is implementing a multi-agent system where AI agents can autonomously take actions such as sending emails, submitting purchase orders, and creating calendar invites. A security architect insists that each agent should have the minimum permissions necessary to perform only its specific task. What is the PRIMARY reason this constraint is important in autonomous AI agent systems?",
+"opts": {
+"A": "Limiting agent permissions reduces the potential blast radius of both prompt injection attacks and agent reasoning errors — if an agent is compromised or makes a mistake, it can only execute actions within its narrow permission scope, limiting the extent of unintended harm.",
+"B": "Limiting agent permissions improves response speed because agents with fewer permissions require less computational processing time to determine which tools they can use.",
+"C": "Limiting agent permissions ensures that each agent receives a smaller allocated share of the context window, reducing token consumption and inference costs.",
+"D": "Agent permission restrictions are required by AWS service terms of service for all Amazon Bedrock Agents deployments, making them mandatory for compliance rather than a security design choice."
+},
+"fin": [
+"A"
+],
+"expl": "The principle of least privilege applied to AI agents is critical because agents introduce a new class of risk: autonomous consequential action. Traditional software with elevated permissions is a known security risk. AI agents with elevated permissions are even more dangerous because: (1) they can be manipulated through prompt injection to take unintended actions; (2) reasoning errors in the agent's planning can cause legitimate but incorrect actions; (3) the agent may be tricked by malicious content in retrieved data (indirect injection). IAM role scoping for Amazon Bedrock Agents should follow: one IAM role per agent with only the specific action permissions needed, Lambda function permissions scoped to only the specific operations the agent uses, read-only database access unless write is specifically required, and CloudTrail logging to audit all agent actions.",
+"multi": false
+},
+{
+"id": "PE-047",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A company is building an AI system that will recommend medical procedures to patients based on their symptoms. The design team proposes two versions: Version A presents recommendations as definitive medical instructions, and Version B presents recommendations as informational options to discuss with a licensed physician. Which version is more aligned with responsible AI principles for this domain, and why?",
+"opts": {
+"A": "Version A is more aligned with responsible AI because definitive recommendations are more actionable and reduce the cognitive burden on patients who may struggle to make complex medical decisions.",
+"B": "Both versions are equally aligned with responsible AI principles because the underlying recommendation quality is identical; only the wording differs.",
+"C": "Version B is more aligned with responsible AI principles because it preserves human oversight by licensed medical professionals, positions AI as a decision-support tool rather than a decision-replacement tool, and maintains patient safety by requiring professional medical judgment before action.",
+"D": "Version A is more aligned because the efficiency gains from direct AI medical guidance eliminate unnecessary physician consultations and reduce healthcare costs."
+},
+"fin": [
+"C"
+],
+"expl": "The medical AI decision-support versus decision-replacement distinction is fundamental in healthcare AI ethics. Decision-support AI (Version B) augments and informs clinical judgment; the licensed physician reviews the AI recommendation, applies clinical expertise, considers patient-specific factors the AI may not capture, and takes final accountability for the treatment decision. Decision-replacement AI (Version A) bypasses professional oversight and takes autonomous responsibility for clinical guidance, which: violates medical licensing frameworks in virtually every jurisdiction, removes the accountability that comes with licensure, exposes patients to harm from AI errors without a professional safety net, and violates responsible AI principles of meaningful human oversight in high-stakes domains. The responsible design always positions medical AI as support for licensed professionals, not replacement of them.",
+"multi": false
+},
+{
+"id": "PE-074",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A media and publishing company is deploying a generative AI tool to create customer-facing promotional artwork and marketing copy. The Chief Legal Officer raises concerns regarding potential copyright infringement claims if the foundation model reproduces elements of third-party copyrighted works. Which risk management provision should the company verify with its cloud AI provider?",
+"opts": {
+"A": "A guarantee that the cloud provider will refund the monthly AWS bill if any copyright lawsuit is threatened.",
+"B": "Generative AI Intellectual Property (IP) Indemnification coverage, which protects customers against third-party copyright or IP infringement claims arising from the use of outputs generated by specified first-party foundation models.",
+"C": "A requirement that the publishing company transfer all its existing trademarks and copyrights to the cloud provider prior to deployment.",
+"D": "A policy stating that AI-generated content is automatically exempt from all global copyright laws, eliminating the need for indemnification."
+},
+"fin": [
+"B"
+],
+"expl": "Intellectual property and copyright risk is a premier legal consideration when scaling generative AI. Enterprise AI strategists must review the cloud vendor's Intellectual Property Indemnification commitments. AWS provides generative AI indemnification for covered Amazon Bedrock models (such as the Amazon Titan family). This contractual commitment protects customers from third-party copyright claims alleging that the model's generated outputs infringe external intellectual property, provided the customer did not intentionally generate infringing content or disable safety guardrails. Having clear IP indemnification allows enterprises to commercialize generative AI applications with legal confidence.",
+"multi": false
+},
+{
+"id": "PE-075",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A government agency is drafting governance policies aligned with the NIST AI Risk Management Framework (AI RMF) and ISO/IEC 42001. The governance committee mandates that every AI system must maintain an updated 'Model Card' prior to production deployment. What is the primary purpose of a Model Card in enterprise AI governance?",
+"opts": {
+"A": "To provide a physical plastic badge that data scientists must wear inside the server room to access GPU clusters.",
+"B": "To store encrypted credit card information used to pay for foundation model inference API calls.",
+"C": "To automatically compile Python source code into low-level machine instructions for edge hardware execution.",
+"D": "To provide a standardized, transparent documentation record outlining the model's intended use, training data provenance, evaluation benchmarks, known limitations, out-of-scope uses, and ethical considerations."
+},
+"fin": [
+"D"
+],
+"expl": "Model Cards are a foundational transparency mechanism in responsible AI governance frameworks (including NIST AI RMF, ISO/IEC 42001, and the EU AI Act). A comprehensive Model Card includes: (1) Model Overview & Architecture, (2) Intended Uses & Out-of-Scope Applications (preventing misuse in inappropriate high-risk contexts), (3) Training & Evaluation Data Characteristics (demographic distribution, labeling methodology), (4) Performance Metrics across diverse subgroups (fairness/bias checks), (5) Environmental Impact (compute resources consumed), and (6) Ethical Considerations & Limitations. Amazon SageMaker Model Cards provides built-in tools to auto-populate and export governance-ready model cards directly from SageMaker pipelines.",
+"multi": false
+},
+{
+"id": "PE-076",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A multinational enterprise has established corporate sustainability targets to achieve net-zero carbon emissions across its technology footprint. The Chief Sustainability Officer notices that engineering teams are routinely deploying massive 400-billion parameter LLMs for simple classification and data formatting tasks. Which architectural practice best aligns AI initiatives with 'Green AI' environmental sustainability principles?",
+"opts": {
+"A": "Right-size models by using smaller, task-specific Foundation Models or Small Language Models (SLMs) for targeted tasks, and deploy specialized energy-efficient inference chips such as AWS Inferentia.",
+"B": "Require all models to run exclusively on outdated legacy CPU servers with cooling fans disabled to save electricity.",
+"C": "Increase model context windows to 2 million tokens for all user queries to ensure the model never needs to be re-run.",
+"D": "Delete all historical training datasets and prohibit the use of any AI technology across the entire company."
+},
+"fin": [
+"A"
+],
+"expl": "Sustainability in AI ('Green AI') focuses on minimizing the environmental and carbon footprint of AI workloads across their lifecycle. Key best practices include: (1) Model Right-Sizing: selecting the smallest model capable of meeting task accuracy requirements (e.g., using Amazon Nova Micro or Claude Haiku rather than Opus for simple classification), (2) Energy-Efficient Hardware: utilizing purpose-built accelerators like AWS Trainium and AWS Inferentia2 which deliver superior performance-per-watt compared to general-purpose GPUs, (3) Inference Optimization: applying quantization, pruning, and caching (prompt caching), (4) Cloud Region Selection: hosting workloads in AWS Regions powered by high proportions of renewable energy. This aligns with the Sustainability Pillar of the AWS Well-Architected Framework.",
+"multi": false
+},
+{
+"id": "PE-077",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "An AI safety board is classifying organizational oversight mechanisms across three automated customer loan processing workflows: (Workflow A) AI generates loan terms and automatically transfers funds with no human review; (Workflow B) AI prepares loan recommendations which a licensed credit officer must review and click to approve; (Workflow C) AI automatically approves low-risk loans within strict limits, while a human supervisor monitors aggregated telemetry and can intervene to halt processing if anomalies arise. How should the board classify the human oversight level in each workflow?",
+"opts": {
+"A": "Workflow A is Human-in-the-loop, Workflow B is Human-out-of-the-loop, Workflow C is Human-on-the-loop.",
+"B": "Workflow A is Human-out-of-the-loop (autonomous), Workflow B is Human-in-the-loop (human decision-maker), Workflow C is Human-on-the-loop (supervisory oversight).",
+"C": "Workflow A is Human-on-the-loop, Workflow B is Human-in-the-loop, Workflow C is Human-out-of-the-loop.",
+"D": "All three workflows are classified as Human-in-the-loop as long as a human data scientist wrote the original training code."
+},
+"fin": [
+"B"
+],
+"expl": "Responsible AI governance establishes three fundamental operational tiers of human agency and oversight: (1) Human-in-the-loop (HITL): The AI acts strictly as decision support; every individual output requires human verification and active approval before taking effect (mandatory for high-stakes healthcare, judicial, and major financial underwriting decisions). (2) Human-on-the-loop (HOTL): The AI executes operations autonomously within pre-approved guardrails, but human supervisors continuously monitor telemetry and maintain override authority ('kill-switch' or exception escalation). (3) Human-out-of-the-loop (HOOTL): Fully autonomous execution with no real-time human intervention (acceptable only for low-stakes, easily reversible operations like email spam filtering or photo tagging). The EU AI Act requires appropriate HITL or HOTL mechanisms for all high-risk AI deployments.",
+"multi": false
+},
+{
+"id": "PE-078",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A cybersecurity research lab warns that an enterprise customer service chatbot fine-tuned on proprietary internal ticket transcripts could be vulnerable to 'Membership Inference' and 'Model Inversion' attacks. What is the fundamental risk posed by these privacy attacks?",
+"opts": {
+"A": "An attacker can overheat the GPU hardware by sending complex math equations to the chatbot endpoint.",
+"B": "An attacker can force the chatbot to rewrite its own underlying neural network architecture from a Transformer to a Convolutional network.",
+"C": "An attacker can steal the AWS root account password by asking the chatbot to perform a password reset.",
+"D": "An attacker can query the model repeatedly to deduce whether specific sensitive individual records were included in the training data, or reconstruct private confidential text that the model memorized during fine-tuning."
+},
+"fin": [
+"D"
+],
+"expl": "Privacy attacks against machine learning models exploit the fact that deep neural networks can inadvertently memorize rare training sequences. The primary privacy attack vectors include: (1) Membership Inference Attacks: An attacker determines whether a specific target data point (e.g., a specific patient's medical history) was part of the model's training set by analyzing output confidence distributions. (2) Training Data Extraction / Model Inversion: An attacker queries the model to extract memorized training examples (e.g., SSNs, proprietary source code, private emails). Mitigations include: Differential Privacy (DP-SGD) during training, stringent PII data scrubbing/redaction before fine-tuning, training data deduplication, and runtime rate limiting and output sanitization via Amazon Bedrock Guardrails.",
 "multi": false
 },
 {
@@ -5922,6 +7195,310 @@ const DATA=[
 "A"
 ],
 "expl": "A 正確：指定單一當責者（如專案贊助人）作為統一的訊息來源，避免互相矛盾。",
+"multi": false
+},
+{
+"id": "PE-048",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "An AI project is entering the production deployment phase for a customer-facing loan pre-approval model. The project manager asks the team to develop a rollback plan. What is the PRIMARY reason a rollback plan is essential for AI model deployments?",
+"opts": {
+"A": "Rollback plans are required by AWS terms of service for all models deployed on Amazon SageMaker inference endpoints before they can receive live traffic.",
+"B": "Rollback plans reduce the inference cost of the new model by providing an automatic fallback to the previous lower-cost model version when traffic exceeds budget thresholds.",
+"C": "Rollback plans ensure that the data science team retains credit for the original model architecture if the new version underperforms, protecting intellectual property ownership.",
+"D": "If the newly deployed model produces unexpected errors, bias patterns, or business metric degradation in production, a rollback plan enables rapid restoration of the previous stable model version to minimize customer harm and business impact."
+},
+"fin": [
+"D"
+],
+"expl": "Model rollback plans are a fundamental MLOps safety mechanism. They address the reality that even well-evaluated models can fail in production: distribution shift may cause performance degradation, new model versions may exhibit unexpected behavior on edge-case inputs, integration issues may cause incorrect outputs in specific user journeys, or post-deployment bias monitoring may reveal unfair patterns not detected in evaluation. A robust rollback plan includes: a previous model version preserved and validated for immediate redeployment, a defined trigger threshold (e.g., accuracy drops more than 3 percentage points, error rate exceeds 1%), a documented rollback procedure tested in a staging environment, clear communication roles for notifying stakeholders, and a root cause analysis process to understand the production issue before re-attempting deployment. Amazon SageMaker supports blue/green deployment patterns with instant traffic shifting and model version management.",
+"multi": false
+},
+{
+"id": "PE-049",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "資料策略與資料準備度",
+"code": "PE",
+"stem": "An AI project sponsor observes that the development team is spending 70% of the project timeline on data preparation activities — collecting, cleaning, labeling, and validating training data — while only 30% is spent on model training and evaluation. The sponsor proposes to cut the data preparation budget to speed up delivery. What is the most appropriate response from the project manager?",
+"opts": {
+"A": "Agree with the sponsor because model training and evaluation are the more technically complex and valuable phases; data preparation is a commodity activity that can be outsourced cheaply.",
+"B": "Explain to the sponsor that the 70/30 split reflects the well-documented reality of ML projects where data quality is the primary determinant of model performance, and reducing data preparation investment is likely to produce a model that fails to meet business targets.",
+"C": "Agree with the sponsor and redirect the saved time to fine-tuning the model architecture, since architectural innovation will compensate for data quality limitations.",
+"D": "Agree with the sponsor and use data augmentation techniques to artificially multiply the existing small dataset until it reaches the required size without additional data collection effort."
+},
+"fin": [
+"B"
+],
+"expl": "The 70/30 split of time between data work and modeling work is thoroughly documented across the ML industry. Andrew Ng's Machine Learning Yearbook survey found that data scientists spend approximately 60-80% of their time on data collection, cleaning, labeling, and feature engineering. This reflects the fundamental reality that model performance is bottlenecked by data quality, not algorithmic sophistication. The principle 'garbage in, garbage out' captures this precisely: even the most advanced model architecture cannot extract reliable signal from poorly labeled, biased, or unrepresentative training data. Project sponsors without ML experience often assume that the GPU-intensive model training phase is the 'real' work, when in practice, data quality is the primary determinant of business outcome.",
+"multi": false
+},
+{
+"id": "PE-050",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "資料策略與資料準備度",
+"code": "PE",
+"stem": "A company is building a new AI model for customer segmentation and the project manager asks the data team for a data lineage report. What is the business value of maintaining data lineage documentation for AI projects?",
+"opts": {
+"A": "Data lineage provides a traceable record of where training data came from, how it was transformed, and what quality checks it passed — enabling the team to reproduce results, debug model problems, audit for regulatory compliance, and understand the source of any model bias.",
+"B": "Data lineage documentation enables the model to update its own predictions in real time as source data changes without requiring retraining.",
+"C": "Data lineage is primarily a backup mechanism that allows the data engineering team to restore deleted training datasets from cloud storage.",
+"D": "Data lineage documentation automatically detects and corrects errors in the training dataset each time a new model version is trained."
+},
+"fin": [
+"A"
+],
+"expl": "Data lineage (also known as data provenance) tracks every step in a dataset's journey: original source systems and extraction queries, transformation logic applied at each pipeline stage, data quality checks performed and their outcomes, joins and aggregations applied, features engineered from raw fields, and the specific dataset version used for each model training run. Business value includes: Auditability — regulators can verify that training data met required standards; Debugging — when model performance degrades, lineage helps identify whether a data pipeline change caused the issue; Reproducibility — the exact training dataset can be reconstructed for research or compliance purposes; Bias root-cause analysis — tracing bias back to specific data sources or transformation steps that introduced it. AWS services supporting data lineage include Amazon SageMaker ML Lineage Tracking and AWS Glue Data Catalog.",
+"multi": false
+},
+{
+"id": "PE-051",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A company plans to deploy its first AI model to production using Amazon SageMaker. The MLOps lead proposes implementing a Continuous Integration/Continuous Deployment (CI/CD) pipeline for the model. A business stakeholder asks why CI/CD is important for AI models and not just for traditional software. What is the best explanation?",
+"opts": {
+"A": "CI/CD is not actually important for AI models because models do not have code that changes — they only have weights that are replaced during retraining, making traditional CI/CD pipelines irrelevant.",
+"B": "CI/CD is important for AI models only because it reduces AWS infrastructure costs by automatically provisioning and deprovisioning SageMaker training instances at scheduled intervals.",
+"C": "CI/CD for ML automates the full model lifecycle — triggering retraining when data drift is detected, running evaluation checks against quality gates before deployment, versioning all artifacts, and enabling rapid rollback — ensuring consistent, reliable, and auditable model updates.",
+"D": "CI/CD pipelines for AI models are required by AWS SageMaker for all enterprise customer accounts and are automatically provisioned at no additional cost as part of the SageMaker service."
+},
+"fin": [
+"C"
+],
+"expl": "MLOps CI/CD pipelines extend software development best practices to the unique requirements of machine learning: Data validation — automated checks that new training data meets schema, distribution, and quality requirements; Model training — triggered by data drift detection, scheduled retraining intervals, or code changes; Model evaluation — quality gates that block deployment if accuracy drops below thresholds, fairness criteria are violated, or latency SLAs are not met; Model versioning — every trained model artifact is versioned with its training data, parameters, and evaluation metrics; Deployment automation — models pass through staging then production environments with automated traffic shifting; Rollback capability — previous model versions can be restored rapidly if production issues are detected. Amazon SageMaker Pipelines provides native MLOps CI/CD capabilities for the AWS ecosystem.",
+"multi": false
+},
+{
+"id": "PE-052",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "PE",
+"stem": "A company is launching an AI transformation program and the HR director asks the project manager: how should the AI team be structured to maximize both technical excellence and business impact? Which team structure is most effective for enterprise AI programs?",
+"opts": {
+"A": "Assign all AI responsibilities to the central IT department, which manages it as a technology infrastructure project alongside network and server administration.",
+"B": "Create a standalone AI lab staffed exclusively by data scientists who work independently from business units, then transfer completed models to business teams upon project completion.",
+"C": "Hire data scientists only — business analysts and domain experts are not valuable for AI projects because they lack technical ML knowledge.",
+"D": "Use cross-functional AI squads that embed data scientists alongside domain experts, a product owner, an ML engineer, and a business analyst — with a central AI platform team providing shared infrastructure and standards."
+},
+"fin": [
+"D"
+],
+"expl": "The cross-functional AI squad model (also called an embedded or pod model) is the organizational design most commonly cited as effective for enterprise AI programs. Each squad includes: a Product Owner (defines business requirements and success metrics), Domain Experts / Business Analysts (provide domain knowledge, validate outputs, drive adoption), Data Scientists (define modeling approach, train and evaluate models), ML Engineers (build data pipelines, deployment infrastructure, monitoring), and a Platform Team liaison (connects squad to shared infrastructure). A central AI Platform Team provides: shared MLOps infrastructure (SageMaker pipelines, model registry), governance frameworks and policy templates, reusable ML components and patterns, and AI literacy programs for the organization. This structure avoids both the ivory-tower isolation of pure AI labs and the lack of technical expertise in business-unit-only teams.",
+"multi": false
+},
+{
+"id": "PE-053",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "PE",
+"stem": "A company is running an AI proof of concept for predicting customer service ticket resolution times. The POC has been running for 8 weeks but the data science team reports that they are still unable to achieve the target accuracy because the available training dataset is too small and too noisy. What is the most appropriate action for the project manager?",
+"opts": {
+"A": "Immediately terminate the project and declare failure without assessing whether alternative approaches or additional data sources could overcome the current data limitations.",
+"B": "Conduct a structured root cause analysis: determine whether more data can be collected within budget and timeline, whether data quality issues can be remediated, whether the target accuracy is achievable with available data, and whether alternative modeling approaches (e.g., transfer learning or pre-built services) could close the gap — then present findings to the steering committee.",
+"C": "Continue running the POC for another 8 weeks without changing the approach, since more training time will eventually allow the model to achieve the target accuracy on the current dataset.",
+"D": "Replace the data science team with a new team that has stronger skills, since the inability to achieve target accuracy must reflect insufficient team capability rather than data limitations."
+},
+"fin": [
+"B"
+],
+"expl": "When an AI POC encounters a data limitation barrier, the structured project management response is: (1) Root Cause Analysis — distinguish between surmountable obstacles (data collection possible, quality fixable) and fundamental blockers (required data does not exist, cannot be collected within constraints); (2) Option Assessment — evaluate alternative approaches: additional data collection, data quality remediation, transfer learning from a pre-trained model, use of a pre-built AWS AI service (Comprehend, Forecast, etc.), or scope reduction; (3) Decision Recommendation — present findings to the steering committee with clear options, cost/timeline estimates, and a recommended path forward including defined kill-criteria if continuation is approved; (4) Outcome Decision — the steering committee decides to continue with a revised plan, pivot approach, or terminate. This structured approach prevents both premature abandonment of viable projects and indefinite continuation of unviable ones.",
+"multi": false
+},
+{
+"id": "PE-054",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "A company's AI governance framework requires all AI projects to complete a Privacy Impact Assessment (PIA) before using personal data in model training. A project team is building a model using customer purchase history and demographic data. Why is a PIA specifically important before using this data for model training?",
+"opts": {
+"A": "A PIA identifies what personal data will be used, assesses the privacy risks associated with training on that data, ensures the data processing has a valid legal basis and appropriate consent, and determines what safeguards (anonymization, encryption, access controls) are needed to protect individuals' rights.",
+"B": "A PIA is a regulatory formality required by AWS and must be submitted to AWS before any SageMaker training job can be launched on personal data.",
+"C": "A PIA automatically anonymizes all personal data in the training dataset, replacing names and emails with randomly generated identifiers before training begins.",
+"D": "A PIA is only required when the training data contains medical records under HIPAA; for non-medical purchase and demographic data, no privacy assessment is necessary."
+},
+"fin": [
+"A"
+],
+"expl": "A Privacy Impact Assessment (PIA), also known as a Data Protection Impact Assessment (DPIA) under GDPR, is a structured process for evaluating privacy risks before new data processing begins. For AI model training using personal data, a PIA examines: Legal basis (does the company have consent, legitimate interest, or another valid legal basis for training on this data?), Data minimization (is only the personal data necessary for the training purpose being used?), Purpose limitation (is the training use consistent with the purpose for which the data was originally collected?), Risk assessment (could the model infer sensitive attributes about individuals that they did not disclose?), and Safeguards (what access controls, anonymization, encryption, and audit logging protect the training data?). AWS provides a Shared Responsibility Model and GDPR resources to help customers understand their obligations when using AWS services for personal data processing.",
+"multi": false
+},
+{
+"id": "PE-055",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "PE",
+"stem": "A company's AI program has completed four successful AI pilots over 18 months. The Chief Digital Officer asks the program director to develop a plan to transition the program from the 'experimentation' phase to the 'enterprise scaling' phase. Which set of actions best characterizes the transition plan?",
+"opts": {
+"A": "Announce that the experimental phase is over and instruct all business units to independently procure and deploy AI systems using their departmental budgets without central coordination.",
+"B": "Transition to scale by hiring 200 additional data scientists immediately and assigning one data scientist to each business process across the enterprise.",
+"C": "Establish centralized MLOps infrastructure for standardized model deployment and monitoring, create an enterprise AI governance framework, develop reusable AI components and patterns, build AI literacy across business units, and define a portfolio of priority scale-up use cases.",
+"D": "Declare all four pilots as production deployments immediately and present them to the board as evidence of enterprise-scale AI without any additional investment."
+},
+"fin": [
+"C"
+],
+"expl": "The transition from experimentation to enterprise scaling is a major organizational transformation requiring foundational capability development across five dimensions: (1) Technical Infrastructure — standardized MLOps pipelines, model registries, shared feature stores, and monitoring infrastructure (Amazon SageMaker, AWS CI/CD); (2) Governance — enterprise AI governance framework, model risk management, data privacy policies, responsible AI standards; (3) Organizational Capability — AI literacy programs for business units, train-the-trainer programs, change management competency; (4) Reusable Assets — common ML patterns, shared feature libraries, pre-approved model templates for common use cases; and (5) Portfolio Management — a prioritized roadmap of scale-up use cases governed by a value and risk scoring framework. Organizations that attempt to scale without these foundations typically experience a proliferation of ungoverned, unreliable AI systems.",
+"multi": false
+},
+{
+"id": "PE-056",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "PE",
+"stem": "A healthcare AI project team discovers two weeks before the planned production launch that the model has a higher false negative rate for a specific ethnic group, meaning it is significantly less likely to flag that group's cases for clinical review. What is the MOST appropriate course of action?",
+"opts": {
+"A": "Proceed with the launch as planned since the overall model accuracy across all groups is above the 90% target threshold defined at project initiation.",
+"B": "Launch the model with a disclaimer in the user interface noting that performance may vary by patient population, and address the bias in the next quarterly model update.",
+"C": "Notify the vendor who supplied the training data that the data caused a bias problem and request a replacement dataset, then relaunch without performing any additional bias evaluation.",
+"D": "Delay the launch, investigate the root cause of the differential false negative rate, remediate the bias through data augmentation or resampling and model retraining, re-evaluate all demographic groups, and obtain governance approval before rescheduling deployment."
+},
+"fin": [
+"D"
+],
+"expl": "Discovering a clinically significant disparate error rate for a protected demographic group before deployment represents a serious model quality failure that must be remediated before launch, not disclosed as a known limitation. The remediation process involves: Root cause analysis (is the bias caused by underrepresentation in training data, label quality issues for this group, or proxy feature use?), Data remediation (augment training data for the underrepresented group, apply oversampling techniques, or reweight training examples), Model retraining on the remediated dataset, Comprehensive fairness re-evaluation across all demographic groups using relevant fairness metrics (equal opportunity, equalized odds), governance review and sign-off confirming bias has been adequately addressed, and rescheduling deployment with an updated timeline. The cost of delay is far lower than the harm — clinical, legal, and reputational — of deploying a biased healthcare model. Amazon SageMaker Clarify provides pre-deployment fairness evaluation.",
+"multi": false
+},
+{
+"id": "PE-057",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "An AI project is approaching its planned end date but the model has not yet achieved the minimum business accuracy threshold required in the project charter. The data science team estimates it would require 6 more months of additional data collection and retraining. The steering committee must decide whether to extend, pivot, or terminate the project. Which factor MOST strongly justifies termination over extension?",
+"opts": {
+"A": "The data science team used a machine learning algorithm that the steering committee chair personally dislikes, justifying termination on architectural grounds.",
+"B": "Root cause analysis reveals that the fundamental data required to achieve the accuracy target does not exist and cannot feasibly be collected within any reasonable budget or timeline, making the accuracy target technically unachievable.",
+"C": "The project manager prefers working on a different AI project and has advocated for terminating this one to free up capacity for the preferred project.",
+"D": "The current model has achieved 88% accuracy against a target of 90%, suggesting that only minor incremental improvement is needed and the project should be terminated rather than extended."
+},
+"fin": [
+"B"
+],
+"expl": "The decision framework for extending versus terminating a struggling AI project involves evaluating: Technical feasibility — is the accuracy target technically achievable given available and collectible data? If the required data fundamentally does not exist, the target is unachievable regardless of time or budget invested. Opportunity cost — what business value and projects are foregone by extending this one? If the opportunity cost exceeds the expected value of success, termination is rational. Sunk cost fallacy avoidance — the investment already made is not a reason to continue; only future expected value justifies extension. Progress rate — is the accuracy improving over time, or has it plateaued? Plateaued performance despite continued investment signals a fundamental constraint. When root cause analysis reveals that the training data required to achieve the target simply does not exist and cannot be collected, termination is clearly justified over extension.",
+"multi": false
+},
+{
+"id": "PE-058",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A company is running a generative AI POC to assess whether a foundation model can reliably answer complex internal policy questions. The evaluation team designs a benchmark test with 200 policy questions and compares model answers to verified correct answers. Which metric should be the PRIMARY evaluation criterion for this use case?",
+"opts": {
+"A": "Groundedness or faithfulness — the percentage of model answers that are factually supported by the policy documents provided as context, measured by comparing model citations and claims against the source policy documents.",
+"B": "Response creativity — the subjective assessment of how innovative and original the model's answers are compared to the reference answers in the benchmark.",
+"C": "Response latency — the average time in milliseconds for the model to generate an answer for each policy question in the benchmark.",
+"D": "Token efficiency — the average number of tokens used per model response, with lower token counts indicating better model performance on the benchmark."
+},
+"fin": [
+"A"
+],
+"expl": "For enterprise policy Q&A use cases, the primary evaluation metrics are: Groundedness/Faithfulness — does the model's answer reflect what the policy actually says (no hallucination)? Completeness/Recall — does the answer include all the relevant policy information needed to answer the question correctly? Correctness — does the answer match the verified correct answer for the policy question? For measuring faithfulness in RAG-based Q&A systems, standard evaluation frameworks include RAGAS (RAG Assessment) which measures answer faithfulness against retrieved context, and Amazon Bedrock Model Evaluation which provides customizable evaluation frameworks. Creative or lengthy answers are liabilities in policy Q&A — the goal is precise, accurate, policy-grounded responses.",
+"multi": false
+},
+{
+"id": "PE-079",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "An AI program manager is assessing long-term maintenance costs for an enterprise computer vision pipeline. The technical lead mentions that 'AI Technical Debt' is significantly higher than traditional software technical debt. Which factor contributes MOST to the unique ongoing maintenance burden of machine learning systems?",
+"opts": {
+"A": "Hidden feedback loops, data dependencies, feature entanglement (CACE principle: Changing Anything Changes Everything), and continuous data and concept drift requiring recurring pipeline retraining.",
+"B": "The requirement to physically replace server memory chips every 30 days due to neural weight degradation.",
+"C": "The legal mandate that all Python code must be completely rewritten in assembly language every calendar quarter.",
+"D": "The fact that machine learning models cannot run in the cloud and must always be hosted on on-premises personal laptops."
+},
+"fin": [
+"A"
+],
+"expl": "Google's seminal paper 'Hidden Technical Debt in Machine Learning Systems' (Sculley et al.) highlights that in production AI systems, actual ML code represents a tiny fraction of the overall codebase. The vast majority of ongoing maintenance and technical debt arises from: (1) Data Dependencies (unstable data inputs, underutilized features, data schema shifts), (2) Systemic Entanglement (the CACE principle: Changing Anything Changes Everything), (3) Configuration Debt (managing complex hyperparameters and environment configurations), (4) Pipeline Jungle (gluing disparate data preparation and extraction scripts), and (5) Silent Failures (models continuing to output numbers without crashing, even when prediction accuracy has collapsed due to concept drift). Managing AI technical debt requires mature MLOps practices, automated testing with SageMaker Pipelines, and continuous drift monitoring.",
+"multi": false
+},
+{
+"id": "PE-080",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "PE",
+"stem": "A logistics company is building an AI document extraction pipeline for custom shipping manifests. Initial model accuracy on ambiguous, handwritten documents is 72%, which is below the 95% business SLA. The project manager wants to implement an Active Learning and human review mechanism where the model automatically routes low-confidence predictions to domain experts, whose corrections are continuously fed back to retrain the model. Which AWS service combination enables this workflow?",
+"opts": {
+"A": "Amazon Route 53 DNS failover paired with Amazon Simple Notification Service (SNS) email alerts to all warehouse workers.",
+"B": "Amazon CloudFront distribution configured with a Lambda@Edge geo-restriction policy.",
+"C": "Amazon Augmented AI (Amazon A2I) integrated with Amazon Textract or Amazon SageMaker, and Amazon SageMaker Ground Truth for model retraining.",
+"D": "Amazon S3 Glacier Deep Archive lifecycle policy with immediate tape backup deletion."
+},
+"fin": [
+"C"
+],
+"expl": "Amazon Augmented AI (Amazon A2I) brings human review to machine learning applications in production. When an ML model (e.g., Amazon Textract, Amazon Rekognition, or custom SageMaker endpoints) processes an input, confidence score thresholds trigger automated routing: high-confidence predictions proceed automatically to downstream systems, while low-confidence predictions are dispatched to a designated human review workforce (internal employees, vendor pools, or Amazon Mechanical Turk). The human corrections resolve edge cases and generate high-quality ground truth data that is fed into active learning loops via Amazon SageMaker Ground Truth to continuously retrain and improve model performance over time.",
+"multi": false
+},
+{
+"id": "PE-081",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "PE",
+"stem": "An enterprise AI project to predict retail customer demand has been in development for 9 months and has spent $800,000 against a $1,000,000 budget. The model's predictive performance has plateaued at an error rate that provides zero economic benefit over the legacy simple moving-average rule. The project sponsor argues: 'We have already invested $800,000, so we must approve an additional $500,000 to keep going.' Which decision-making trap is the sponsor exhibiting, and what is the disciplined project governance response?",
+"opts": {
+"A": "The sponsor is exhibiting the Availability Heuristic; the project manager should immediately spend the remaining budget on purchasing additional foundation model API tokens.",
+"B": "The sponsor is exhibiting the Sunk Cost Fallacy; the steering committee should conduct an objective Stage-Gate evaluation based on forward-looking ROI and technical feasibility, and terminate or pivot the project if success cannot be empirically justified.",
+"C": "The sponsor is exhibiting confirmation bias; the team should immediately delete the legacy moving-average baseline so the AI model appears to be the only available option.",
+"D": "The sponsor is exhibiting regression to the mean; the project manager should double all accuracy metrics on executive status slides."
+},
+"fin": [
+"B"
+],
+"expl": "Stage-Gate project governance is essential for managing AI R&D risks. Machine learning projects are inherently experimental: despite rigorous planning and skilled engineering, a model may fail to extract sufficient predictive signal from available data. When projects struggle, stakeholders frequently fall prey to the Sunk Cost Fallacy—justifying continued expenditure based on unrecoverable past investments rather than realistic future returns. Effective AI project managers implement strict Gate Reviews where continuation requires: (1) demonstrable forward-looking ROI, (2) quantifiable performance improvement over simple non-AI baselines, and (3) validated technical feasibility. If pre-established 'kill-criteria' are triggered, halting the project preserves capital for higher-yield initiatives.",
+"multi": false
+},
+{
+"id": "PE-082",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "資料策略與資料準備度",
+"code": "PE",
+"stem": "A fintech startup is developing an AI fraud detection model for a new peer-to-peer payment product. Because the product has just launched, there are almost no historical fraud transactions available in the database. The team proposes using a generative AI model to create synthetic fraud transaction data for training. What is a critical risk and validation requirement when using synthetic training data?",
+"opts": {
+"A": "Synthetic data is illegal under all international banking regulations and results in immediate automated revocation of cloud hosting accounts.",
+"B": "Synthetic data can only be generated using physical quantum computers and cannot run on AWS cloud instances.",
+"C": "Synthetic data models run four times faster in production because synthetic numbers contain fewer mathematical bytes than real-world numbers.",
+"D": "Synthetic data may fail to capture subtle real-world fraud complexities, amplify generator biases, or induce 'model collapse' if overused; the team must validate synthetic data fidelity and benchmark the model against real-world holdout samples."
+},
+"fin": [
+"D"
+],
+"expl": "Synthetic data generation is increasingly utilized to overcome data scarcity, protect PII, and simulate rare tail-risk events (e.g., fraud, rare diseases, edge-case autonomous driving scenarios). However, AI project managers must manage distinct risks: (1) Fidelity Risk: The synthetic generator may produce idealized data that misses messy real-world noise, leading to overfitting and poor production generalization; (2) Model Collapse: Repeatedly training models on synthetic data generated by other models degrades diversity and accuracy over generations; (3) Validation Mandate: Synthetic datasets must undergo statistical distribution validation (e.g., Kolmogorov-Smirnov tests, Wasserstein distance) and models trained on synthetic data must always be benchmarked against genuine real-world holdout datasets before production deployment.",
+"multi": false
+},
+{
+"id": "PE-083",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "PE",
+"stem": "An enterprise architect is establishing standard MLOps governance across 15 distributed data science squads. The architect mandates the adoption of a centralized Model Registry. What is the primary governance function of a centralized Model Registry in the AI lifecycle?",
+"opts": {
+"A": "To provide a centralized repository for cataloging trained model versions, tracking metadata and training lineage, managing formal approval status transitions (e.g., Approved for Production, Pending Review, Rejected), and auditing deployment governance.",
+"B": "To automatically generate marketing press releases whenever a data scientist saves a Jupyter notebook.",
+"C": "To bypass all corporate security firewalls and grant unrestricted root database access to all candidate models.",
+"D": "To store uncompressed raw customer video recordings in a public Amazon S3 bucket for unrestricted community access."
+},
+"fin": [
+"A"
+],
+"expl": "Amazon SageMaker Model Registry is a core MLOps governance capability that enables organizations to: (1) Catalog models across the enterprise in a centralized repository, (2) Manage model versions and associate metadata (evaluation metrics, baseline drift constraints, Model Cards), (3) Maintain full training and artifact lineage, (4) Enforce approval workflows with distinct permissions (e.g., only lead MLOps engineers or compliance officers can change status to 'Approved'), and (5) Trigger automated CI/CD deployment pipelines via AWS CodePipeline or SageMaker Pipelines when approval is granted. This ensures that no unvetted or non-compliant model reaches production.",
 "multi": false
 },
 {

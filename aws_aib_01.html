@@ -66,7 +66,7 @@ details .in{padding:0 12px 12px}
 <script>
 const TOPICS=[...new Map(DATA.map(q=>[q.dm,q.domain])).entries()].sort((a,b)=>a[0]-b[0]);
 const SUBS=[...new Set(DATA.map(q=>q.sub))];
-const SRC={CN:'cloudninja.pro',SP:'Shapingpixel',GD:'Get It Done',CC:'Core Concept'};
+const SRC={CN:'cloudninja.pro',SP:'Shapingpixel',GD:'Get It Done',CC:'Core Concept',PE:'Practice Exam 2026'};
 const $=(t,a={},...c)=>{const e=document.createElement(t);for(const[k,v]of Object.entries(a)){if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?'':v)}for(const x of c.flat())if(x!=null)e.append(x.nodeType?x:document.createTextNode(x));return e};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let wrong=new Set(LS.get('aib_wrong',[])),stats=LS.get('aib_stats',{}),last=LS.get('aib_last',null);
@@ -107,7 +107,7 @@ function home(){
   cb.onchange=()=>{cfg.sources=cb.checked?[...cfg.sources,k]:cfg.sources.filter(x=>x!==k);LS.set('aib_cfg2',cfg);home()};return el}));
  const seg=(opts,key)=>$('div',{class:'seg'},opts.map(([v,l])=>$('button',{class:cfg[key]===v?'on':'',onclick:()=>{cfg[key]=v;LS.set('aib_cfg2',cfg);home()}},l)));
  upd();
- show([$('h1',{},'AIB-C01 題庫測驗'),$('div',{class:'sub'},'AWS Certified AI Business Strategist・320 題・依考試 Domain 篩選、隨機抽題、錯題重練'),
+ show([$('h1',{},'AIB-C01 題庫測驗'),$('div',{class:'sub'},'AWS Certified AI Business Strategist・403 題・依考試 Domain 篩選、隨機抽題、錯題重練'),
  $('div',{class:'stats'},$('div',{class:'stat'},$('b',{},DATA.length),$('span',{},'題庫總題數')),$('div',{class:'stat'},$('b',{},wrong.size),$('span',{},'錯題本')),$('div',{class:'stat'},$('b',{},acc+(acc==='–'?'':'%')),$('span',{},'累計正確率')),$('div',{class:'stat'},$('b',{},last?last.pct+'%':'–'),$('span',{},'上次成績'))),
  $('div',{class:'card'},$('div',{class:'row',style:'justify-content:space-between'},$('h2',{},'1. 考試 Domain'),$('div',{},$('button',{class:'link',onclick:()=>{cfg.topics=TOPICS.map(t=>t[0]);home()}},'全選'),$('button',{class:'link',onclick:()=>{cfg.topics=[];home()}},'全不選'))),topicBox),
  $('details',{class:'card'},$('summary',{style:'padding:0'},$('h2',{style:'margin:0'},'進階：依子主題再細分（選填）')),$('div',{class:'row',style:'margin:8px 0'},$('button',{class:'link',onclick:()=>{cfg.subs=SUBS;home()}},'全選'),$('button',{class:'link',onclick:()=>{cfg.subs=[];home()}},'全不選')),subBox),
@@ -165,6 +165,6 @@ function result(ok,n,pct){
   $('div',{class:'row',style:'margin-bottom:14px'},$('button',{class:'primary',disabled:!wr.length,onclick:()=>startWrong(wr)},`重練本次錯題（${wr.length}）`),$('button',{disabled:!wrong.size,onclick:()=>startWrong([...wrong].map(i=>byId[i]))},`練習全部錯題本（${wrong.size}）`),$('button',{onclick:home},'回首頁')),
   $('h2',{},'逐題檢討'),list]);
 }
-if(cfg.v!==2){cfg.sources=[...new Set([...cfg.sources,'CC'])];cfg.v=2;LS.set('aib_cfg2',cfg)}
+if(cfg.v!==3){cfg.sources=[...new Set([...cfg.sources,...Object.keys(SRC)])];cfg.v=3;LS.set('aib_cfg2',cfg)}
 home();
 </script></body></html>
