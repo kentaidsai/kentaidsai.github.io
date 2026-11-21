@@ -1,5 +1,311 @@
-// AIB-C01 題庫（255 題）：id、考試 Domain(dm/domain)、子主題(sub)、來源(code)、題幹(stem)、選項(opts)、正確答案(fin)、解析(expl)
+// AIB-C01 題庫（320 題）：id、考試 Domain(dm/domain)、子主題(sub)、來源(code)、題幹(stem)、選項(opts)、正確答案(fin)、解析(expl)
 const DATA=[
+{
+"id": "CC-001",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A grocery chain's merchandising director asks why the demand forecasting model needs two years of past sales before it can be used. Which explanation is MOST accurate?",
+"opts": {
+"A": "Regulations require two full years of records before any automated forecast can be used for purchasing decisions.",
+"B": "The model copies last year's sales figures for each week, so it needs a full year of data to fill every week.",
+"C": "The model learns patterns such as seasonality from historical examples, so it needs enough history to generalise.",
+"D": "The model stores every past transaction so it can look up an exact match for each future week it forecasts."
+},
+"fin": [
+"C"
+],
+"expl": "Training means learning patterns from historical examples; seasonal patterns need several cycles of history to learn and generalise. A model doesn't copy last year's figures (B) or look up exact matches (D), and no general regulation requires two years of records (A).",
+"multi": false
+},
+{
+"id": "CC-002",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A fashion retailer's executive team is comparing three proposals: one predicts which customers will return items, one writes product descriptions, and one routes refund requests over 500 dollars to a supervisor. Which statement correctly classifies the proposals?",
+"opts": {
+"A": "Return prediction is generative AI, descriptions are machine learning, and routing needs a trained model.",
+"B": "All three are traditional machine learning, because each one is trained on the retailer's own past records.",
+"C": "All three are generative AI, because each one produces an output that a store employee will act upon.",
+"D": "Return prediction is machine learning, descriptions are generative AI, and the routing is a business rule."
+},
+"fin": [
+"D"
+],
+"expl": "Predicting returns from history is classic ML, writing new descriptions is generative AI, and a fixed 500 dollar threshold is a rule that needs no AI. Producing an output doesn't make something generative AI (C); A swaps ML and Gen AI; a fixed threshold isn't trained on records (B).",
+"multi": false
+},
+{
+"id": "CC-003",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "An online marketplace wants to use AI on two data sets: a table of 5 years of order transactions and a collection of 2 million free-text customer reviews. Which statement BEST describes the difference for planning purposes?",
+"opts": {
+"A": "The order table is structured and suits predictive models; the reviews are unstructured and suit generative AI.",
+"B": "The reviews are structured because each one has a date, so they suit forecasting better than the order table.",
+"C": "The order table is unstructured because it is very large, so it suits generative AI better than the reviews.",
+"D": "Both data sets are unstructured, so they need exactly the same preparation effort before any AI project can use them."
+},
+"fin": [
+"A"
+],
+"expl": "Rows and columns with a fixed schema are structured and suit predictive ML; free text is unstructured and suits Gen AI or NLP. The two need different preparation (D). A date field doesn't make free text structured (B), and size doesn't make a table unstructured (C).",
+"multi": false
+},
+{
+"id": "CC-004",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A home goods retailer trained a product recommendation model on purchase data from its urban stores. After launching it in rural stores, the recommendations perform poorly. What is the MOST likely cause?",
+"opts": {
+"A": "Rural stores have fewer products, so the model needs to be retrained as a generative AI model instead.",
+"B": "The training data did not represent rural customers, so the model learned patterns that do not apply there.",
+"C": "The model was trained for too long, so it forgot the general patterns it had learned from the urban stores.",
+"D": "Recommendation models only work with unstructured data, and rural purchase records are stored as tables."
+},
+"fin": [
+"B"
+],
+"expl": "Data that doesn't represent the population the model serves is a data quality (representativeness) problem. Training longer doesn't cause this kind of forgetting (C); recommendation models commonly use structured purchase data (D); fewer products doesn't call for generative AI (A).",
+"multi": false
+},
+{
+"id": "CC-005",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A retailer's legal and data teams keep using terms such as 'model', 'training data' and 'AI system' differently in contracts and policies. The chief data officer wants a recognised framework that describes the components of ML-based AI systems with a common vocabulary. Which standard BEST fits this need?",
+"opts": {
+"A": "ISO/IEC 42001, because it certifies the organisation's AI management system and its policies.",
+"B": "ISO 9001, because it defines the quality management processes for products and their services.",
+"C": "ISO/IEC 23053, because it gives a framework describing the components of ML-based AI systems.",
+"D": "ISO/IEC 27001, because it defines the controls for an information security management system."
+},
+"fin": [
+"C"
+],
+"expl": "ISO/IEC 23053 provides a framework and shared vocabulary for AI systems that use machine learning. ISO/IEC 42001 is the certifiable AI management system standard (governing AI, not describing components); 27001 covers information security; 9001 covers quality management.",
+"multi": false
+},
+{
+"id": "CC-006",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A retail CEO says, \"Our pricing AI is software, so it will give exactly the same answer every time and never be wrong.\" Which response from the AI strategy lead is MOST accurate?",
+"opts": {
+"A": "Correct, because once a model is deployed its predictions are fixed and checked like any other software.",
+"B": "Correct, provided the model was trained on at least five years of clean and complete pricing history.",
+"C": "Not quite: AI models are always wrong for new products, so prices for those should be set manually.",
+"D": "Not quite: AI predictions are probabilistic, so they can be wrong and need monitoring and tolerance."
+},
+"fin": [
+"D"
+],
+"expl": "AI models produce the most likely answer from learned patterns, so they can be wrong; decisions need error tolerance, review and monitoring. Deployed models aren't guaranteed correct like deterministic code (A), more history doesn't make them infallible (B), and they aren't always wrong for new products (C).",
+"multi": false
+},
+{
+"id": "CC-007",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "AI／ML／GenAI 基礎概念與資料類型",
+"code": "CC",
+"stem": "A grocery chain wants to flag any refund over 200 dollars that lacks a receipt for manager approval. The rule is fixed by policy and auditors need every decision to be exactly reproducible. Which approach is MOST appropriate?",
+"opts": {
+"A": "Use rule-based automation that applies the 200 dollars and receipt conditions to every refund request.",
+"B": "Deploy a generative AI assistant that reads each refund and decides whether it needs approval.",
+"C": "Train a machine learning model on past refunds to predict which ones a manager would have approved.",
+"D": "Build an AI agent that checks refunds and escalates the ones it judges to carry the highest risk."
+},
+"fin": [
+"A"
+],
+"expl": "When the logic is fully known and decisions must be exactly reproducible, rule-based automation is cheaper, predictable and auditable. ML, Gen AI or an agent adds cost and probabilistic behaviour to a problem a simple rule solves.",
+"multi": false
+},
+{
+"id": "CC-008",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "An e-commerce company is considering an AI agent to handle late-delivery complaints. Which capability MOST distinguishes an AI agent from the company's existing FAQ chatbot?",
+"opts": {
+"A": "It can be trained on the company's FAQ documents so that its answers match published store policies.",
+"B": "It can plan steps and use tools such as order lookup and refund systems to take actions toward a goal.",
+"C": "It can be shown to customers inside the mobile app as well as on the company's website and in email.",
+"D": "It can answer customer questions in natural language around the clock without any human staff involved."
+},
+"fin": [
+"B"
+],
+"expl": "Agents plan multi-step work and use tools to act on systems, with some autonomy, which a question-answering chatbot doesn't do. Round-the-clock answers (D) and FAQ grounding (A) are things the chatbot can already do; channels (C) are a deployment choice.",
+"multi": false
+},
+{
+"id": "CC-009",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "An online retailer launched a fraud detection model a year ago. No code has changed, but the fraud catch rate has fallen steadily since a new payment method became popular. Which explanation and response is BEST?",
+"opts": {
+"A": "Fraud models are only accurate in their first year; replace it with a generative AI model this time.",
+"B": "The model's software has a defect that appeared over time; reinstall the original version of the model file.",
+"C": "The catch rate is expected to fall; lower the alert threshold so the model flags every new payment.",
+"D": "The model has drifted as transaction patterns changed; monitor performance and retrain it on recent data."
+},
+"fin": [
+"D"
+],
+"expl": "When behaviour changes after training, models drift; the response is monitoring against a baseline and retraining on recent data. Reinstalling the same model (B) keeps outdated patterns; there's no one-year rule and Gen AI isn't a fraud-scoring replacement (A); flagging every new payment (C) floods reviewers.",
+"multi": false
+},
+{
+"id": "CC-010",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "A fashion retailer discovers that store managers paste customer complaints, including names and phone numbers, into several free public chatbots. The CIO wants to reduce risk without stopping productive use of AI. Which action should come FIRST?",
+"opts": {
+"A": "Wait for a regulator to issue guidance on chatbots before deciding which tools staff may use at work.",
+"B": "Block every AI website on the corporate network and tell staff that AI tools are no longer allowed.",
+"C": "Publish which AI tools are approved, under evaluation or blocked, with data rules and an approved option.",
+"D": "Let each store manager choose their own AI tools, as long as each one signs a personal liability waiver."
+},
+"fin": [
+"C"
+],
+"expl": "Transparent classification of tools, with data-use rules and a useful approved alternative, reduces shadow AI risk while keeping productive use. Blanket bans (B) push use underground; waivers (D) don't protect customer data; waiting (A) leaves the exposure in place.",
+"multi": false
+},
+{
+"id": "CC-011",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "A marketplace's operations team wants AI help with three tasks. Which task is the BEST fit for an AI agent rather than a simple assistant or fixed workflow?",
+"opts": {
+"A": "Answering a shopper's question about the store's standard return window using the published policy page.",
+"B": "Resolving a seller dispute by checking orders, carrier status and policy, then issuing a credit within limits.",
+"C": "Sending the same order confirmation email to every buyer immediately after each successful card payment.",
+"D": "Calculating the monthly commission for each seller as a fixed percentage of that seller's total sales."
+},
+"fin": [
+"B"
+],
+"expl": "A multi-step task across several systems, where the steps vary by case and the action can be bounded, suits an agent. A single policy answer suits an assistant (A); a fixed email (C) is workflow automation; a fixed percentage (D) is a calculation rule.",
+"multi": false
+},
+{
+"id": "CC-012",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "CC",
+"stem": "A retailer's marketing team gets vague, inconsistent product descriptions from a generative AI tool when they type 'write a description'. Which change is MOST likely to improve the results quickly and cheaply?",
+"opts": {
+"A": "Give clear instructions: audience, tone, length, required features and an example in the house style.",
+"B": "Raise the model's temperature setting so it produces more varied and imaginative descriptions.",
+"C": "Switch to the largest model available, because larger models never need detailed written instructions.",
+"D": "Fine-tune a custom model on ten thousand product descriptions before the team writes any new copy."
+},
+"fin": [
+"A"
+],
+"expl": "Prompt engineering (clear task, audience, format, constraints and a few-shot example) is the fastest, cheapest improvement. Fine-tuning (D) costs more; higher temperature (B) makes output more random; larger models still benefit from clear instructions (C).",
+"multi": false
+},
+{
+"id": "CC-013",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "CC",
+"stem": "A grocery chain's customer assistant answers questions about weekly promotions. Promotions change every Monday, and the assistant keeps quoting last week's offers. Which approach BEST fixes this?",
+"opts": {
+"A": "Add the full year's promotion history to every single prompt so that the model can see all offers at once.",
+"B": "Use retrieval augmented generation so answers draw on the current promotions document at question time.",
+"C": "Lower the temperature so that the assistant gives the same answer to each question every time it runs.",
+"D": "Fine-tune the model every Monday on the new promotions so that it memorises each week's offers."
+},
+"fin": [
+"B"
+],
+"expl": "RAG retrieves current documents at question time, so updating the promotions document updates the answers with no retraining. Weekly fine-tuning (D) is costly and lags; stuffing a year of history (A) wastes tokens; lower temperature (C) gives consistency, not currency.",
+"multi": false
+},
+{
+"id": "CC-014",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "CC",
+"stem": "A retailer's legal team uses a generative AI assistant to review supplier contracts. For contracts over 300 pages, the assistant misses clauses near the end and costs are much higher than expected. What is the MOST likely cause?",
+"opts": {
+"A": "The model was not fine-tuned on legal language, so it cannot read contract clauses written by lawyers.",
+"B": "The assistant's temperature is too low, so it stops reading once it has found a few relevant clauses.",
+"C": "Generative AI models can only process documents that are shorter than about ten pages of plain text.",
+"D": "The contracts exceed the model's context window, and long inputs use many tokens that drive up cost."
+},
+"fin": [
+"D"
+],
+"expl": "Very long inputs can exceed the context window so later content is cut or poorly attended to, and token-based pricing makes long inputs expensive; chunking, summarisation or RAG help. Temperature controls randomness, not how much is read (B); models handle far more than ten pages (C).",
+"multi": false
+},
+{
+"id": "CC-015",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "CC",
+"stem": "A fashion brand wants its assistant to write social posts in a distinctive brand voice across thousands of posts. Careful prompting with examples still gives inconsistent tone. Which technique is MOST appropriate next?",
+"opts": {
+"A": "Fine-tuning a model on approved past posts, so it learns the brand voice and applies it consistently.",
+"B": "Raising the maximum output tokens, so the model has more room to express the brand's personality.",
+"C": "Retrieval augmented generation over the brand's style guide, so each post retrieves a few style rules.",
+"D": "Training a new foundation model from scratch on the brand's posts and its full product catalogue."
+},
+"fin": [
+"A"
+],
+"expl": "When prompting can't achieve a consistent style at scale, fine-tuning on good examples is the next step. RAG adds knowledge but rarely changes tone as reliably (C); training from scratch (D) is far too costly; more output tokens (B) allow longer text, not a consistent voice.",
+"multi": false
+},
+{
+"id": "CC-016",
+"dm": 1,
+"domain": "Domain 1：AI 基礎與素養（AI Fundamentals and Literacy）24%",
+"sub": "提示工程、RAG 與模型調整",
+"code": "CC",
+"stem": "A retailer's assistant answers HR policy questions for employees. Which TWO practices BEST reduce the chance that it gives confident but wrong answers? (Select TWO)",
+"opts": {
+"A": "Remove the policy documents from the prompt so that the model relies on its broad general knowledge.",
+"B": "Increase the maximum output length so that the assistant can explain each answer in far more detail.",
+"C": "Instruct the assistant to say it does not know when the answer is not found in the provided sources.",
+"D": "Raise the temperature so the assistant considers more possible answers before it chooses one.",
+"E": "Ground answers in the current HR policy documents and show citations that employees can check."
+},
+"fin": [
+"C",
+"E"
+],
+"expl": "Grounding on current documents with citations (E) and instructing the model to admit when the answer isn't in the sources (C) both reduce hallucinations. Higher temperature (D) adds randomness; removing sources (A) makes the model guess; longer answers (B) aren't more accurate.",
+"multi": true
+},
 {
 "id": "CN-002",
 "dm": 1,
@@ -1081,6 +1387,354 @@ const DATA=[
 ],
 "expl": "A 正確：同時含固定欄位、自由文字與結構不一的巢狀 payload，屬部分結構化、部分非結構化，需分別處理。",
 "multi": false
+},
+{
+"id": "CC-017",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A supermarket chain's leadership asks the AI strategy lead to propose its first AI initiatives. Which approach to identifying use cases is MOST likely to deliver business value?",
+"opts": {
+"A": "Ask the IT team to pick the use cases that use the most advanced models, as they are most impressive.",
+"B": "Copy the AI use cases a competitor announced last quarter so the chain does not fall behind in the market.",
+"C": "List the newest AI capabilities on the market and find a department willing to try each one of them.",
+"D": "Start from business objectives and pain points, map AI capabilities to outcomes, and define KPIs for each."
+},
+"fin": [
+"D"
+],
+"expl": "High-impact use cases start from business objectives and pain points, mapping a capability to a process change, outcome and KPI. Technology-first lists (C) and impressive models (A) produce solutions looking for problems; copying a competitor (B) ignores the chain's own objectives.",
+"multi": false
+},
+{
+"id": "CC-018",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "An apparel retailer wants a meeting-summary and email-drafting assistant for 2,000 office staff. It is a common need, the company has no AI engineers, and it wants results within a month. Which option BEST fits?",
+"opts": {
+"A": "Build a custom assistant on a foundation model platform with a new in-house AI engineering team.",
+"B": "Train a proprietary language model on the company's internal emails and meeting transcripts.",
+"C": "Buy an existing AI assistant product that meets the security and data handling requirements.",
+"D": "Hire a partner to build a fully custom assistant and then hand it over to an internal team."
+},
+"fin": [
+"C"
+],
+"expl": "For a common, non-differentiating need with no in-house skills and a short timeline, buying a ready product that meets security and data requirements is fastest and cheapest. Building (A, D) takes longer for no differentiation; training a model (B) is far too costly.",
+"multi": false
+},
+{
+"id": "CC-019",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A home improvement retailer has scored six AI pilot ideas. Which idea should it prioritise FIRST?",
+"opts": {
+"A": "Low value, low feasibility: an AI artwork generator for store walls that needs custom training.",
+"B": "High value, high feasibility: product Q and A from existing manuals with a clear owner and metrics.",
+"C": "High value, low feasibility: data needed for it does not exist yet and would take two years to collect.",
+"D": "Low value, high feasibility: a novelty chatbot that tells jokes to shoppers who visit the website."
+},
+"fin": [
+"B"
+],
+"expl": "A high-value, high-feasibility idea with a clear owner and metrics is a quick win to do first. High value with low feasibility (C) is a strategic bet to plan and de-risk later; low-value ideas (D, A) shouldn't come first.",
+"multi": false
+},
+{
+"id": "CC-020",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "An online retailer ran a 10-week pilot of an AI returns assistant with an agreed kill criterion: at least 20% of return requests resolved without an agent. It reached 6%, and the team sees no fix. Leaders have spent 400,000 dollars. What should leadership do?",
+"opts": {
+"A": "Terminate the pilot as agreed and redirect the budget, documenting what the team learned from it.",
+"B": "Scale the assistant to all customers, because more users will generate the data needed to improve.",
+"C": "Pause the pilot indefinitely without a review date so that the budget stays allocated to the team.",
+"D": "Continue for another year, because stopping now would waste the 400,000 dollars already spent on it."
+},
+"fin": [
+"A"
+],
+"expl": "The pilot missed its predefined kill criterion with no credible path, so terminating and redirecting budget is good governance. Money already spent is a sunk cost (D); scaling a failing solution (B) multiplies the problem; an indefinite pause (C) ties up budget without a decision.",
+"multi": false
+},
+{
+"id": "CC-021",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A retailer calculates shipping charges from a published table based on order weight and destination zone. A vendor proposes a generative AI system to calculate charges. What should the strategy lead recommend?",
+"opts": {
+"A": "Replace the table with a machine learning model that predicts shipping charges from past orders.",
+"B": "Adopt the generative AI system, because AI will improve accuracy over the published shipping table.",
+"C": "Keep the table-driven calculation, because the logic is fully defined and must be exact every time.",
+"D": "Use the AI system for half of all orders and compare the two methods for a full year before deciding."
+},
+"fin": [
+"C"
+],
+"expl": "When logic is fully defined and must be exact, AI adds cost and unpredictability. The table is already exact, so AI can't improve accuracy (B); a year-long split test (D) and an ML model (A) introduce probabilistic errors.",
+"multi": false
+},
+{
+"id": "CC-022",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A grocery chain plans to move its customer service assistant from one AI vendor to another. Which plan BEST protects business continuity during the transition?",
+"opts": {
+"A": "Run both in parallel on a share of traffic, test against agreed criteria, and keep a rollback option.",
+"B": "Switch all traffic to the new vendor on a single weekend and cancel the old contract immediately after.",
+"C": "Let the new vendor test the assistant on live customers first and agree on success criteria afterward.",
+"D": "Turn the assistant off during the migration and send all customers to the phone queue until it is done."
+},
+"fin": [
+"A"
+],
+"expl": "Parallel running, acceptance criteria agreed in advance and a rollback option protect continuity. A big-bang cutover (B) leaves no fallback; agreeing criteria afterwards (C) means nothing to test against; switching off (D) disrupts customers.",
+"multi": false
+},
+{
+"id": "CC-023",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A specialty retailer is evaluating vendor proposals for an AI demand planning product. Which TWO questions are MOST important to ask before choosing? (Select TWO)",
+"opts": {
+"A": "How many AI research papers has the vendor's engineering team published in the past five years?",
+"B": "How accurate is the product on our own historical data, measured against our current forecasts?",
+"C": "Does the vendor's sales demonstration use a larger foundation model than its competitors do?",
+"D": "Will our sales data be used to train models for other customers, and where will it be stored?",
+"E": "How many other retailers in our region have heard of the vendor's brand and its marketing campaigns?"
+},
+"fin": [
+"B",
+"D"
+],
+"expl": "Accuracy on your own data against a baseline (B) and data use and residency terms (D) decide value and compliance. Research papers (A), model size in a demo (C) and brand awareness (E) don't show whether the product works for you or protects your data.",
+"multi": true
+},
+{
+"id": "CC-024",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "CC",
+"stem": "A department store plans to deploy an AI assistant to help store associates answer product questions. The COO wants to prove its value after six months. What should the team do BEFORE deployment?",
+"opts": {
+"A": "Agree that success will be judged by how many associates log into the assistant each week.",
+"B": "Measure current answer times, sales conversion and associate satisfaction to set a baseline.",
+"C": "Wait until the assistant is live and then decide which metrics will best show its benefits.",
+"D": "Ask the vendor to provide industry-average ROI figures to present to the COO after six months."
+},
+"fin": [
+"B"
+],
+"expl": "A baseline measured before deployment is what makes later improvement provable. Logins alone (A) measure usage, not business value; choosing metrics after launch (C) leaves no comparable starting point; industry averages (D) don't show this store's results.",
+"multi": false
+},
+{
+"id": "CC-025",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "CC",
+"stem": "An online retailer's AI agent-assist tool saves service agents 2 minutes on each of 900,000 contacts a year. Agents cost 36 dollars an hour fully loaded, and the saved time is used to take more contacts instead of hiring. Annual running costs are 260,000 dollars and the one-time build was 140,000 dollars. What is the approximate first-year ROI?",
+"opts": {
+"A": "About 315%: 1.08 million dollars of benefit minus 260 thousand dollars of running cost, divided by the 260 thousand dollars.",
+"B": "About 270%: the 1.08 million dollars of benefit divided by the 400 thousand dollars of total first-year cost.",
+"C": "About 63%: the 680 thousand dollars of net benefit divided by the 1.08 million dollars of total yearly benefit.",
+"D": "About 170%: 1.08 million dollars of benefit minus 400 thousand dollars of first-year cost, divided by the 400 thousand dollars."
+},
+"fin": [
+"D"
+],
+"expl": "Time saved = 900,000 × 2 min = 30,000 hours × 36 dollars = 1.08 million dollars. First-year costs = 260k + 140k = 400k, so ROI = (1.08M − 400k) ÷ 400k ≈ 170%. Leaving out the build cost (A) overstates ROI; benefit ÷ cost (B) is a ratio, not ROI; net benefit ÷ benefit (C) is a margin.",
+"multi": false
+},
+{
+"id": "CC-026",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "業務價值、ROI 與 KPI 衡量",
+"code": "CC",
+"stem": "A grocery chain is three weeks into a pilot of an AI tool that suggests replies to customer emails. Projected annual savings won't be measurable for months. Which metric gives the EARLIEST reliable signal that the savings will materialise?",
+"opts": {
+"A": "The share of suggested replies that agents accept with little editing, tracked week by week.",
+"B": "The number of features listed in the vendor's product roadmap for the next twelve months.",
+"C": "The total annual return on investment calculated from the first three weeks of pilot results.",
+"D": "The size of the foundation model the vendor uses compared with the models of competitors."
+},
+"fin": [
+"A"
+],
+"expl": "Adoption measures such as the acceptance rate of suggestions are leading indicators that predict whether time savings will arrive. Annual ROI (C) is a lagging measure; roadmap features (B) and model size (D) don't show value in this pilot.",
+"multi": false
+},
+{
+"id": "CC-027",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "CC",
+"stem": "An online retailer's monthly generative AI bill has tripled while the number of customer conversations has grown only 20%. Which TWO actions are MOST likely to bring costs back in line? (Select TWO)",
+"opts": {
+"A": "Add the full conversation history from all previous visits to each new customer prompt.",
+"B": "Switch all requests to a priority service tier so that responses come back faster.",
+"C": "Retrieve only the relevant passages instead of adding whole documents to every prompt.",
+"D": "Move every request to the largest available model so answers are right the first time.",
+"E": "Route simple questions to a smaller, cheaper model that still meets the quality target."
+},
+"fin": [
+"C",
+"E"
+],
+"expl": "Costs growing faster than usage usually means more tokens per request or an oversized model; routing simple questions to a smaller model (E) and retrieving only relevant passages (C) cut both. The largest model (D), longer history (A) and a priority tier (B) all raise cost.",
+"multi": true
+},
+{
+"id": "CC-028",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "CC",
+"stem": "A retailer is building a business case for an AI-powered product search feature and needs to estimate the AWS service costs before any development starts. Which AWS tool is MOST appropriate?",
+"opts": {
+"A": "AWS Pricing Calculator, to model expected usage and estimate the monthly costs in advance.",
+"B": "AWS Marketplace, to read reviews that other customers have written about AI search products.",
+"C": "The AWS shared responsibility model, to see which costs AWS covers and which the retailer pays.",
+"D": "AWS Cost Explorer, to analyse the spending history of the search feature over the last year."
+},
+"fin": [
+"A"
+],
+"expl": "AWS Pricing Calculator estimates the cost of planned services from expected usage, before anything is built. Cost Explorer (D) analyses actual spend, which doesn't exist yet; Marketplace reviews (B) aren't a cost estimate; the shared responsibility model (C) divides security duties, not costs.",
+"multi": false
+},
+{
+"id": "CC-029",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AWS 服務、定價與成本管理",
+"code": "CC",
+"stem": "A grocery chain processes 50,000 supplier invoices every night with a generative AI model. Results are needed by 8 AM, and the finance team wants to lower cost. Which option BEST fits?",
+"opts": {
+"A": "Process each invoice as an individual real-time request as soon as it arrives in the system.",
+"B": "Reserve dedicated capacity for 24 hours a day so that the nightly run always has capacity available.",
+"C": "Use batch inference for the overnight run, which costs less than on-demand for supported models.",
+"D": "Use a priority service tier so that every invoice is processed in the shortest possible time."
+},
+"fin": [
+"C"
+],
+"expl": "Work that isn't urgent suits batch inference, priced about 50% below on-demand for supported models. A priority tier (D) costs more for unneeded speed; real-time requests (A) pay on-demand prices; reserving capacity all day (B) pays for 24 hours to use a few.",
+"multi": false
+},
+{
+"id": "CC-030",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A regional grocery chain notices that an AI-native online grocer is winning its customers with personalised offers and same-day delivery predictions. What should the chain's strategy team do FIRST?",
+"opts": {
+"A": "Ignore the competitor, because AI-native start-ups usually fail before they reach a large market share.",
+"B": "Assess the competitive landscape: where AI changes customer expectations and where the chain is exposed.",
+"C": "Buy the same AI software the competitor uses so that the chain can launch identical features within a month.",
+"D": "Lower prices on every product until the competitor runs out of funding and leaves the regional market."
+},
+"fin": [
+"B"
+],
+"expl": "Assessing the competitive landscape (changing expectations, exposure and the chain's own assets) comes before choosing a response. Copying the competitor (C) skips analysis; ignoring the threat (A) and a price war (D) aren't AI strategies and carry large risk.",
+"multi": false
+},
+{
+"id": "CC-031",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A home appliance retailer sells products once and rarely hears from customers again. It collects usage data from connected appliances with customer consent. Which AI-enabled opportunity BEST represents business model transformation?",
+"opts": {
+"A": "Use AI to translate the existing customer manuals into five additional languages automatically.",
+"B": "Use AI to schedule warehouse staff shifts more efficiently based on forecast order volumes.",
+"C": "Use AI to write product descriptions for the website faster than the current copywriting team.",
+"D": "Offer a subscription that uses AI on appliance data to predict failures and schedule repairs."
+},
+"fin": [
+"D"
+],
+"expl": "Moving from one-off sales to an ongoing AI-powered service creates a new way to capture value, which is business model transformation. Faster descriptions (C), better scheduling (B) and translation (A) optimise the current model.",
+"multi": false
+},
+{
+"id": "CC-032",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "An online fashion marketplace wants an AI advantage that competitors can't easily copy. All its competitors can access the same foundation models. Which approach is MOST likely to create a sustainable advantage?",
+"opts": {
+"A": "Run a single high-profile AI pilot each year and present the results at industry events.",
+"B": "Switch to whichever foundation model scores highest on public benchmarks each quarter.",
+"C": "Combine proprietary fit and returns data with AI embedded in sizing and returns processes.",
+"D": "Announce an AI strategy publicly before competitors do, to be seen as the market's leader."
+},
+"fin": [
+"C"
+],
+"expl": "Proprietary data plus AI integrated into core processes creates a data flywheel that competitors can't easily replicate. Benchmark-chasing (B) uses models every competitor can access; announcements (D) and showcase pilots (A) don't create lasting capability.",
+"multi": false
+},
+{
+"id": "CC-033",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "In a retailer's market, AI-powered product search and recommendations have become standard across nearly all competitors. The retailer has neither. Which investment posture is MOST appropriate?",
+"opts": {
+"A": "Fund a long-term research lab to invent a new kind of recommendation algorithm before acting on it.",
+"B": "Wait several years until the technology matures before making any investment in AI search at all.",
+"C": "Build a proprietary search model from scratch to leapfrog competitors that bought their solutions.",
+"D": "Reach parity quickly, often by buying proven solutions, and focus differentiation efforts elsewhere."
+},
+"fin": [
+"D"
+],
+"expl": "When a capability has become table stakes, the priority is reaching parity quickly, often by buying, while differentiating elsewhere. Waiting (B) widens the gap; building from scratch (C) or funding a research lab (A) is slow and costly.",
+"multi": false
+},
+{
+"id": "CC-034",
+"dm": 2,
+"domain": "Domain 2：AI 策略與商業價值創造（AI Strategy and Business Value Creation）28%",
+"sub": "AI 策略、用例選擇、優先序與競爭優勢",
+"code": "CC",
+"stem": "A retailer's board asks how AI will improve operations in a way that adds up to a competitive advantage. Which TWO examples BEST describe operational improvements from AI? (Select TWO)",
+"opts": {
+"A": "Lower unit costs from automated document processing in finance and supplier management.",
+"B": "Faster replenishment cycles from more accurate demand forecasts that reduce stockouts.",
+"C": "More press coverage of the company's AI announcements than its main competitors received.",
+"D": "A higher monthly cloud bill, which shows that the company is investing seriously in AI.",
+"E": "A larger number of AI pilots launched each quarter, regardless of whether they reach production."
+},
+"fin": [
+"A",
+"B"
+],
+"expl": "Lower unit costs (A) and faster cycle times with fewer stockouts (B) are operational improvements that compound into advantage. Pilot counts (E), cloud spend (D) and press coverage (C) are activity or perception, not operational results.",
+"multi": true
 },
 {
 "id": "CN-001",
@@ -2431,6 +3085,314 @@ const DATA=[
 "multi": false
 },
 {
+"id": "CC-035",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "An online retailer's AI system sets credit limits for its store card. Customers who are declined ask why, and a regulator requires a clear reason. Which responsible AI dimension is MOST directly involved?",
+"opts": {
+"A": "Veracity: factually correct outputs, such as accurate product details and prices.",
+"B": "Explainability: mechanisms to understand and communicate why the system produced a decision.",
+"C": "Controllability: mechanisms to monitor the system and steer its behaviour when needed.",
+"D": "Robustness: correct outputs for both the expected inputs and any unexpected or unusual inputs."
+},
+"fin": [
+"B"
+],
+"expl": "Telling a declined customer why a decision was made is explainability. Robustness concerns unusual inputs, controllability concerns steering behaviour, and veracity concerns factual correctness.",
+"multi": false
+},
+{
+"id": "CC-036",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A fashion retailer's AI chatbot answers customers on its website, but the page doesn't say that customers are talking to an AI. Which responsible AI dimension does this MOST directly affect?",
+"opts": {
+"A": "Robustness, because the chatbot may give poor answers to questions with spelling errors.",
+"B": "Privacy, because the chatbot may store customer questions longer than is truly needed.",
+"C": "Transparency, because customers can't make an informed choice about engaging with AI.",
+"D": "Fairness, because customers in different groups may receive different answers from it."
+},
+"fin": [
+"C"
+],
+"expl": "Disclosing that customers are interacting with AI lets them make informed choices, which is transparency. The other concerns are real but the missing disclosure is a transparency issue.",
+"multi": false
+},
+{
+"id": "CC-037",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A retailer plans to launch an AI hiring screen for store staff next week to beat a seasonal rush. Fairness testing shows it rejects older applicants at a much higher rate. What should the business leader do?",
+"opts": {
+"A": "Delay the screen, fix the disparity or use human review, and document the decision formally.",
+"B": "Launch on schedule but tell recruiters to ignore the screen whenever they feel it may be wrong.",
+"C": "Cancel all use of AI in the company because the hiring screen has shown a fairness problem.",
+"D": "Launch on schedule and plan to add fairness fixes after the seasonal hiring rush is over."
+},
+"fin": [
+"A"
+],
+"expl": "A high-impact decision with a known fairness problem shouldn't launch as is; mitigate (fix the cause or add human review), narrow or delay, and document the trade-off. Launching and fixing later (D) knowingly harms applicants; informal overrides (B) aren't a control; cancelling all AI (C) is disproportionate.",
+"multi": false
+},
+{
+"id": "CC-038",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A grocery chain is starting a project to personalise offers using loyalty card data. When should responsible AI practices first be integrated into the project?",
+"opts": {
+"A": "Only if a customer complaint or regulator inquiry shows that something has gone wrong in use.",
+"B": "After the model is built, during a final review just before customers see the first offers.",
+"C": "Once a year during the annual audit, together with the external review of the financial statements.",
+"D": "At the start, when the use case, stakeholders and risks are defined, and again at major changes."
+},
+"fin": [
+"D"
+],
+"expl": "Governance by design means integrating responsible AI from the start (use case, stakeholders, risks, data rights) and revisiting it at material changes. A final review (B) is too late; waiting for complaints (A) or an annual audit (C) leaves harm undetected.",
+"multi": false
+},
+{
+"id": "CC-039",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A retailer's AI assistant will decide whether to approve refunds of up to 2,000 dollars for high-value electronics without a human. Which safeguard is MOST appropriate?",
+"opts": {
+"A": "Require human approval above a set amount, with clear escalation criteria for unusual cases.",
+"B": "Raise the assistant's temperature so it considers a wider range of possible refund outcomes.",
+"C": "Let the assistant approve all refunds automatically and review a sample of decisions once a year.",
+"D": "Turn off logging of the assistant's decisions so customer data is not kept longer than needed."
+},
+"fin": [
+"A"
+],
+"expl": "Costly, consequential actions call for human-in-the-loop approval above a threshold plus clear escalation criteria. A yearly sample (C) is too little oversight; turning off logging (D) removes the audit trail; temperature (B) adds randomness.",
+"multi": false
+},
+{
+"id": "CC-040",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A retailer's personalisation team wants more customer data, including location history, to improve recommendations. Privacy counsel is concerned. Which approach BEST balances the two objectives?",
+"opts": {
+"A": "Collect the data without telling customers so the recommendations feel more natural to them.",
+"B": "Abandon personalisation entirely, because any use of customer data creates some privacy risk.",
+"C": "Collect all available data now, since storage is cheap and the data might be useful later.",
+"D": "Collect only the data needed, with clear consent and value for customers, and minimise retention."
+},
+"fin": [
+"D"
+],
+"expl": "Data minimisation with clear consent, a value exchange customers understand and limited retention balances personalisation and privacy. Collecting everything (C) or covertly (A) violates privacy principles; abandoning personalisation (B) gives up achievable value.",
+"multi": false
+},
+{
+"id": "CC-041",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "CC",
+"stem": "A large retailer has AI projects in marketing, supply chain and HR, each approved only by its own department head. The board wants consistent oversight. Which governance structure BEST addresses this?",
+"opts": {
+"A": "A single external consultant who reviews all the AI projects once a year and writes a report on them.",
+"B": "An arrangement where each department continues approving its own AI projects independently.",
+"C": "A cross-functional AI governance council with business, legal, compliance, privacy, security and HR.",
+"D": "A rule that the data science team alone approves every AI project before it starts development."
+},
+"fin": [
+"C"
+],
+"expl": "A cross-functional council provides consistent oversight with clear accountability. Data science alone (D) lacks legal, risk and business perspectives; department-by-department approval (B) is the problem; a yearly external review (A) is too infrequent.",
+"multi": false
+},
+{
+"id": "CC-042",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "CC",
+"stem": "A retailer selling in the EU plans an AI chatbot for customer service. Under the EU AI Act, which obligation MOST clearly applies to this type of system?",
+"opts": {
+"A": "No obligations, because customer service chatbots are excluded from the EU AI Act entirely.",
+"B": "Telling customers that they are interacting with an AI system, under transparency obligations.",
+"C": "Conformity assessment and registration as a high-risk system before the chatbot can launch.",
+"D": "A complete ban, because the EU AI Act prohibits all chatbots that talk to consumers in the EU."
+},
+"fin": [
+"B"
+],
+"expl": "Chatbots fall under the Act's transparency obligations: people must be told they are interacting with AI. They aren't prohibited (D) or high-risk by default (C, which applies to uses such as hiring and credit), nor fully excluded (A).",
+"multi": false
+},
+{
+"id": "CC-043",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "CC",
+"stem": "A retailer builds an AI assistant on a managed AWS AI service. The project sponsor says, \"Because the AWS service is compliant, our assistant is automatically compliant.\" Which response is MOST accurate?",
+"opts": {
+"A": "Not quite: AWS is responsible for the retailer's data, but the retailer is responsible for AWS servers.",
+"B": "Correct, because AWS takes full responsibility for the compliance of all applications built on its services.",
+"C": "Correct, provided the retailer chooses an AWS Region that is located inside its home country.",
+"D": "Not quite: AWS secures the service, but the retailer stays responsible for its data, access and use case."
+},
+"fin": [
+"D"
+],
+"expl": "Under the shared responsibility model, AWS secures the cloud and the services it runs, while the customer remains responsible for its data, access management, configuration and the compliance of its use case. Choosing a Region (C) helps residency but doesn't make a use case compliant; option A reverses the model.",
+"multi": false
+},
+{
+"id": "CC-044",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "CC",
+"stem": "A retailer's new AI assistant answers employee questions from internal documents. Some documents are restricted to HR and finance. Which control is MOST important to require?",
+"opts": {
+"A": "Let employees decide for themselves which restricted documents the assistant may search through.",
+"B": "Store all internal documents in one public folder so that the assistant can find them quickly.",
+"C": "Ensure the assistant respects document permissions, so users only get answers they may see.",
+"D": "Give the assistant read access to all documents so it can answer every question completely."
+},
+"fin": [
+"C"
+],
+"expl": "Least privilege means the assistant must respect existing document permissions so users only receive answers drawn from documents they're allowed to open. Full access (D) and a public folder (B) leak restricted information; letting employees decide (A) bypasses data owners.",
+"multi": false
+},
+{
+"id": "CC-045",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "AI 治理、風險分級、合規法規與存取控制",
+"code": "CC",
+"stem": "A retailer wants to prioritise governance effort across 40 AI use cases. Which TWO factors should MOST increase a use case's risk classification? (Select TWO)",
+"opts": {
+"A": "The system acts autonomously in ways that are hard to reverse, such as issuing payments.",
+"B": "The system makes decisions that significantly affect people, such as hiring or credit offers.",
+"C": "The system was built by an external vendor rather than by the retailer's internal team.",
+"D": "The system is used by the marketing department rather than by the finance department team.",
+"E": "The system uses a foundation model that was released within the last twelve calendar months."
+},
+"fin": [
+"A",
+"B"
+],
+"expl": "Impact on people (B) and autonomous, hard-to-reverse actions (A) are core risk factors. Who built it (C), the model's release date (E) and which department uses it (D) don't by themselves change the potential for harm.",
+"multi": true
+},
+{
+"id": "CC-046",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A retailer's product recommendation model passed fairness testing at launch two years ago. Since then the customer base has changed a lot. What should the governance team require?",
+"opts": {
+"A": "A one-time retest only if a customer files a formal discrimination complaint about the model.",
+"B": "Ongoing monitoring of fairness metrics across customer groups to detect any bias drift over time.",
+"C": "No further action, because a model that passed fairness testing at launch remains fair afterwards.",
+"D": "Removal of all customer group data from monitoring so that no bias can be detected or reported."
+},
+"fin": [
+"B"
+],
+"expl": "Bias can drift as populations and data change, so fairness needs ongoing monitoring across groups. Passing at launch (C) doesn't guarantee later fairness; waiting for complaints (A) means harm happens first; removing group data (D) hides bias.",
+"multi": false
+},
+{
+"id": "CC-047",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A fashion retailer uses generative AI to create marketing images. Leadership is worried about copyright claims over generated content. Which TWO actions BEST reduce this risk? (Select TWO)",
+"opts": {
+"A": "Remove the watermarks and content credentials from images so they look like original work.",
+"B": "Assume that AI-generated images can never infringe copyright because they are newly created.",
+"C": "Prompt the model to copy the style of a named living artist so the images look professional.",
+"D": "Have creative and legal staff review generated images before they are published in campaigns.",
+"E": "Use providers that offer IP indemnity for generated output, and check the terms that apply."
+},
+"fin": [
+"D",
+"E"
+],
+"expl": "Provider IP indemnity (E) and human review before publication (D) reduce exposure. Imitating a named living artist (C) increases risk; AI output can reproduce protected material (B); removing watermarks and credentials (A) undermines transparency.",
+"multi": true
+},
+{
+"id": "CC-048",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "負責任 AI 原則（公平、可解釋、透明、人工監督、內容安全）",
+"code": "CC",
+"stem": "A retailer's AI assistant for store managers sometimes cites company policies that don't exist. Which approach BEST reduces this risk?",
+"opts": {
+"A": "Switch to a larger model, because bigger models do not invent facts or policy documents.",
+"B": "Raise the temperature so the assistant explores more options before choosing its answer.",
+"C": "Ground answers in the current policy library with citations and check answers against sources.",
+"D": "Remove the policy library so that the assistant answers from its own general training data."
+},
+"fin": [
+"C"
+],
+"expl": "Grounding in the current policy library with citations and grounding checks directly targets hallucinated policies. Larger models still hallucinate (A); higher temperature (B) increases randomness; removing sources (D) makes invention more likely.",
+"multi": false
+},
+{
+"id": "CC-049",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "A grocery chain's AI demand forecasts have been in production for a year. Which set of production controls is MOST appropriate?",
+"opts": {
+"A": "Accuracy monitoring against a baseline, alert thresholds, a named owner and an incident process.",
+"B": "Monitoring of the cloud bill only, since accuracy cannot change unless the code itself changes.",
+"C": "A one-time accuracy test at launch, after which the forecasts are trusted without further checks.",
+"D": "A quarterly review of user satisfaction surveys, with no technical monitoring of forecasts."
+},
+"fin": [
+"A"
+],
+"expl": "Production AI needs ongoing performance monitoring against a baseline, alert thresholds, a named owner and an incident process. A one-time test (C) misses drift; accuracy can change without code changes (B); surveys alone (D) miss measurable accuracy problems.",
+"multi": false
+},
+{
+"id": "CC-050",
+"dm": 3,
+"domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
+"sub": "營運監控、可靠性與 Agentic AI",
+"code": "CC",
+"stem": "A retailer's customer assistant built on a foundation model will be updated when the provider releases a new model version. What should the retailer require BEFORE adopting the new version?",
+"opts": {
+"A": "Wait until the old version is retired and then switch over without any additional testing.",
+"B": "Ask customers to report any changes they notice after the new version goes into production.",
+"C": "Adopt it immediately in production, because new model versions always perform better.",
+"D": "Re-evaluate it against the retailer's test set and safety criteria before switching over."
+},
+"fin": [
+"D"
+],
+"expl": "Provider model changes can alter behaviour, so re-evaluating against your own test set and safety criteria before switching manages reliability risk. New versions aren't always better (C); switching untested (A) or relying on customers to find problems (B) exposes customers to regressions.",
+"multi": false
+},
+{
 "id": "CN-004",
 "dm": 3,
 "domain": "Domain 3：AI 治理與負責任 AI 領導力（AI Governance and Responsible AI Leadership）24%",
@@ -3515,6 +4477,295 @@ const DATA=[
 ],
 "expl": "A 正確：知情權針對申請人自己的決策，通用說明頁無法滿足。",
 "multi": false
+},
+{
+"id": "CC-051",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A national retailer wants to deploy generative AI in every department within three months. Leaders disagree on priorities, data sits in separate regional systems, and there is no AI policy. What should the strategy lead recommend FIRST?",
+"opts": {
+"A": "Hire a large AI engineering team and let them decide which departments should adopt AI first.",
+"B": "Delay all AI work for two years until every regional data system has been fully replaced.",
+"C": "Assess readiness across leadership, data and governance, then close gaps with a focused pilot.",
+"D": "Deploy the AI tools everywhere at once, because quick adoption will resolve the disagreements."
+},
+"fin": [
+"C"
+],
+"expl": "With misaligned leaders, siloed data and no policy, assess readiness and close the most critical gaps while proving value with a focused pilot. Deploying everywhere (D) amplifies the gaps; letting engineers set business priorities (A) skips business ownership; a two-year freeze (B) is disproportionate.",
+"multi": false
+},
+{
+"id": "CC-052",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A retailer has run 25 AI proofs of concept across departments over two years. None is in production, and there are no shared standards. At which maturity stage is the retailer MOST likely?",
+"opts": {
+"A": "Experimentation, because work consists of isolated proofs of concept with nothing in production.",
+"B": "Transformational, because AI is clearly part of every department's activities and plans.",
+"C": "Enterprise-scale deployment, because 25 projects show AI is used across the business.",
+"D": "Operational, because two years of AI work means that its delivery processes are fully established."
+},
+"fin": [
+"A"
+],
+"expl": "Isolated proofs of concept with nothing in production and no standards is the experimentation stage, however many there are. Transformational (B) and enterprise-scale (C) need AI in production at scale; Operational (D) needs use cases in production with measured value.",
+"multi": false
+},
+{
+"id": "CC-053",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "A retailer's AI pilots work technically but employees rarely use them, because the tools sit outside their daily systems and nobody explained the changes. Which capability gaps does this MOST likely show?",
+"opts": {
+"A": "Data gaps only: the training data was too small, which explains why employees avoid the tools.",
+"B": "Process and people gaps: AI was not built into workflows and change management was missing.",
+"C": "Governance gaps only: the company needs more approval steps before any new tool is released.",
+"D": "Technology gaps only: the models need more parameters before employees will start using them."
+},
+"fin": [
+"B"
+],
+"expl": "Tools outside daily workflows and no explanation of the change point to process and people gaps. The pilots work technically, so model size (D) and training data (A) aren't the issue; more approval steps (C) wouldn't raise adoption.",
+"multi": false
+},
+{
+"id": "CC-054",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A mid-sized retailer at the experimentation stage wants to reach enterprise-scale AI. Its biggest blockers are inconsistent data access and no AI policy. How should it prioritise investment?",
+"opts": {
+"A": "Spread the budget equally across every possible AI capability so that no area is left behind.",
+"B": "Invest first in the most advanced models available, then address data and policy once they are live.",
+"C": "Wait until competitors have reached enterprise scale and then copy their investment sequence.",
+"D": "Address the blockers first, building data access and policy through a few high-priority use cases."
+},
+"fin": [
+"D"
+],
+"expl": "Fix the blockers first, and build foundations through real high-priority use cases so each project leaves reusable assets. Advanced models first (B) ignore the blockers; spreading budget evenly (A) dilutes effort; waiting for competitors (C) cedes ground.",
+"multi": false
+},
+{
+"id": "CC-055",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "資料策略與資料準備度",
+"code": "CC",
+"stem": "A retailer's churn model performs poorly. Customer purchases, support tickets and loyalty data sit in separate systems owned by different departments that don't share data. What is the MOST effective response?",
+"opts": {
+"A": "Address the silos with clear data ownership, sharing agreements and integration on a governed platform.",
+"B": "Let each department build its own separate churn model, using only the data that it already owns.",
+"C": "Ask the data science team to tune the model further using only the purchase data it already has.",
+"D": "Replace the churn model with a generative AI chatbot that asks customers whether they plan to leave."
+},
+"fin": [
+"A"
+],
+"expl": "The model lacks signals locked in silos; data ownership, sharing agreements and integration on a governed platform fix the root cause. Tuning on incomplete data (C) can't add missing signals; a chatbot (D) doesn't predict churn; separate models (B) entrench the silos.",
+"multi": false
+},
+{
+"id": "CC-056",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "資料策略與資料準備度",
+"code": "CC",
+"stem": "A retailer finds that nobody fixes data quality problems in its product catalogue, and requests to use the data for AI wait months for approval. Which foundation is MOST clearly missing?",
+"opts": {
+"A": "A newer foundation model that can automatically repair the errors in any product catalogue data.",
+"B": "Clear data ownership and stewardship, with an agreed process for approving data sharing and use.",
+"C": "A faster network connection between the catalogue system and the AI development environment.",
+"D": "A larger data storage capacity in the cloud so that more copies of the catalogue can be kept."
+},
+"fin": [
+"B"
+],
+"expl": "When nobody fixes quality and approvals stall, the missing foundation is data ownership and stewardship with a sharing process. Storage (D) and network speed (C) don't assign responsibility; a model can't replace data ownership (A).",
+"multi": false
+},
+{
+"id": "CC-057",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A retailer's AI pilots run on individual employees' laptops with copies of customer data, and none can move into production. What should leadership invest in?",
+"opts": {
+"A": "A policy that bans all AI pilots until the company has replaced its core retail systems.",
+"B": "More powerful laptops for each data scientist so pilots can process larger data sets locally.",
+"C": "A shared, governed platform with secure data access, repeatable deployment and monitoring.",
+"D": "An external agency that runs every pilot on its own servers using copies of customer data."
+},
+"fin": [
+"C"
+],
+"expl": "Moving from laptop pilots to production needs a shared, governed platform with secure data access, repeatable deployment (MLOps) and monitoring. Bigger laptops (B) keep the problems; a ban (A) stops progress; copying data to an agency (D) adds data risk.",
+"multi": false
+},
+{
+"id": "CC-058",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "A retailer's AI programme has stalled. Each executive funds different AI tools, and employees receive mixed messages about priorities. What is the MOST important leadership action?",
+"opts": {
+"A": "Hand the programme to the IT department and remove business executives from AI decisions.",
+"B": "Announce that AI is a top priority and leave each team to interpret what that should mean for it.",
+"C": "Let each executive continue funding their preferred tools to keep the programme moving forward.",
+"D": "Appoint an executive sponsor and align the leadership team on a shared AI vision and priorities."
+},
+"fin": [
+"D"
+],
+"expl": "A visible executive sponsor and an aligned leadership team with a shared vision and priorities fix fragmented funding and mixed messages. Continuing as is (C) keeps the problem; removing business leaders (A) loses business ownership; slogans without alignment (B) don't help.",
+"multi": false
+},
+{
+"id": "CC-059",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "A retailer is forming a team to deploy an AI tool that screens supplier contracts for risk. Which team composition BEST fits?",
+"opts": {
+"A": "Procurement lead as owner, with technical experts, legal, compliance and some end users.",
+"B": "An external vendor only, since vendors have the most experience deploying similar tools.",
+"C": "Data scientists and software engineers only, since the tool is a technical project at heart.",
+"D": "The procurement team only, since procurement staff will be the main users of the AI tool."
+},
+"fin": [
+"A"
+],
+"expl": "Cross-functional teams with a business owner, technical experts, legal, compliance and end users, under clear accountability, give AI initiatives the best chance. Technologists alone (C), users alone (D) or a vendor alone (B) miss perspectives.",
+"multi": false
+},
+{
+"id": "CC-060",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "Rumours spread that a retailer's new AI assistant will replace its customer service team, and morale is falling. What should leadership do?",
+"opts": {
+"A": "Say nothing until the rollout is complete, so that unclear information does not cause worry.",
+"B": "Communicate openly on timelines, how roles will change and reskilling plans, with two-way Q and A.",
+"C": "Tell employees that questions about AI will be handled by the vendor's support team only.",
+"D": "Promise that no one's job or daily work will change, even though some roles will be redesigned."
+},
+"fin": [
+"B"
+],
+"expl": "Early, honest, two-way communication about timelines, role changes and reskilling builds trust. Silence (A) feeds rumours; false promises (D) destroy credibility; sending questions to a vendor (C) avoids leadership accountability.",
+"multi": false
+},
+{
+"id": "CC-061",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "A retailer's employees avoid trying AI tools because a failed pilot last year led to blame and a cancelled bonus. Which leadership intervention BEST addresses this barrier?",
+"opts": {
+"A": "Remove all AI tools until employees request them, so that nobody feels any pressure to try.",
+"B": "Run pilots in secret so that failures are not visible to managers or to other employees.",
+"C": "Create psychological safety: frame pilots as learning with agreed criteria and recognise lessons.",
+"D": "Require employees to use AI tools daily, and penalise those who do not reach their usage targets."
+},
+"fin": [
+"C"
+],
+"expl": "Fear of failure is addressed with psychological safety: learning goals with agreed criteria, recognising lessons and leaders modelling experimentation. Penalties (D) deepen fear; removing tools (A) stalls progress; secret pilots (B) undermine trust.",
+"multi": false
+},
+{
+"id": "CC-062",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "A retailer wants all 15,000 employees to understand AI basics and use approved tools safely within a year. Which TWO approaches BEST support this goal? (Select TWO)",
+"opts": {
+"A": "A role-based training programme that gives every employee a baseline in AI literacy.",
+"B": "Responsible AI training covering acceptable use, data handling and the approved tools.",
+"C": "A reading list of AI research papers that employees can study in their own spare time.",
+"D": "A deep technical certification course in model training for every store employee.",
+"E": "A single hackathon for 50 volunteers from the technology team at the company headquarters."
+},
+"fin": [
+"A",
+"B"
+],
+"expl": "Enterprise-wide literacy needs a role-based training programme (A) and responsible AI training on safe use (B). A hackathon for 50 (E) doesn't reach 15,000; deep technical certification for everyone (D) is the wrong level; optional papers (C) won't build broad literacy.",
+"multi": true
+},
+{
+"id": "CC-063",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A retailer's AI returns-processing pilot met its targets in one region. What should happen BEFORE rolling it out to all 600 stores?",
+"opts": {
+"A": "Copy the pilot set-up exactly to all stores at once, because it already worked in one region.",
+"B": "Run the pilot in the same region for another three years to be certain of the long-term results.",
+"C": "Rebuild the solution from scratch with a different vendor to confirm the results were not luck.",
+"D": "Production readiness: governance approval, security review, monitoring, cost at scale, training."
+},
+"fin": [
+"D"
+],
+"expl": "Moving from pilot to production-grade needs governance approval, security and privacy review, monitoring and support, unit costs at scale, and training. Copying everywhere (A) skips that work; three more years (B) delays value; rebuilding (C) wastes the success.",
+"multi": false
+},
+{
+"id": "CC-064",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "組織變革、人才與溝通",
+"code": "CC",
+"stem": "Several departments at a retailer are building separate AI chatbots with different vendors and no common standards, which duplicates cost and creates inconsistent quality. Which approach BEST addresses this?",
+"opts": {
+"A": "Ban all chatbots across the company until a single department volunteers to build one for all.",
+"B": "Ask the most senior department head to choose one vendor for everything without any consultation.",
+"C": "Establish an AI centre of excellence with shared standards and platforms in a hub-and-spoke model.",
+"D": "Let each department keep its own chatbot and vendor, since departments know their needs best."
+},
+"fin": [
+"C"
+],
+"expl": "An AI centre of excellence, often hub-and-spoke, sets shared standards, platforms and reusable components while departments still build for their needs. Keeping things as they are (D) continues duplication; a ban (A) halts value; a unilateral vendor choice (B) skips cross-functional input.",
+"multi": false
+},
+{
+"id": "CC-065",
+"dm": 4,
+"domain": "Domain 4：業務就緒、領導力與 AI 轉型（Business Readiness, Leadership, and AI Transformation）24%",
+"sub": "成熟度、準備度評估與 PoC→量產轉型",
+"code": "CC",
+"stem": "A retailer is expanding its AI assistant from internal use to customers in three new countries. Which TWO factors are MOST important to evaluate during this scaling? (Select TWO)",
+"opts": {
+"A": "Whether the assistant's name and logo are the same as those used for internal employees.",
+"B": "Whether the original pilot team members would like to move to the new countries in person.",
+"C": "Fallback processes and phased rollout plans that protect service if the assistant fails.",
+"D": "Whether competitors in the new countries have already announced their customer AI assistants.",
+"E": "Whether new countries' laws and languages change the risk class and quality of the assistant."
+},
+"fin": [
+"C",
+"E"
+],
+"expl": "Scaling to new countries changes regulatory risk and performance across languages (E) and needs continuity plans with fallbacks and phased rollout (C). Branding (A), relocation preferences (B) and competitor announcements (D) don't decide whether scaling is safe and effective.",
+"multi": true
 },
 {
 "id": "CN-005",
