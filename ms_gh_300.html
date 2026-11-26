@@ -100,6 +100,7 @@ label.sw input{width:20px;height:20px;margin-top:3px;flex:none}
 @media (min-width:640px){body{padding:0 24px 110px}.hdr{margin:0 -24px 24px;padding:10px 24px}.card{padding:22px}h1{font-size:1.9rem}.qtext{font-size:1.15rem}}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
+<script>(function(){var t="dark";try{t=localStorage.getItem("gh300_theme")||"dark"}catch(e){}document.documentElement.dataset.theme=t==="light"?"light":"dark"})()</script>
 </head>
 <body>
 <header class="hdr"><div class="in"><b>GH-300 模擬測驗</b><button class="theme" id="th" type="button">切換深色／淺色</button></div></header>
@@ -117,29 +118,35 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const app=document.getElementById("app");
 if(!Q.length){document.getElementById("app").innerHTML="<p>找不到題庫檔 ms_gh300.js，請確認它與本檔案放在同一個資料夾。</p>"}
-const cfg={doms:new Set([1,2,3,4,5,6]),count:20,shuffleOpts:false,incBad:false};
+const SRC={A:{n:"來源 A：舊題庫",s:"原 ms_gh300.js，已移除與來源 B 重複的 5 題"},B:{n:"來源 B：新題庫",s:"GH-300_Question_Bank（清理後 122 題）"}};
+const sv=q=>q.src||(q.n>126?"B":"A");
+const cfg={srcs:new Set(["A","B"]),doms:new Set([1,2,3,4,5,6]),count:20,shuffleOpts:false,incBad:false};
 let S=null;
 
-function pool(){return Q.filter(q=>cfg.doms.has(q.d)&&(cfg.incBad||q.s!=="X"))}
+function pool(){return Q.filter(q=>cfg.srcs.has(sv(q))&&cfg.doms.has(q.d)&&(cfg.incBad||q.s!=="X"))}
 
 function setup(){
   S=null;
   const wrong=loadWrong().filter(n=>Q.some(q=>q.n===n));
   const avail=pool().length;
   if(cfg.count>avail)cfg.count=Math.max(1,avail);
-  const cnt=d=>Q.filter(q=>q.d===d&&(cfg.incBad||q.s!=="X")).length;
+  const cnt=d=>Q.filter(q=>cfg.srcs.has(sv(q))&&q.d===d&&(cfg.incBad||q.s!=="X")).length;
+  const scnt=k=>Q.filter(q=>sv(q)===k&&(cfg.incBad||q.s!=="X")).length;
   app.innerHTML=`
   <h1>開始練習</h1>
   <p class="sub">GitHub Copilot 認證題庫，共 ${Q.length} 題。選擇主題與題數後開始，答錯的題目會存進錯題本。</p>
-  <section class="card"><h2>1. 考試主題</h2>
+  <section class="card"><h2>1. 題庫來源</h2>
+    <div class="chips">${Object.entries(SRC).map(([k,v])=>`<button type="button" class="chip srcchip" data-s="${k}" aria-pressed="${cfg.srcs.has(k)}"><span class="dot"></span><span class="t">${v.n}<small>${v.s}・${scnt(k)} 題</small></span></button>`).join("")}</div>
+  </section>
+  <section class="card"><h2>2. 考試主題</h2>
     <div class="chips">${Object.entries(DOM).map(([k,v])=>`<button type="button" class="chip" style="--c:${v.c}" data-d="${k}" aria-pressed="${cfg.doms.has(+k)}"><span class="dot"></span><span class="t">${v.n}<small>占比 ${v.w}・${cnt(+k)} 題</small></span></button>`).join("")}</div>
     <div class="row" style="margin-top:10px"><button type="button" class="btn small" id="all">全選</button><button type="button" class="btn small" id="none">全不選</button></div>
   </section>
-  <section class="card"><h2>2. 題數</h2>
+  <section class="card"><h2>3. 題數</h2>
     <div class="presets" id="pre">${[10,20,30,50].map(n=>`<button type="button" class="btn small" data-n="${n}" aria-pressed="${cfg.count===n}">${n} 題</button>`).join("")}<button type="button" class="btn small" data-n="all" aria-pressed="${cfg.count===avail&&![10,20,30,50].includes(avail)}">全部</button></div>
     <div class="row" style="margin-top:10px"><label for="cnt">自訂題數</label><input id="cnt" type="number" min="1" max="${Math.max(avail,1)}" value="${cfg.count}" inputmode="numeric"><span class="hint">目前條件下共 ${avail} 題可抽</span></div>
   </section>
-  <section class="card"><h2>3. 選項</h2>
+  <section class="card"><h2>4. 選項</h2>
     <label class="sw"><input type="checkbox" id="so" ${cfg.shuffleOpts?"checked":""}><span>隨機打亂選項順序<br><span class="hint">避免背答案字母</span></span></label>
     <label class="sw"><input type="checkbox" id="ib" ${cfg.incBad?"checked":""}><span>包含答案有疑義的題目（${Q.filter(q=>q.s==="X").length} 題）<br><span class="hint">Q9、Q13、Q122 的影片答案與官方文件不符，預設不出題</span></span></label>
   </section>
@@ -147,7 +154,8 @@ function setup(){
     <button type="button" class="btn" id="wb" ${wrong.length?"":"disabled"}>錯題本（${wrong.length}）</button>
     <button type="button" class="btn primary" id="go" ${avail?"":"disabled"}>開始測驗</button>
   </div></div>`;
-  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const d=+b.dataset.d;cfg.doms.has(d)?cfg.doms.delete(d):cfg.doms.add(d);setup()});
+  app.querySelectorAll(".srcchip").forEach(b=>b.onclick=()=>{const k=b.dataset.s;cfg.srcs.has(k)?cfg.srcs.delete(k):cfg.srcs.add(k);setup()});
+  app.querySelectorAll(".chip[data-d]").forEach(b=>b.onclick=()=>{const d=+b.dataset.d;cfg.doms.has(d)?cfg.doms.delete(d):cfg.doms.add(d);setup()});
   document.getElementById("all").onclick=()=>{cfg.doms=new Set([1,2,3,4,5,6]);setup()};
   document.getElementById("none").onclick=()=>{cfg.doms=new Set();setup()};
   app.querySelectorAll("#pre .btn").forEach(b=>b.onclick=()=>{cfg.count=b.dataset.n==="all"?avail:Math.min(+b.dataset.n,avail);setup()});
@@ -171,7 +179,7 @@ function show(){
   <div class="top"><span>${S.label?S.label+"・":""}第 ${S.i+1} / ${S.items.length} 題</span><button type="button" class="btn small" id="quit">結束</button></div>
   <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>
   <section class="card">
-    <div><span class="tag" style="--c:${d.c}">${d.n}</span><span class="hint">題庫 Q${q.n}</span></div>
+    <div><span class="tag" style="--c:${d.c}">${d.n}</span><span class="hint">${SRC[sv(q)].n.split("：")[0]}・題庫 Q${q.n}</span></div>
     <div class="qtext">${esc(q.q)}</div>
     ${multi?`<div class="need">複選：請選 ${q.a.length} 項</div>`:""}
     <div class="opts" role="${multi?"group":"radiogroup"}">${it.opts.map((o,j)=>`<label class="opt" data-k="${o.k}"><input type="${multi?"checkbox":"radio"}" name="o" value="${o.k}"><span class="k">${String.fromCharCode(97+j)}.</span><span>${esc(o.t)}</span></label>`).join("")}</div>
@@ -239,7 +247,7 @@ function result(){
   document.getElementById("redo").onclick=()=>start(shuffle(wrongNow.map(r=>Q.find(q=>q.n===r.n))),"錯題重練");
   window.scrollTo(0,0);
 }
-document.getElementById("th").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark"};
+document.getElementById("th").onclick=()=>{const r=document.documentElement;const t=r.dataset.theme==="light"?"dark":"light";r.dataset.theme=t;try{localStorage.setItem("gh300_theme",t)}catch(e){}};
 if(Q.length)setup();
 </script>
 </body>
