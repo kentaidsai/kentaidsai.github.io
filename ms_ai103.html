@@ -3,40 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f6cbd">
-<title>Microsoft AI-103 互動測驗</title>
+<meta name="theme-color" content="#2b579a">
+<title>AI-103 互動測驗</title>
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--ink:#1d2530;--mut:#6b7686;--line:#dde2ea;--pri:#0f6cbd;--ok:#1b8a4b;--okbg:#e6f5ec;--bad:#c4314b;--badbg:#fbe9ed;--warn:#b45309;--warnbg:#fff4e0}
-@media(prefers-color-scheme:dark){:root{--bg:#14181e;--card:#1d232c;--ink:#e6eaf0;--mut:#93a0b3;--line:#2e3744;--pri:#4aa3f0;--ok:#4cc17f;--okbg:#17352a;--bad:#ff7a90;--badbg:#3a1c25;--warn:#f0b35a;--warnbg:#3a2d14}}
+:root{--bg:#f3f2f1;--card:#fff;--ink:#323130;--mut:#605e5c;--line:#e1dfdd;--pri:#0078d4;--ok:#107c10;--okbg:#dff6dd;--bad:#a4262c;--badbg:#fde7e9;--warn:#8a5700;--warnbg:#fff4ce;--hdr:#2b579a;--dP:#2b579a;--dG:#d24726;--dV:#217346;--dT:#7719aa;--dI:#038387}
+@media(prefers-color-scheme:dark){:root{--bg:#201f1e;--card:#292827;--ink:#f3f2f1;--mut:#c8c6c4;--line:#3b3a39;--pri:#479ef5;--ok:#6bb700;--okbg:#1b2e17;--bad:#f1707b;--badbg:#3b1d21;--warn:#ffd335;--warnbg:#3a3015;--hdr:#1b3a6b;--dP:#7da0e8;--dG:#f08a6e;--dV:#5ec58a;--dT:#c99cf0;--dI:#4fc9cc}}
 *{box-sizing:border-box}
-body{margin:0;font:15px/1.6 -apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink)}
-header{background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;position:sticky;top:0;z-index:5}
-header h1{font-size:17px;margin:0 0 6px}
+body{margin:0;font:15px/1.6 "Segoe UI","Segoe UI Variable",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--hdr);color:#fff;padding:10px 16px;position:sticky;top:0;z-index:5;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+header h1{font-size:17px;margin:0 0 6px;font-weight:600;letter-spacing:.2px}
+header .stat{color:#dbe6f7}header .stat b{color:#fff}
+header button,header select,header input[type=text]{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff}
+header select option{color:#323130;background:#fff}
+header input::placeholder{color:#cfdcf2}
+header button:hover:not(:disabled){background:rgba(255,255,255,.22);border-color:#fff}
+header input[type=checkbox]{accent-color:#fff}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .stat{color:var(--mut);font-size:13px}
 .stat b{color:var(--ink)}
-button,select,input[type=text],input[type=number]{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px}
+button,select,input[type=text],input[type=number]{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:4px;padding:6px 12px}
 button{cursor:pointer}button:hover:not(:disabled){border-color:var(--pri)}button:disabled{opacity:.45;cursor:default}
 button.pri{background:var(--pri);border-color:var(--pri);color:#fff}
+button.pri:hover:not(:disabled){background:#106ebe;border-color:#106ebe}
+.card{box-shadow:0 1.6px 3.6px rgba(0,0,0,.08),0 .3px .9px rgba(0,0,0,.06)}
+.tag.dP{color:var(--dP);border-color:var(--dP)}.tag.dG{color:var(--dG);border-color:var(--dG)}.tag.dV{color:var(--dV);border-color:var(--dV)}.tag.dT{color:var(--dT);border-color:var(--dT)}.tag.dI{color:var(--dI);border-color:var(--dI)}
+.qcard{border-top:4px solid var(--pri)}
+.qcard.dP{border-top-color:var(--dP)}.qcard.dG{border-top-color:var(--dG)}.qcard.dV{border-top-color:var(--dV)}.qcard.dT{border-top-color:var(--dT)}.qcard.dI{border-top-color:var(--dI)}
+.side h3{border-left:3px solid var(--pri);padding-left:8px}
 button.ok{background:var(--ok);border-color:var(--ok);color:#fff}button.no{background:var(--bad);border-color:var(--bad);color:#fff}
 main{max-width:1100px;margin:0 auto;padding:14px;display:grid;grid-template-columns:1fr 250px;gap:14px}
 @media(max-width:860px){main{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px}
 .qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
 .tag{font-size:12px;padding:1px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--mut)}
 .tag.t{color:var(--pri);border-color:var(--pri)}.tag.w{color:var(--bad);border-color:var(--bad)}.tag.f{color:var(--warn);border-color:var(--warn)}
 .qtext p{margin:.4em 0}
-.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:8px 0;cursor:pointer}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:4px;padding:9px 12px;margin:8px 0;cursor:pointer}
 .opt:hover{border-color:var(--pri)}
-.opt.sel{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 10%,transparent)}
+.opt.sel{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 12%,transparent)}
 .opt.right{border-color:var(--ok);background:var(--okbg)}.opt.wrong{border-color:var(--bad);background:var(--badbg)}
 .opt .l{font-weight:700;min-width:1.4em}
 .opt.locked{cursor:default}
-img.qi{max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:8px 0;background:#fff;display:block}
-details{margin:8px 0;border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
+img.qi{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;margin:8px 0;background:#fff;display:block}
+details{margin:8px 0;border:1px dashed var(--line);border-radius:4px;padding:6px 10px}
 summary{cursor:pointer;color:var(--mut);font-size:13px}
 pre.ocr{white-space:pre-wrap;font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--mut);margin:6px 0 0}
-.res{margin-top:12px;padding:10px 14px;border-radius:10px}
+.res{margin-top:12px;padding:10px 14px;border-radius:4px}
 .res.ok{background:var(--okbg);color:var(--ok)}.res.no{background:var(--badbg);color:var(--bad)}
 .res .sub{color:var(--ink);font-size:13px;margin-top:4px}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
@@ -69,7 +81,7 @@ pre.ocr{word-break:break-word}
  #filters .stat{flex:1 1 44%}
  #filters #stat{display:none}
  main{padding:10px;gap:10px;grid-template-columns:1fr}
- .card{padding:12px;border-radius:10px}
+ .card{padding:12px;border-radius:4px}
  .side{order:2}
  .grid{max-height:220px;overflow:auto;grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}
  .grid button{padding:8px 0}
@@ -175,7 +187,7 @@ function stats(){
   $('#stat2').innerHTML=$('#stat').innerHTML.replace(/共 <b>\d+<\/b> 題・/,'');
   const wo=$('#mode').querySelector('[value=wrong]');wo.textContent=`錯題練習（${bad}）`;
   $('#mode').querySelector('[value=flag]').textContent=`已標記（${Object.keys(P.flag).length}）`;
-  $('#dstat').innerHTML='<b>各領域正確率</b><br>'+(DATA.domains||[]).map(d=>{const qs=QS.filter(q=>q.dom===d.id);let o=0,t=0;qs.forEach(q=>{const r=P.r[q.n];if(r){t++;if(r.ok)o++}});return `${esc(d.name)}（${d.w}）：${t?Math.round(o/t*100)+'%':'–'}　<span style="color:var(--mut)">${o}/${t}／${qs.length} 題</span>`}).join('<br>');
+  $('#dstat').innerHTML='<b>各領域正確率</b><br>'+(DATA.domains||[]).map(d=>{const qs=QS.filter(q=>q.dom===d.id);let o=0,t=0;qs.forEach(q=>{const r=P.r[q.n];if(r){t++;if(r.ok)o++}});return `<span style="color:var(--d${d.id})">■</span> ${esc(d.name)}（${d.w}）：${t?Math.round(o/t*100)+'%':'–'}　<span style="color:var(--mut)">${o}/${t}／${qs.length} 題</span>`}).join('<br>');
   $('#mode').querySelector('[value=unseen]').textContent=`未作答（${QS.length-tot}）`;
 }
 function grid(){
@@ -196,7 +208,8 @@ function render(){
     c.innerHTML=`<div class="done"><h2>${m==='wrong'?'🎉 錯題本是空的':'沒有符合條件的題目'}</h2><p class="stat">${m==='wrong'?'答錯的題目會自動收集在這裡。':'請調整上方篩選條件。'}</p></div>`;return;
   }
   const q=list[idx],r=P.r[q.n];
-  let h=`<div class="qhead"><b>Question #${q.n}</b><span class="tag">${DN[q.dom]?DN[q.dom].name:''}</span><span class="tag t">${q.type==='MCQ'?(q.multi?'多選 '+q.ans.length+' 項':'單選'):q.type}</span>`+
+  c.className='card qcard d'+q.dom;
+  let h=`<div class="qhead"><b>Question #${q.n}</b><span class="tag d${q.dom}">${DN[q.dom]?DN[q.dom].name:''}</span><span class="tag t">${q.type==='MCQ'?(q.multi?'多選 '+q.ans.length+' 項':'單選'):q.type}</span>`+
    (r?(r.ok?'<span class="tag">上次答對</span>':'<span class="tag w">上次答錯</span>'):'')+
    (r?`<span class="tag">作答 ${r.t} 次・錯 ${r.w} 次</span>`:'')+
    `<span class="tag" style="margin-left:auto">${idx+1} / ${list.length}</span><button id="bFlag" class="${P.flag[q.n]?'f':''}">${P.flag[q.n]?'★ 已標記':'☆ 標記'}</button></div>`;
