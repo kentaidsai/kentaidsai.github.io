@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GH-300 GitHub Copilot 互動式測驗</title>
+<style>
+:root{--bg:#f3f2f1;--card:#ffffff;--ink:#201f1e;--mute:#605e5c;--line:#e1dfdd;--accent:#0f6cbd;--accent2:#115ea3;--ok:#107c10;--okbg:#dff6dd;--bad:#d13438;--badbg:#fde7e9;--warn:#8a6100;--warnbg:#fff4ce;--sel:#eff6fc;--hdr:#0f6cbd}
+@media(prefers-color-scheme:dark){:root{--bg:#1b1a19;--card:#292827;--ink:#f3f2f1;--mute:#c8c6c4;--line:#3b3a39;--accent:#4f9de0;--accent2:#6cb8f6;--ok:#6bb700;--okbg:#1f2d17;--bad:#f1707b;--badbg:#3a1d20;--warn:#f7c948;--warnbg:#3a2f12;--sel:#1f3347;--hdr:#115ea3}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI","Segoe UI Variable",-apple-system,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.top{background:var(--hdr);color:#fff;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#f25022 0 25%,#7fba00 25% 50%,#00a4ef 50% 75%,#ffb900 75% 100%) 1;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.top .in{max-width:860px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.top h1{font-size:18px;margin:0;font-weight:600;color:#fff}
+.top .meta{color:rgba(255,255,255,.85)}
+.logo{width:22px;height:22px;display:grid;grid-template-columns:1fr 1fr;gap:2px;flex:none}
+.logo i{display:block}
+.logo i:nth-child(1){background:#f25022}.logo i:nth-child(2){background:#7fba00}.logo i:nth-child(3){background:#00a4ef}.logo i:nth-child(4){background:#ffb900}
+h1{font-size:20px;margin:8px 0 12px}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1.6px 3.6px rgba(0,0,0,.13),0 .3px .9px rgba(0,0,0,.11)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,button,input[type=number]{font:inherit;padding:6px 12px;border:1px solid #8a8886;border-radius:4px;background:var(--card);color:var(--ink)}
+button{cursor:pointer}
+button:hover:not(:disabled){background:var(--sel)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button.primary:hover:not(:disabled){background:var(--accent2);border-color:var(--accent2)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--accent);width:0}
+.meta{color:var(--mute);font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:2px;border:1px solid var(--line);color:var(--mute);margin-right:4px}
+.tag.red{color:var(--bad);border-color:var(--bad)}
+.tag.yellow{color:var(--warn);border-color:var(--warn)}
+.stem{font-size:17px;margin:8px 0 12px;white-space:pre-wrap}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:4px;background:var(--card)}
+.opt:hover:not(.locked){background:var(--sel);border-left-color:var(--accent)}
+.opt .k{font-weight:700;min-width:1.4em}
+.opt.sel{background:var(--sel);border-color:var(--accent)}
+.opt.right{background:var(--okbg);border-color:var(--ok);border-left-color:var(--ok)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);border-left-color:var(--bad)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
+.opt.locked{cursor:default}
+.note{margin-top:10px;padding:10px 12px;border-radius:4px;font-size:14px;border-left:4px solid var(--line);background:var(--bg)}
+.note.res-ok{background:var(--okbg);border-left-color:var(--ok)} .note.res-bad{background:var(--badbg);border-left-color:var(--bad)}
+.note.warn{background:var(--warnbg);border-left-color:var(--warn)}
+.imgs img{max-width:100%;border:1px solid var(--line);border-radius:4px;margin:6px 0;background:#fff}
+.ans li{margin:2px 0}
+.nav{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
+.grid{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.grid button{min-width:36px;padding:3px 0;font-size:12px}
+.grid .ok{background:var(--okbg);border-color:var(--ok)} .grid .no{background:var(--badbg);border-color:var(--bad)} .grid button small{font-size:10px;margin-left:1px}.grid .cur{outline:2px solid var(--accent)}
+.hide{display:none}
+/* ===== RWD ===== */
+html{-webkit-text-size-adjust:100%}
+img{max-width:100%;height:auto}
+.row>label{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.opt{word-break:break-word;overflow-wrap:anywhere;touch-action:manipulation}
+.stem{overflow-wrap:anywhere}
+button,select,input{touch-action:manipulation}
+@media (max-width:720px){
+  .wrap{padding:10px 10px calc(76px + env(safe-area-inset-bottom))}
+  .top .in{padding:10px 12px}.top h1{font-size:16px}
+  .panel,.card{padding:12px;border-radius:8px}
+  /* 篩選區：每個控制項占滿一列，避免 iOS 聚焦放大(字級≥16px) */
+  .panel>.row{flex-direction:column;align-items:stretch}
+  .panel>.row>label{justify-content:space-between;flex-wrap:nowrap;width:100%;min-width:0}
+  .panel>.row>label>select,.panel>.row>label>input{width:auto;max-width:100%;text-overflow:ellipsis}
+  #fCheckWrap{display:none}
+  .panel>.row select,.panel>.row input[type=number]{flex:1 1 0;min-width:0;width:0;min-height:42px;font-size:16px}
+  #fCount{width:100%!important}
+  #btnStart{min-height:46px;font-size:17px}
+  /* 錯題本標題列：按鈕換行 */
+  #book>.row{flex-direction:row;align-items:center}
+  #book .row .row{gap:6px}
+  #btnPractice,#btnClear{min-height:40px}
+  /* 選項加大觸控面積 */
+  .opt{padding:13px 12px;font-size:16px}
+  .stem{font-size:16px}
+  .note{font-size:14px}
+  /* 題號格縮小並可捲動 */
+  .grid{max-height:112px;overflow-y:auto;gap:4px}
+  .grid button{min-width:34px;min-height:34px}
+  /* 上一題/下一題固定在底部 */
+  .nav{position:fixed;left:0;right:0;bottom:0;margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);z-index:10}
+  .nav button{flex:1;min-height:46px;font-size:16px}
+  #quiz.hide~.nav{display:none}
+}
+@media (max-width:380px){
+  .grid button{min-width:30px;font-size:11px}
+  .opt .k{min-width:1.2em}
+}
+@media (min-width:721px) and (max-width:1024px){
+  .wrap{max-width:720px}
+}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="in"><span class="logo"><i></i><i></i><i></i><i></i></span><h1>GH-300 GitHub Copilot 互動式測驗 <span class="meta" id="total"></span></h1></div></header>
+<div class="wrap">
+
+  <div class="panel">
+    <div class="row">
+      <label>範圍
+        <select id="fTopic"></select>
+      </label>
+      <label>類型
+        <select id="fType">
+          <option value="all">全部</option>
+          <option value="flag">分歧題（🔴🟡）</option>
+          <option value="red">僅 🔴 分歧大</option>
+          <option value="wrong">上次答錯</option>
+          <option value="image">圖片題</option>
+        </select>
+      </label>
+      <label>題數 <input type="number" id="fCount" min="1" value="0" style="width:72px" title="0 = 全部"></label>
+      <label><input type="checkbox" id="fShuffle"> 隨機順序</label>
+      <button class="primary" id="btnStart">開始</button>
+    </div>
+    <div class="meta" id="poolInfo" style="margin-top:6px"></div>
+  </div>
+
+  <div class="panel" id="book">
+    <div class="row" style="justify-content:space-between">
+      <b>📕 錯題本 <span class="meta" id="bookCount"></span></b>
+      <span class="row">
+        <button class="primary" id="btnPractice">開始錯題練習</button>
+        <button id="btnClear">清空</button>
+      </span>
+    </div>
+    <div class="meta" style="margin-top:4px">錯題練習：答錯的題目會排到最後重練，直到答對才移出錯題本；一般測驗答錯會自動加入。</div>
+    <div class="grid" id="bookList"></div>
+  </div>
+
+  <div id="quiz" class="hide">
+    <div class="panel">
+      <div class="row" style="justify-content:space-between">
+        <span id="progress" class="meta"></span>
+        <span id="score" class="meta"></span>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="grid" id="grid"></div>
+    </div>
+    <div class="card" id="card"></div>
+    <div class="nav">
+      <button id="btnPrev">← 上一題</button>
+      <button id="btnNext" class="primary">下一題 →</button>
+    </div>
+  </div>
+
+  <div id="result" class="card hide"></div>
+</div>
+
+<script src="msgh300.js"></script>
+<script>
+(function(){
+  var KEY='msgh300_wrong';
+  // 錯題本：{題號:{n:累計答錯次數,t:最近答錯時間}}；相容舊格式（題號陣列）
+  function load(){
+    try{
+      var v=JSON.parse(localStorage.getItem(KEY)||'{}');
+      if(Array.isArray(v)){var o={};v.forEach(function(i){o[i]={n:1,t:0}});return o}
+      return v||{};
+    }catch(e){return {}}
+  }
+  function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+  var wrongMap=load();
+  var wrongSet={
+    has:function(id){return !!wrongMap[id]},
+    get size(){return Object.keys(wrongMap).length}
+  };
+  function K(q){return q._k||q.id}
+  var practiceMode=false; // 錯題練習：答錯會重新排入佇列，直到答對
+  var $=function(id){return document.getElementById(id)};
+  var pool=[],idx=0,state={}; // state[id]={sel:[],checked:bool,ok:bool}
+  $('total').textContent='（共 '+QUESTIONS.length+' 題）';
+
+  // topic filter
+  var topics=[];QUESTIONS.forEach(function(q){if(topics.indexOf(q.topic)<0)topics.push(q.topic)});
+  $('fTopic').innerHTML='<option value="">全部主題</option>'+topics.map(function(t){
+    var c=QUESTIONS.filter(function(q){return q.topic===t}).length;
+    return '<option value="'+esc(t)+'">'+esc(t)+'（'+c+'）</option>'}).join('');
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  function filtered(){
+    var t=$('fTopic').value,ty=$('fType').value;
+    return QUESTIONS.filter(function(q){
+      if(t&&q.topic!==t)return false;
+      if(ty==='flag')return !!q.flag;
+      if(ty==='red')return q.flag==='red';
+      if(ty==='wrong')return wrongSet.has(q.id);
+      if(ty==='image')return q.type==='image';
+      return true;
+    });
+  }
+  function updatePool(){$('poolInfo').textContent='符合條件：'+filtered().length+' 題；已記錄錯題：'+wrongSet.size+' 題'}
+  ['fTopic','fType'].forEach(function(i){$(i).addEventListener('change',updatePool)});
+  updatePool();
+
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+  $('btnStart').onclick=function(){
+    practiceMode=false;
+    pool=filtered().slice();
+    if(!pool.length){alert('沒有符合條件的題目');return}
+    if($('fShuffle').checked)shuffle(pool);
+    var n=parseInt($('fCount').value,10);
+    if(n>0&&n<pool.length)pool=pool.slice(0,n);
+    state={};idx=0;
+    $('quiz').classList.remove('hide');$('result').classList.add('hide');
+    render();
+  };
+
+  function render(){
+    var q=pool[idx],st=state[K(q)]||(state[K(q)]={sel:[],checked:false,ok:null});
+    var h='<div class="meta">Q'+q.id+' · '+esc(q.topic)+(q.type==='image'?' · <span class="tag">'+esc(q.kind)+'</span>':'');
+    if(q.flag)h+=' <span class="tag '+q.flag+'">'+(q.flag==='red'?'🔴 社群投票分歧大':'🟡 略有分歧')+'</span>';
+    h+='</div><div class="stem">'+esc(q.stem)+'</div>';
+    if(q.type==='mcq'){
+      var multi=q.answer.length>1;
+      if(multi)h+='<div class="meta">多選題：請選 '+q.answer.length+' 項</div>';
+      Object.keys(q.options).forEach(function(k){
+        var cls='opt',sel=st.sel.indexOf(k)>=0,isAns=q.answer.indexOf(k)>=0;
+        if(st.checked){cls+=' locked';
+          if(isAns&&sel)cls+=' right';else if(!isAns&&sel)cls+=' wrong';else if(isAns)cls+=' missed'}
+        else if(sel)cls+=' sel';
+        h+='<button class="'+cls+'" data-k="'+k+'"><span class="k">'+k+'.</span><span>'+esc(q.options[k])+'</span></button>';
+      });
+      if(!st.checked)h+='<div class="row" style="margin-top:8px"><button class="primary" id="btnCheck"'+(st.sel.length?'':' disabled')+'>檢查答案</button></div>';
+      else{
+        h+='<div class="note '+(st.ok?'res-ok':'res-bad')+'">'+(st.ok?'✅ 答對了':'❌ 答錯了')+'　正確答案：<b>'+q.answer.join('')+'</b></div>';
+        h+=extra(q);
+      }
+    }else{
+      h+='<div class="meta">圖片題（題幹與選項在圖中）：</div><div class="imgs">';
+      (q.images||[]).forEach(function(s,i){if(!st.checked&&i>0&&/_b\./.test(s))return;h+='<img src="'+esc(s)+'" alt="Q'+q.id+'">'});
+      h+='</div><div class="note warn"><b>圖片文字解析：</b>'+esc(q.imgContent)+'</div>';
+      if(!st.checked)h+='<div class="row" style="margin-top:8px"><button class="primary" id="btnReveal">顯示答案</button></div>';
+      else{
+        h+='<div class="note res-ok"><b>正確答案</b><ul class="ans">'+q.answerLines.map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ul></div>';
+        h+='<div class="row" style="margin-top:8px"><span class="meta">你答對了嗎？</span><button id="selfOk">✅ 對</button><button id="selfBad">❌ 錯</button></div>';
+        h+=extra(q);
+      }
+    }
+    $('card').innerHTML=h;
+    bind(q,st);
+    $('btnPrev').disabled=idx===0;
+    $('btnNext').textContent=idx===pool.length-1?'完成 ✔':'下一題 →';
+    paint();
+  }
+
+  function extra(q){
+    var h='';
+    if(q.votes)h+='<div class="note">📊 社群投票：'+esc(q.votes)+'</div>';
+    if(q.flagVotes&&q.type==='image')h+='<div class="note">📊 社群投票：'+esc(q.flagVotes)+'</div>';
+    if(q.verified)h+='<div class="note warn">🔎 查證：'+esc(q.verified)+'</div>';
+    if(q.explain)h+='<div class="note">💡 解析：'+esc(q.explain)+'</div>';
+    return h;
+  }
+
+  function mark(q,ok){
+    var st=state[K(q)];st.ok=ok;
+    if(ok){
+      // 一般模式答對保留記錄；錯題練習中答對才移出錯題本
+      if(practiceMode)delete wrongMap[q.id];
+    }else{
+      var w=wrongMap[q.id]||{n:0,t:0};w.n++;w.t=Date.now();wrongMap[q.id]=w;
+      // 錯題練習：答錯的題目排到最後再練一次
+      if(practiceMode)pool.push(Object.assign({},q,{_k:q.id+'_r'+Date.now()}));
+    }
+    save(wrongMap);updatePool();renderBook();
+  }
+
+  function bind(q,st){
+    var card=$('card');
+    if(q.type==='mcq'){
+      card.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){
+        if(st.checked)return;
+        var k=b.dataset.k,multi=q.answer.length>1,p=st.sel.indexOf(k);
+        if(multi){if(p>=0)st.sel.splice(p,1);else st.sel.push(k)}else st.sel=[k];
+        render();
+      }});
+      var c=$('btnCheck');
+      if(c)c.onclick=function(){
+        var a=q.answer.slice().sort().join(''),s=st.sel.slice().sort().join('');
+        st.checked=true;mark(q,a===s);render();
+      };
+    }else{
+      var r=$('btnReveal');if(r)r.onclick=function(){st.checked=true;st.ok=null;render()};
+      var y=$('selfOk'),n=$('selfBad');
+      if(y)y.onclick=function(){mark(q,true);render()};
+      if(n)n.onclick=function(){mark(q,false);render()};
+    }
+  }
+
+  function paint(){
+    var done=0,ok=0;
+    pool.forEach(function(q){var s=state[K(q)];if(s&&s.checked&&s.ok!==null){done++;if(s.ok)ok++}});
+    $('progress').textContent='第 '+(idx+1)+' / '+pool.length+' 題';
+    $('score').textContent='已作答 '+done+'　答對 '+ok+(done?'（'+Math.round(ok/done*100)+'%）':'');
+    $('barFill').style.width=((idx+1)/pool.length*100)+'%';
+    $('grid').innerHTML=pool.map(function(q,i){
+      var s=state[K(q)],c=i===idx?'cur ':'';
+      if(s&&s.ok===true)c+='ok';else if(s&&s.ok===false)c+='no';
+      return '<button class="'+c+'" data-i="'+i+'">'+q.id+'</button>';
+    }).join('');
+    $('grid').querySelectorAll('button').forEach(function(b){b.onclick=function(){idx=+b.dataset.i;render()}});
+  }
+
+  function renderBook(){
+    var ids=Object.keys(wrongMap).map(Number).sort(function(a,b){return wrongMap[b].n-wrongMap[a].n||a-b});
+    $('bookCount').textContent='（'+ids.length+' 題）';
+    $('btnPractice').disabled=!ids.length;$('btnClear').disabled=!ids.length;
+    $('bookList').innerHTML=ids.length?ids.map(function(i){
+      return '<button class="no" title="累計答錯 '+wrongMap[i].n+' 次" data-id="'+i+'">'+i+(wrongMap[i].n>1?'<small>×'+wrongMap[i].n+'</small>':'')+'</button>'}).join(''):'<span class="meta">目前沒有錯題</span>';
+    $('bookList').querySelectorAll('button').forEach(function(b){b.onclick=function(){startPractice([+b.dataset.id])}});
+  }
+  function startPractice(ids){
+    var list=QUESTIONS.filter(function(q){return ids.indexOf(q.id)>=0});
+    if(!list.length)return;
+    practiceMode=true;pool=shuffle(list.slice());state={};idx=0;
+    $('quiz').classList.remove('hide');$('result').classList.add('hide');
+    render();window.scrollTo({top:$('quiz').offsetTop-8,behavior:'smooth'});
+  }
+  $('btnPractice').onclick=function(){startPractice(Object.keys(wrongMap).map(Number))};
+  $('btnClear').onclick=function(){
+    if(confirm('確定清空錯題本？')){wrongMap={};save(wrongMap);updatePool();renderBook()}
+  };
+  renderBook();
+
+  $('btnPrev').onclick=function(){if(idx>0){idx--;render()}};
+  $('btnNext').onclick=function(){
+    if(idx<pool.length-1){idx++;render()}else finish();
+  };
+
+  function finish(){
+    var done=0,ok=0,bad=[],tries=0;
+    pool.forEach(function(q){var s=state[K(q)];if(s&&s.ok!==null&&s.checked){tries++;if(q._k)return;done++;if(s.ok)ok++;else bad.push(q.id)}});
+    var h='<h2 style="margin-top:0">測驗結果</h2><p>共 '+pool.length+' 題，已作答 '+done+' 題，答對 <b>'+ok+'</b> 題'+(done?'（'+Math.round(ok/done*100)+'%）':'')+'。</p>';
+    if(practiceMode)h+='<p>錯題練習：共作答 '+tries+' 次；仍在錯題本的題數：'+Object.keys(wrongMap).length+'。</p>';
+    h+=bad.length?'<p>答錯題號：'+bad.map(function(i){return 'Q'+i}).join('、')+'</p>':'<p>沒有答錯的題目 🎉</p>';
+    h+='<div class="row"><button class="primary" id="again">重新設定</button><button id="back">回到題目</button></div>';
+    $('result').innerHTML=h;$('result').classList.remove('hide');
+    $('again').onclick=function(){$('quiz').classList.add('hide');$('result').classList.add('hide');window.scrollTo(0,0)};
+    $('back').onclick=function(){$('result').classList.add('hide')};
+    $('result').scrollIntoView({behavior:'smooth'});
+  }
+})();
+</script>
+</body>
+</html>
