@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AB-100 互動測驗</title>
+<style>
+:root{--blue:#0078d4;--blue-d:#106ebe;--blue-l:#eff6fc;--green:#107c10;--green-l:#dff6dd;--red:#d13438;--red-l:#fde7e9;--orange:#d83b01;--yellow:#ffb900;--gray:#605e5c;--line:#e1dfdd;--bg:#faf9f8;--tx:#201f1e}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.hd{max-width:960px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.logo{display:grid;grid-template-columns:12px 12px;gap:2px;flex:none}
+.logo i{width:12px;height:12px;display:block}
+.logo i:nth-child(1){background:#f25022}.logo i:nth-child(2){background:#7fba00}.logo i:nth-child(3){background:#00a4ef}.logo i:nth-child(4){background:#ffb900}
+h1{font-size:18px;margin:0;font-weight:600;flex:1}
+.hbtn{border:0;background:none;color:var(--blue);font:inherit;cursor:pointer;padding:6px 8px}
+main{max-width:960px;margin:auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+h2{font-size:17px;margin:0 0 12px;font-weight:600}
+.hero{background:linear-gradient(135deg,#0078d4,#106ebe);color:#fff;border:0}
+.hero h2{color:#fff;font-size:22px}.hero p{margin:4px 0 0;opacity:.92}
+.dom{border-left:4px solid var(--blue);padding-left:12px;margin:14px 0}
+.dom.S{border-color:#7fba00}.dom.D{border-color:#00a4ef}.dom.P{border-color:#f25022}
+.dom h3{margin:0 0 6px;font-size:15px}
+.chk{display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--blue)}
+.chk .n{margin-left:auto;color:var(--gray);font-size:13px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg label{border:1px solid var(--line);padding:8px 16px;border-radius:2px;cursor:pointer;background:#fff;min-width:64px;text-align:center}
+.seg input{display:none}
+.seg input:checked+span{color:#fff}
+.seg label:has(input:checked){background:var(--blue);border-color:var(--blue);color:#fff}
+.btn{border:1px solid var(--blue);background:var(--blue);color:#fff;padding:10px 22px;border-radius:2px;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--blue-d)}
+.btn.sec{background:#fff;color:var(--blue)}.btn.sec:hover{background:var(--blue-l)}
+.btn.warn{background:var(--orange);border-color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:flex;gap:12px;flex-wrap:wrap}
+.stat{flex:1;min-width:120px;background:var(--blue-l);padding:10px 14px;border-radius:4px}
+.stat b{display:block;font-size:22px;color:var(--blue)}
+.link{color:var(--blue);cursor:pointer;background:none;border:0;font:inherit;padding:0;text-decoration:underline}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0 14px}
+.bar div{height:100%;background:var(--blue);transition:width .3s}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--gray);margin-bottom:10px;align-items:center}
+.tag{background:var(--blue-l);color:var(--blue);padding:2px 8px;border-radius:10px;font-size:12px}
+.tag.o{background:#fff4ce;color:#7a5b00}
+.stem{white-space:pre-wrap;font-size:16px;margin:8px 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:4px;padding:10px 12px;margin:8px 0;cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--blue);background:var(--blue-l)}
+.opt input{margin-top:5px;width:17px;height:17px;accent-color:var(--blue)}
+.opt .k{font-weight:700;color:var(--blue);min-width:18px}
+.opt.sel{border-color:var(--blue);background:var(--blue-l)}
+.opt.ok{border-color:var(--green);background:var(--green-l)}
+.opt.bad{border-color:var(--red);background:var(--red-l)}
+.locked .opt{cursor:default}
+.slot{display:grid;grid-template-columns:1fr minmax(180px,1fr);gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.slot select{font:inherit;padding:8px;border:1px solid #8a8886;border-radius:2px;width:100%;background:#fff}
+.slot.ok select{border-color:var(--green);background:var(--green-l)}
+.slot.bad select{border-color:var(--red);background:var(--red-l)}
+.slot .ans{grid-column:1/-1;font-size:13px;color:var(--green)}
+@media(max-width:600px){.slot{grid-template-columns:1fr}.hd{padding:8px 12px}main{padding:10px}.card{padding:14px}}
+details{border:1px solid var(--line);border-radius:4px;margin:10px 0;background:#fbfbfb}
+summary{padding:8px 12px;cursor:pointer;color:var(--blue);font-weight:600}
+details .in{padding:4px 12px 12px;white-space:pre-wrap;font-size:14px;max-height:340px;overflow:auto}
+details img{max-width:100%;border:1px solid var(--line);margin-top:8px}
+.fb{border-left:4px solid var(--green);background:var(--green-l);padding:10px 14px;margin:14px 0;border-radius:2px}
+.fb.bad{border-color:var(--red);background:var(--red-l)}
+.fb .h{font-weight:700;margin-bottom:4px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-top:14px}
+.grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dot{width:30px;height:30px;border:1px solid var(--line);border-radius:2px;background:#fff;font-size:12px;cursor:pointer}
+.dot.cur{outline:2px solid var(--blue)}.dot.done{background:var(--blue-l)}.dot.ok{background:var(--green-l);border-color:var(--green)}.dot.bad{background:var(--red-l);border-color:var(--red)}
+.score{font-size:44px;font-weight:700;color:var(--blue)}
+.li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hide{display:none}
+.note{font-size:13px;color:var(--gray)}
+</style>
+</head>
+<body>
+<header><div class="hd"><div class="logo"><i></i><i></i><i></i><i></i></div><h1>AB-100 互動測驗</h1><button class="hbtn" id="homeBtn">首頁</button></div></header>
+<main id="app"></main>
+<script src="ms_ab100.js"></script>
+<script>
+(function(){
+const D=AB100_DATA, Q=D.questions, byId={};Q.forEach(q=>byId[q.id]=q);
+const KEY='ab100_state_v1';
+let st={wrong:{},hist:[],seen:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)st=Object.assign(st,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const $=s=>document.querySelector(s), app=$('#app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let run=null; // {list,idx,mode,exam,ans:{},checked:{}}
+$('#homeBtn').onclick=()=>{if(run&&!run.done&&!confirm('離開目前測驗？進度不會保存。'))return;run=null;home()};
+
+function home(){
+  const wrongN=Object.keys(st.wrong).filter(i=>byId[i]).length;
+  const catCount={};Q.forEach(q=>catCount[q.cat]=(catCount[q.cat]||0)+1);
+  let doms='';
+  for(const d of Object.keys(D.domains)){
+    const cs=Object.keys(D.categories).filter(c=>D.categories[c].domain===d);
+    const tot=cs.reduce((a,c)=>a+(catCount[c]||0),0);
+    doms+=`<div class="dom ${d}"><h3>${esc(D.domains[d])} <span class="note">（${tot} 題）</span></h3>`+
+      cs.map(c=>`<label class="chk"><input type="checkbox" class="cat" value="${c}" checked><span>${esc(D.categories[c].name.split('｜')[1])}</span><span class="n">${catCount[c]||0} 題</span></label>`).join('')+'</div>';
+  }
+  const h=st.hist.slice(-5).reverse().map(x=>`<div class="li">${x.date}　${esc(x.label)}　<b>${x.ok}/${x.n}</b>（${Math.round(x.ok/x.n*100)}%）</div>`).join('')||'<div class="note">尚無紀錄</div>';
+  app.innerHTML=`
+  <div class="card hero"><h2>Microsoft AB-100 模擬測驗</h2><p>${esc(D.source)}</p></div>
+  <div class="card"><div class="stats">
+    <div class="stat"><b>${Q.length}</b>題庫總題數</div>
+    <div class="stat"><b>${Object.keys(st.seen).length}</b>已作答題數</div>
+    <div class="stat"><b style="color:var(--orange)">${wrongN}</b>錯題本</div></div></div>
+  <div class="card"><h2>① 選擇考試主題</h2>
+    <div class="row" style="margin-bottom:6px"><button class="link" id="all">全選</button><button class="link" id="none">全不選</button></div>${doms}</div>
+  <div class="card"><h2>② 題數與模式</h2>
+    <div class="seg" id="num">
+      <label><input type="radio" name="n" value="10" checked><span>10 題</span></label>
+      <label><input type="radio" name="n" value="20"><span>20 題</span></label>
+      <label><input type="radio" name="n" value="50"><span>50 題</span></label>
+      <label><input type="radio" name="n" value="0"><span>全部</span></label></div>
+    <div style="margin-top:12px" class="seg">
+      <label><input type="radio" name="m" value="practice" checked><span>練習模式（作答後立即看解說）</span></label>
+      <label><input type="radio" name="m" value="exam"><span>考試模式（結束後才看答案）</span></label></div>
+    <label class="chk" style="margin-top:10px"><input type="checkbox" id="dedupe" checked><span>同題幹的變體題只抽一題（避免選項不同的重複題互相洩題）</span></label>
+    <p class="note" id="avail"></p>
+    <div class="row" style="margin-top:8px"><button class="btn" id="start">開始測驗</button>
+    <button class="btn warn" id="wrongBtn" ${wrongN?'':'disabled'}>錯題練習（${wrongN}）</button>
+    ${wrongN?'<button class="btn sec" id="wrongList">檢視錯題</button>':''}</div></div>
+  <div class="card"><h2>最近測驗</h2>${h}<p class="note">${wrongN||st.hist.length?'<button class="link" id="reset">清除所有紀錄</button>':''}</p></div>`;
+  const cats=()=>[...document.querySelectorAll('.cat:checked')].map(x=>x.value);
+  const upd=()=>{const n=Q.filter(q=>cats().includes(q.cat)).length;$('#avail').textContent=`目前所選主題共 ${n} 題可抽。`;$('#start').disabled=!n};
+  document.querySelectorAll('.cat').forEach(x=>x.onchange=upd);upd();
+  $('#all').onclick=()=>{document.querySelectorAll('.cat').forEach(x=>x.checked=true);upd()};
+  $('#none').onclick=()=>{document.querySelectorAll('.cat').forEach(x=>x.checked=false);upd()};
+  $('#start').onclick=()=>{
+    const n=+document.querySelector('[name=n]:checked').value, m=document.querySelector('[name=m]:checked').value;
+    let pool=shuffle(Q.filter(q=>cats().includes(q.cat)));
+    if($('#dedupe').checked){const seen={};pool=pool.filter(q=>{const k=q.q.toLowerCase().replace(/\W+/g,' ');if(seen[k])return false;seen[k]=1;return true})}
+    if(n)pool=pool.slice(0,n);
+    begin(pool,m==='exam',`隨機 ${pool.length} 題`);
+  };
+  const w=$('#wrongBtn');if(w)w.onclick=()=>{
+    const n=+document.querySelector('[name=n]:checked').value, m=document.querySelector('[name=m]:checked').value;
+    let pool=shuffle(Object.keys(st.wrong).filter(i=>byId[i]).map(i=>byId[i]));
+    if(n)pool=pool.slice(0,n);
+    begin(pool,m==='exam','錯題練習',true)};
+  const wl=$('#wrongList');if(wl)wl.onclick=wrongList;
+  const r=$('#reset');if(r)r.onclick=()=>{if(confirm('確定清除錯題本與測驗紀錄？')){st={wrong:{},hist:[],seen:{}};save();home()}};
+}
+function wrongList(){
+  const ids=Object.keys(st.wrong).filter(i=>byId[i]);
+  app.innerHTML=`<div class="card"><h2>錯題本（${ids.length}）</h2>`+ids.map(i=>{const q=byId[i];return `<div class="li"><span class="tag">${esc(q.exam)}</span> <span class="tag o">${esc(D.categories[q.cat].name)}</span><br>${esc(q.q.split('\n').slice(-2).join(' ').slice(0,160))}… <button class="link" data-i="${i}" data-act="rm">移除</button></div>`}).join('')+`<div class="nav"><button class="btn sec" id="back">返回</button></div></div>`;
+  $('#back').onclick=home;
+  app.querySelectorAll('[data-act=rm]').forEach(b=>b.onclick=()=>{delete st.wrong[b.dataset.i];save();wrongList()});
+}
+function begin(list,exam,label,isWrong){
+  if(!list.length)return;
+  run={list,idx:0,exam,label,isWrong,ans:{},checked:{},done:false};
+  show();
+}
+const isDone=q=>run.checked[q.id];
+function grade(q){
+  const a=run.ans[q.id];
+  if(q.type==='slots')return q.slots.every((s,i)=>a&&a[i]===s.answer);
+  return a&&a.length===q.answer.length&&q.answer.every(x=>a.includes(x));
+}
+function answered(q){const a=run.ans[q.id];if(!a)return false;return q.type==='slots'?q.slots.every((s,i)=>a[i]):a.length>0}
+function show(){
+  const q=run.list[run.idx], n=run.list.length, chk=isDone(q), reveal=chk&&!run.exam||run.done;
+  const lock=!!chk&&!run.exam;
+  const c=q.case?D.cases[q.case]:null;
+  let body='';
+  if(q.type==='slots'){
+    body=q.slots.map((s,i)=>{
+      const v=(run.ans[q.id]||[])[i]||'';
+      let cls='';if(lock){cls=v===s.answer?'ok':'bad'}
+      return `<div class="slot ${cls}"><div>${esc(s.label)}</div><select data-i="${i}" ${lock?'disabled':''}><option value="">— 請選擇 —</option>${s.options.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>${lock&&v!==s.answer?`<div class="ans">✔ 正確答案：${esc(s.answer)}</div>`:''}</div>`}).join('');
+    if(q.imgs&&q.imgs.length)body+=`<details><summary>🖼 圖片文字解析／原圖</summary><div class="in">${esc(q.imgText||'')}${q.imgs.map(f=>`<br><img src="ms_ab100_img/${f}" alt="exhibit" onerror="this.style.display='none'">`).join('')}</div></details>`;
+  }else{
+    const sel=run.ans[q.id]||[];
+    body=q.options.map(o=>{
+      let cls=sel.includes(o.k)?'sel':'';
+      if(lock){if(q.answer.includes(o.k))cls='ok';else if(sel.includes(o.k))cls='bad'}
+      return `<label class="opt ${cls}"><input type="${q.type==='multi'?'checkbox':'radio'}" name="o" value="${o.k}" ${sel.includes(o.k)?'checked':''} ${lock?'disabled':''}><span class="k">${o.k}.</span><span>${esc(o.t)}</span></label>`}).join('');
+  }
+  let fb='';
+  if(lock){const ok=grade(q);
+    const ansTxt=q.type==='slots'?q.slots.map(s=>s.answer).join(' ／ '):q.answer.join(', ');
+    fb=`<div class="fb ${ok?'':'bad'}"><div class="h">${ok?'✔ 答對了':'✘ 答錯了'}　正確答案：${esc(ansTxt)}</div>${esc(q.exp)}<div class="note" style="margin-top:6px">${q.verify==='official'?`<span class="tag" style="background:var(--green-l);color:var(--green)">已對照官方文件</span> `:q.verify==='partial'?'<span class="tag o">官方文件僅部分佐證</span> ':'答案為社群共識，非官方；'}${q.ref?`<a href="${esc(q.ref)}" target="_blank" rel="noopener">Microsoft Learn</a>　`:''}${q.url?`<a href="${esc(q.url)}" target="_blank" rel="noopener">ExamTopics 討論</a>`:''}</div></div>`}
+  const isLast=run.idx===n-1;
+  const dots=run.list.map((x,i)=>{let k=i===run.idx?'cur ':'';if(run.checked[x.id]&&!run.exam)k+=grade(x)?'ok':'bad';else if(answered(x))k+='done';return `<button class="dot ${k}" data-g="${i}">${i+1}</button>`}).join('');
+  app.innerHTML=`<div class="card">
+    <div class="meta"><b>${esc(run.label)}　第 ${run.idx+1} / ${n} 題</b><span class="tag">${esc(D.categories[q.cat].name)}</span><span class="tag o">${esc(q.exam)}</span>${q.type==='multi'?'<span class="tag o">複選</span>':''}${q.type==='slots'?`<span class="tag o">${q.kind==='hotspot'?'HOTSPOT':'DRAG DROP'}</span>`:''}</div>
+    <div class="bar"><div style="width:${(run.idx+1)/n*100}%"></div></div>
+    ${c?`<details><summary>📋 ${esc(c.title)}（點擊展開案例）</summary><div class="in">${esc(c.text)}</div></details>`:''}
+    <div class="stem">${esc(q.q)}</div>
+    <div class="${lock?'locked':''}" id="body">${body}</div>${fb}
+    <div class="nav"><div class="row"><button class="btn sec" id="prev" ${run.idx?'':'disabled'}>上一題</button>
+    ${(!run.exam&&!chk)?`<button class="btn" id="chk" ${answered(q)?'':'disabled'}>提交答案</button>`:''}</div>
+    <div class="row">${isLast?(run.done?'<button class="btn warn" id="fin">回首頁</button>':'<button class="btn warn" id="fin">結束並交卷</button>'):'<button class="btn" id="next">下一題</button>'}</div></div>
+    <div class="grid">${dots}</div></div>`;
+  const body_=$('#body');
+  if(!lock){
+    if(q.type==='slots'){body_.querySelectorAll('select').forEach(s=>s.onchange=()=>{const a=run.ans[q.id]||(run.ans[q.id]=[]);a[+s.dataset.i]=s.value;upd()})}
+    else body_.querySelectorAll('input').forEach(inp=>inp.onchange=()=>{
+      let a=run.ans[q.id]||[];
+      if(q.type==='single')a=[inp.value];else a=[...body_.querySelectorAll('input:checked')].map(x=>x.value);
+      run.ans[q.id]=a;
+      body_.querySelectorAll('.opt').forEach(l=>l.classList.toggle('sel',l.querySelector('input').checked));upd()});
+  }
+  function upd(){const b=$('#chk');if(b)b.disabled=!answered(q)}
+  const go=i=>{run.idx=i;show();window.scrollTo(0,0)};
+  $('#prev').onclick=()=>go(run.idx-1);
+  const nx=$('#next');if(nx)nx.onclick=()=>go(run.idx+1);
+  const cb=$('#chk');if(cb)cb.onclick=()=>{record(q);run.checked[q.id]=1;show()};
+  const fn=$('#fin');if(fn)fn.onclick=run.done?(()=>{run=null;home()}):finish;
+  app.querySelectorAll('.dot').forEach(d=>d.onclick=()=>go(+d.dataset.g));
+}
+function record(q){
+  const ok=grade(q);st.seen[q.id]=1;
+  if(ok){if(run.isWrong)delete st.wrong[q.id]}else st.wrong[q.id]=(st.wrong[q.id]||0)+1;
+  save();
+}
+function finish(){
+  const un=run.list.filter(q=>!answered(q)).length;
+  if(un&&!confirm(`還有 ${un} 題未作答，確定交卷？`))return;
+  run.list.forEach(q=>{if(!run.checked[q.id]){if(answered(q))record(q);else{st.wrong[q.id]=(st.wrong[q.id]||0)+1;save()}run.checked[q.id]=1}});
+  run.done=true;
+  const ok=run.list.filter(grade).length,n=run.list.length;
+  const d=new Date();st.hist.push({date:`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,label:run.label,ok,n});st.hist=st.hist.slice(-30);save();
+  const bad=run.list.filter(q=>!grade(q));
+  const bycat={};run.list.forEach(q=>{const c=bycat[q.cat]||(bycat[q.cat]={ok:0,n:0});c.n++;if(grade(q))c.ok++});
+  app.innerHTML=`<div class="card" style="text-align:center"><div class="note">測驗完成</div><div class="score">${Math.round(ok/n*100)}%</div><div>答對 ${ok} / ${n} 題</div>
+   <div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="home2">回首頁</button>${bad.length?'<button class="btn warn" id="again">重做本次錯題</button>':''}<button class="btn sec" id="rev">逐題檢討</button></div></div>
+   <div class="card"><h2>各主題成績</h2>${Object.keys(bycat).map(c=>`<div class="li">${esc(D.categories[c].name)}　<b>${bycat[c].ok}/${bycat[c].n}</b></div>`).join('')}</div>
+   ${bad.length?`<div class="card"><h2>答錯題目（已加入錯題本）</h2>${bad.map(q=>`<div class="li"><span class="tag">${esc(q.exam)}</span> ${esc(q.q.split('\n').slice(-2).join(' ').slice(0,150))}…<br><span class="note">正確答案：${esc(q.type==='slots'?q.slots.map(s=>s.answer).join(' ／ '):q.answer.join(', '))}</span></div>`).join('')}</div>`:''}`;
+  $('#home2').onclick=()=>{run=null;home()};
+  const ag=$('#again');if(ag)ag.onclick=()=>begin(shuffle(bad),false,'重做錯題',true);
+  $('#rev').onclick=()=>{run.idx=0;run.exam=false;show()};
+}
+home();
+})();
+</script>
+</body>
+</html>
